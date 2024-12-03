@@ -1,11 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "@/hooks/use-toast";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import * as Yup from "yup";
 
+// Main Page Component (Handling Register and OTP)
 export default function Page() {
   const [otpSent, setOtpSent] = useState(false);
   const [email, setEmail] = useState("");
@@ -19,17 +26,20 @@ export default function Page() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
-        {otpSent ? (
-          <OtpVerification email={email} password={password} />
-        ) : (
-          <RegisterForm onSuccess={handleSuccess} />
-        )}
-      </div>
+      <Card className="w-full max-w-sm">
+        <CardContent>
+          {otpSent ? (
+            <OtpVerification email={email} password={password} />
+          ) : (
+            <RegisterForm onSuccess={handleSuccess} />
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
+// Custom hook for form validation and submission
 const useFormValidation = (initialValues, validationSchema, onSubmit) => {
   const [error, setError] = useState("");
 
@@ -40,6 +50,11 @@ const useFormValidation = (initialValues, validationSchema, onSubmit) => {
       try {
         await onSubmit(values);
       } catch (error) {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        });
         setError(error.message || "Something went wrong");
       }
     },
@@ -48,6 +63,7 @@ const useFormValidation = (initialValues, validationSchema, onSubmit) => {
   return { formik, error };
 };
 
+// Register Form Component
 const RegisterForm = ({ onSuccess }) => {
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -95,79 +111,84 @@ const RegisterForm = ({ onSuccess }) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+      <h2 className="text-3xl font-bold text-center text-gray-800 my-6">
         Create an Account
       </h2>
-      {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
-
-      <form onSubmit={formik.handleSubmit} className="space-y-4">
+      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label htmlFor="email" className="block text-gray-700">
+          <Label
+            htmlFor="email"
+            className="block text-gray-700 text-sm font-medium"
+          >
             Email
-          </label>
-          <input
+          </Label>
+          <Input
             type="email"
             id="email"
             name="email"
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className="w-full p-3 border text-gray-700 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full p-3"
           />
           {formik.touched.email && formik.errors.email && (
-            <div className="text-red-500 text-sm">{formik.errors.email}</div>
+            <span className="text-red-500 text-sm">{formik.errors.email}</span>
           )}
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-gray-700">
+          <Label
+            htmlFor="password"
+            className="block text-gray-700 text-sm font-medium"
+          >
             Password
-          </label>
-          <input
+          </Label>
+          <Input
             type="password"
             id="password"
             name="password"
             value={formik.values.password}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className="w-full p-3 border text-gray-700 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full p-3"
           />
           {formik.touched.password && formik.errors.password && (
-            <div className="text-red-500 text-sm">{formik.errors.password}</div>
+            <span className="text-red-500 text-sm">
+              {formik.errors.password}
+            </span>
           )}
         </div>
 
-        <button
-          type="submit"
-          className="w-full py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
+        <Button type="submit" className="w-full py-3 mt-4">
           Register
-        </button>
+        </Button>
       </form>
 
       {/* Google Sign-Up Button */}
       <div className="mt-4 flex justify-center">
-        <button
+        <Button
+          variant="outline"
           onClick={handleGoogleSignUp}
-          className="w-full py-3 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="w-full py-3 "
         >
           Sign Up with Google
-        </button>
+        </Button>
       </div>
 
       <div className="mt-6 text-center text-gray-600">
         <span>Already have an account? </span>
-        <a
+        <Link
           href="/auth/signin"
           className="text-indigo-600 hover:text-indigo-700"
         >
           Sign In
-        </a>
+        </Link>
       </div>
     </div>
   );
 };
 
+// OTP Verification Component
 const OtpVerification = ({ email, password }) => {
   const router = useRouter();
 
@@ -205,7 +226,7 @@ const OtpVerification = ({ email, password }) => {
     }
   };
 
-  const { formik, error } = useFormValidation(
+  const { formik } = useFormValidation(
     { otp: "" },
     validationSchema,
     handleSubmit
@@ -213,35 +234,34 @@ const OtpVerification = ({ email, password }) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        Verify OTP
+      <h2 className="text-xl font-semibold text-gray-800 my-6">
+        Verification code has been sent to your email.
       </h2>
-      {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="otp" className="block text-gray-700">
+          <Label
+            htmlFor="otp"
+            className="block text-gray-700 text-sm font-medium"
+          >
             OTP
-          </label>
-          <input
+          </Label>
+          <Input
             type="text"
             id="otp"
             name="otp"
             value={formik.values.otp}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className="w-full p-3 border text-gray-700 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full p-4 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
           />
           {formik.touched.otp && formik.errors.otp && (
             <div className="text-red-500 text-sm">{formik.errors.otp}</div>
           )}
         </div>
 
-        <button
-          type="submit"
-          className="w-full py-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
+        <Button type="submit" className="w-full py-3">
           Verify OTP
-        </button>
+        </Button>
       </form>
     </div>
   );

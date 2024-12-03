@@ -3,6 +3,7 @@
 import React from "react";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 const Page = () => {
   const { data: session, status } = useSession();
@@ -10,8 +11,8 @@ const Page = () => {
   // Show loading state while session data is being fetched
   if (status === "loading") {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <div className="text-xl font-semibold text-gray-600">Loading...</div>
+      <div className="flex justify-center items-center min-h-screen bg-background">
+        <h1 className="text-xl font-semibold text-muted">Loading...</h1>
       </div>
     );
   }
@@ -19,14 +20,14 @@ const Page = () => {
   // If the user is not logged in, show a message
   if (!session) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+      <div className="flex justify-center items-center min-h-screen bg-background">
+        <div className="w-full max-w-md p-8">
+          <h1 className="text-2xl font-bold text-foreground mb-4">
             Not Logged In
-          </h2>
-          <p className="text-gray-600">
+          </h1>
+          <h1 className="text-muted">
             You are not logged in. Please log in to access your account.
-          </p>
+          </h1>
         </div>
       </div>
     );
@@ -34,8 +35,8 @@ const Page = () => {
 
   // If the user is logged in, display user details
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+    <div className="flex justify-center items-center min-h-screen bg-background">
+      <div className="w-full max-w-lg p-8">
         {/* Profile Image */}
         <div className="flex justify-center mb-6">
           <Image
@@ -43,34 +44,34 @@ const Page = () => {
             alt="Profile Image"
             width={100}
             height={100}
-            className="rounded-full border-4 border-indigo-600"
+            className="border-4 border-primary"
           />
         </div>
 
         {/* User Information */}
-        <h2 className="text-3xl font-semibold text-gray-800 text-center mb-6">
+        <h1 className="text-3xl font-semibold text-foreground text-center mb-6">
           Welcome, {session.user.name || session.user.email}!
-        </h2>
+        </h1>
 
         <div className="space-y-4">
-          <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow-sm">
-            <span className="text-lg text-gray-700">Email:</span>
-            <span className="text-lg text-gray-500">{session.user.email}</span>
+          <div className="flex justify-between items-center bg-muted p-4 rounded-lg shadow-sm">
+            <h1 className="text-lg text-foreground">Email:</h1>
+            <h1 className="text-lg text-muted">{session.user.email}</h1>
           </div>
-          <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow-sm">
-            <span className="text-lg text-gray-700">Session ID:</span>
-            <span className="text-lg text-gray-500">{session.id}</span>
+          <div className="flex justify-between items-center bg-muted p-4 rounded-lg shadow-sm">
+            <h1 className="text-lg text-foreground">Session ID:</h1>
+            <h1 className="text-lg text-muted">{session.id}</h1>
           </div>
         </div>
 
         {/* Logout Button */}
         <div className="mt-6 text-center">
-          <button
+          <Button
             onClick={() => signOut()}
-            className="py-2 px-6 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300"
+            className="w-full bg-primary hover:bg-primary-focus text-white rounded-lg"
           >
             Logout
-          </button>
+          </Button>
         </div>
       </div>
     </div>
