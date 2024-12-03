@@ -59,7 +59,7 @@ const handler = NextAuth({
   },
 
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       if (account.provider === "google") {
         await connectToDatabase();
 
@@ -69,6 +69,7 @@ const handler = NextAuth({
           const newUser = new User({
             email: user.email,
             name: user.name || "User",
+            verified: true,
             password: user.email,
             image: user.image || "",
             provider: "google",
