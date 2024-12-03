@@ -10,9 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { toast } from "@/hooks/use-toast";
 
 const LoginForm = () => {
-  const [error, setError] = useState("");
   const router = useRouter();
 
   const validationSchema = Yup.object({
@@ -30,7 +30,11 @@ const LoginForm = () => {
     });
 
     if (response?.error) {
-      setError(response.error);
+      toast({
+        title: "Error",
+        description: response.error,
+        variant: "destructive",
+      });
     } else {
       router.push("/home");
       alert("Login successful.");
@@ -41,7 +45,11 @@ const LoginForm = () => {
     const response = await signIn("google", { redirect: false });
 
     if (response?.error) {
-      setError(response.error);
+      toast({
+        title: "Error",
+        description: response.error,
+        variant: "destructive",
+      });
     } else {
       router.push("/home");
       alert("Google login successful.");
@@ -61,12 +69,6 @@ const LoginForm = () => {
           <h2 className="text-2xl font-bold text-center text-gray-800 my-6">
             Login
           </h2>
-
-          {error && (
-            <span color="red" className="mb-4 text-red-700">
-              {error}
-            </span>
-          )}
 
           <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
             <div>
