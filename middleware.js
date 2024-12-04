@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 
 export function middleware(req) {
   const session = req.cookies.get("next-auth.session-token");
-  const isAuthPage = ["/auth/signin", "/auth/signup"].includes(
+
+  console.log("session", session);
+
+  /* const isAuthPage = ["/auth/signin", "/auth/signup"].includes(
     req.nextUrl.pathname
   );
 
@@ -12,7 +15,7 @@ export function middleware(req) {
 
   if (!session && !isAuthPage) {
     return NextResponse.redirect(new URL("/auth/signin", req.url));
-  }
+  } */
 
   return NextResponse.next();
 }

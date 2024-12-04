@@ -40,9 +40,7 @@ const LoginForm = () => {
   };
 
   const handleGoogleLogin = async () => {
-    const response = await signIn("google", {
-      callbackUrl: "/home",
-    });
+    const response = await signIn("google");
 
     console.log("response", response);
 
