@@ -265,7 +265,7 @@ const SpotifyInsightsPage = () => {
           {/* Top Tracks Tab */}
           <TabsContent
             value="top-tracks"
-            className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
+            className="bg-neutral-800 rounded-2xl p-1 md:p-6 shadow-2xl"
           >
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {topTracks?.map((track) => (
@@ -294,7 +294,7 @@ const SpotifyInsightsPage = () => {
           {/* Top Artists Tab */}
           <TabsContent
             value="top-artists"
-            className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
+            className="bg-neutral-800 rounded-2xl p-1 md:p-6 shadow-2xl"
           >
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {topArtists?.map((artist) => (
@@ -324,7 +324,7 @@ const SpotifyInsightsPage = () => {
           {/* Top Genres Tab */}
           <TabsContent
             value="playback-history"
-            className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
+            className="bg-neutral-800 rounded-2xl p-1 md:p-6 shadow-2xl"
           >
             <div className="space-y-4">
               {playbackHistory.map((item, index) => (
@@ -337,15 +337,15 @@ const SpotifyInsightsPage = () => {
                       item.track.album.images[0]?.url || "/default-album.png"
                     }
                     alt={item.track.name}
-                    width={60}
-                    height={60}
+                    width={78}
+                    height={78}
                     className="rounded-lg"
                   />
                   <div className="flex-grow">
-                    <h3 className="font-semibold text-sm truncate">
+                    <h3 className="font-semibold text-sm text-wrap">
                       {item.track.name}
                     </h3>
-                    <p className="text-xs text-neutral-400 truncate">
+                    <p className="text-xs text-neutral-400 text-wrap">
                       {item.track.artists
                         .map((artist) => artist.name)
                         .join(", ")}
