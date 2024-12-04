@@ -36,7 +36,6 @@ const LoginForm = () => {
       });
     } else {
       router.push("/home");
-      alert("Login successful.");
     }
   };
 
@@ -51,7 +50,6 @@ const LoginForm = () => {
       });
     } else {
       router.push("/home");
-      alert("Google login successful.");
     }
   };
 

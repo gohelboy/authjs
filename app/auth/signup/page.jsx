@@ -84,7 +84,6 @@ const RegisterForm = ({ onSuccess }) => {
     });
 
     if (response.ok) {
-      alert("OTP sent to your email.");
       onSuccess(values.email, values.password);
     } else {
       const errorData = await response.json();
@@ -98,7 +97,6 @@ const RegisterForm = ({ onSuccess }) => {
     if (response?.error) {
       console.error("Google sign-up failed:", response.error);
     } else {
-      alert("Google sign-up successful!");
       onSuccess(response.user.email, response.user.password);
     }
   };
