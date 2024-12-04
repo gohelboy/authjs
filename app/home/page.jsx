@@ -12,7 +12,7 @@ const Page = () => {
   if (status === "loading") {
     return (
       <div className="flex justify-center items-center min-h-screen bg-background">
-        <h1 className="text-xl font-semibold text-muted">Loading...</h1>
+        <h1 className="text-xl font-semibold ">Loading...</h1>
       </div>
     );
   }
@@ -25,7 +25,7 @@ const Page = () => {
           <h1 className="text-2xl font-bold text-foreground mb-4">
             Not Logged In
           </h1>
-          <h1 className="text-muted">
+          <h1 className="">
             You are not logged in. Please log in to access your account.
           </h1>
         </div>
@@ -44,7 +44,7 @@ const Page = () => {
             alt="Profile Image"
             width={100}
             height={100}
-            className="border-4 border-primary"
+            className="border-2 border-primary rounded-full"
           />
         </div>
 
@@ -56,11 +56,11 @@ const Page = () => {
         <div className="space-y-4">
           <div className="flex justify-between items-center bg-muted p-4 rounded-lg shadow-sm">
             <h1 className="text-lg text-foreground">Email:</h1>
-            <h1 className="text-lg text-muted">{session.user.email}</h1>
+            <h1 className="text-lg ">{session.user.email}</h1>
           </div>
           <div className="flex justify-between items-center bg-muted p-4 rounded-lg shadow-sm">
             <h1 className="text-lg text-foreground">Session ID:</h1>
-            <h1 className="text-lg text-muted">{session.id}</h1>
+            <h1 className="text-lg ">{session.id}</h1>
           </div>
         </div>
 

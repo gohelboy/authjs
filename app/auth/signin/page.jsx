@@ -40,7 +40,11 @@ const LoginForm = () => {
   };
 
   const handleGoogleLogin = async () => {
-    const response = await signIn("google", { redirect: false });
+    const response = await signIn("google", {
+      callbackUrl: "/home",
+    });
+
+    console.log("response", response);
 
     if (response?.error) {
       toast({
