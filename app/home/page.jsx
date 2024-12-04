@@ -327,7 +327,7 @@ const SpotifyInsightsPage = () => {
             className="bg-neutral-800 rounded-2xl p-1 md:p-6 shadow-2xl overflow-hidden"
           >
             <div className="space-y-4 md:max-h-[calc(100dvh-240px)] max-h-[calc(100dvh-200px)] overflow-y-scroll rounded-xl scrollbar-hidden">
-              {playbackHistory.map((item, index) => (
+              {playbackHistory?.map((item, index) => (
                 <div
                   key={`${item.track.id}-${index}`}
                   className="bg-neutral-700 rounded-xl p-4 flex items-center space-x-4 hover:bg-neutral-600 transition"
