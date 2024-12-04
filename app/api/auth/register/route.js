@@ -48,7 +48,9 @@ export async function POST(req) {
       `,
     };
 
-    mailTransport.sendMail(options);
+    const mailSent = await mailTransport.sendMail(options);
+
+    console.log("mailSent", mailSent);
 
     return new Response(
       JSON.stringify({ message: "User registered successfully. OTP sent." }),
