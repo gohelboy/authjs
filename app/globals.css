@@ -83,3 +83,12 @@ body {
 .slow-spin {
   animation: slow-spin 5s linear infinite; /* Adjust 5s to a higher value for slower spin */
 }
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* For Internet Explorer 10+ */
+  scrollbar-width: none; /* For Firefox */
+}

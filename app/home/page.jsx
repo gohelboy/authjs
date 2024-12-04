@@ -321,12 +321,12 @@ const SpotifyInsightsPage = () => {
             </div>
           </TabsContent>
 
-          {/* Top Genres Tab */}
+          {/* Playback History Tab */}
           <TabsContent
             value="playback-history"
-            className="bg-neutral-800 rounded-2xl p-1 md:p-6 shadow-2xl"
+            className="bg-neutral-800 rounded-2xl p-1 md:p-6 shadow-2xl overflow-hidden"
           >
-            <div className="space-y-4">
+            <div className="space-y-4 md:max-h-[calc(100dvh-240px)] max-h-[calc(100dvh-200px)] overflow-y-scroll rounded-xl scrollbar-hidden">
               {playbackHistory.map((item, index) => (
                 <div
                   key={`${item.track.id}-${index}`}
