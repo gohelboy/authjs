@@ -40,18 +40,11 @@ const LoginForm = () => {
   };
 
   const handleGoogleLogin = async () => {
-    const response = await signIn("google", { redirect: false });
+    signIn("google", { redirect: false });
+  };
 
-    if (response?.error) {
-      toast({
-        title: "Error",
-        description: response.error,
-        variant: "destructive",
-      });
-    } else {
-      console.log("Response", response);
-      // router.push("/home");
-    }
+  const handleSpotifyLogin = async () => {
+    signIn("spotify", { redirect: false });
   };
 
   const formik = useFormik({
@@ -127,6 +120,14 @@ const LoginForm = () => {
               className="w-full"
             >
               Login with Google
+            </Button>
+          </div>
+          <div className="mt-4">
+            <Button
+              onClick={handleSpotifyLogin}
+              className="w-full bg-green-600 text-white"
+            >
+              Login with Spotify
             </Button>
           </div>
 

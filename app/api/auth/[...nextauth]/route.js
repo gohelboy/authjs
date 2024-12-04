@@ -4,6 +4,31 @@ import bcrypt from "bcrypt";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import SpotifyProvider from "next-auth/providers/spotify";
+
+const allScopes = [
+  "user-read-private",
+  "user-read-email",
+  "user-library-read",
+  "user-library-modify",
+  "user-top-read",
+  "playlist-read-private",
+  "playlist-read-collaborative",
+  "playlist-modify-public",
+  "playlist-modify-private",
+  "user-follow-read",
+  "user-follow-modify",
+  "app-remote-control",
+  "user-read-playback-state",
+  "user-modify-playback-state",
+  "user-read-currently-playing",
+  "user-read-recently-played",
+  "user-read-playback-position",
+  "streaming",
+  "playlist-modify-public",
+  "playlist-modify-private",
+  "ugc-image-upload",
+];
 
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -11,6 +36,16 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+
+    SpotifyProvider({
+      clientId: process.env.SPOTIFY_CLIENT_ID,
+      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      authorization: {
+        params: {
+          scope: allScopes.join(" "),
+        },
+      },
     }),
 
     CredentialsProvider({
@@ -26,26 +61,25 @@ const handler = NextAuth({
         },
       },
       async authorize(credentials) {
-        await connectToDatabase();
-
-        const { email, password } = credentials;
-
-        const user = await User.findOne({ email });
-        if (!user) {
-          throw new Error("No user found");
+        try {
+          await connectToDatabase();
+          const { email, password } = credentials;
+          const user = await User.findOne({ email });
+          if (!user) {
+            throw new Error("No user found");
+          }
+          if (!user.verified) {
+            throw new Error("User not verified");
+          }
+          const isPasswordValid = await bcrypt.compare(password, user.password);
+          if (!isPasswordValid) {
+            throw new Error("Invalid credentials");
+          }
+          return user;
+        } catch (error) {
+          console.error(error);
+          throw new Error("Authentication failed");
         }
-
-        if (!user.verified) {
-          throw new Error("User not verified");
-        }
-
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-
-        if (!isPasswordValid) {
-          throw new Error("Invalid credentials");
-        }
-
-        return user;
       },
     }),
   ],
@@ -79,22 +113,54 @@ const handler = NextAuth({
           await newUser.save();
         }
       }
+
+      if (account.provider === "spotify") {
+        console.log({ user, account }, { user, account });
+
+        await connectToDatabase();
+        const existingUser = await User.findOne({ email: user.email });
+        if (!existingUser) {
+          const newUser = new User({
+            email: user.email || "",
+            name: user.name || "Spotify User",
+            verified: true,
+            password: user.email || "",
+            image: user.image || "",
+            provider: "spotify",
+          });
+          await newUser.save();
+        }
+      }
+
       return true;
     },
 
     async session({ session, token }) {
       session.user.id = token.id;
       session.user.email = token.email;
+      session.user.name = token.name;
+      session.user.image = token.image;
+      session.user.provider = token.provider;
+      session.user.accessToken = token.accessToken;
+      session.user.refreshToken = token.refreshToken;
+
       return session;
     },
 
-    async jwt({ token, user }) {
-      console.log();
-
+    async jwt({ token, account, user }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.name = user.name;
+        token.image = user.image;
+        token.provider = user.provider;
       }
+
+      if (account && account.provider === "spotify") {
+        token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
+      }
+
       return token;
     },
   },
