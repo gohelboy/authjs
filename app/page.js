@@ -1,9 +1,12 @@
 "use client";
 
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   const { data: session } = useSession();
 
   return (
@@ -38,10 +41,10 @@ export default function Home() {
               Sign in to access your personalized dashboard.
             </p>
             <button
-              onClick={() => signIn("google")}
+              onClick={() => router.push("/auth/signin")}
               className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600"
             >
-              Sign In with Google
+              Login
             </button>
           </div>
         )}
