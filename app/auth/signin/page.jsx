@@ -40,9 +40,7 @@ const LoginForm = () => {
   };
 
   const handleGoogleLogin = async () => {
-    const response = await signIn("google");
-
-    console.log("response", response);
+    const response = await signIn("google", { redirect: false });
 
     if (response?.error) {
       toast({
@@ -51,7 +49,8 @@ const LoginForm = () => {
         variant: "destructive",
       });
     } else {
-      router.push("/home");
+      console.log("Response", response);
+      // router.push("/home");
     }
   };
 
@@ -63,9 +62,9 @@ const LoginForm = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <Card className="w-full max-w-sm">
+      <Card className="w-full max-w-sm mx-4">
         <CardContent>
-          <h2 className="text-2xl font-bold text-center text-gray-800 my-6">
+          <h2 className="text-3xl font-bold text-center text-gray-800 my-6">
             Login
           </h2>
 

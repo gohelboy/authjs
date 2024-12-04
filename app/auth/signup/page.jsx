@@ -26,7 +26,7 @@ export default function Page() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <Card className="w-full max-w-sm">
+      <Card className="w-full max-w-sm mx-4">
         <CardContent>
           {otpSent ? (
             <OtpVerification email={email} password={password} />
