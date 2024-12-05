@@ -111,10 +111,12 @@ export async function DELETE(req, { params }) {
       );
     }
 
-    return NextResponse.json({
-      message: "Successfully unfollowed user",
-      status: 200,
-    });
+    return NextResponse.json(
+      {
+        message: "Successfully unfollowed user",
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error in unfollow user operation:", error);
     return NextResponse.json({

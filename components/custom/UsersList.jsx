@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -10,7 +12,7 @@ const UsersList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("/api/user");
+        const res = await fetch("/api/users");
         if (!res.ok) throw new Error("Failed to fetch users");
         const data = await res.json();
         setUsers(data);
@@ -27,7 +29,7 @@ const UsersList = () => {
   const toggleFollow = async (userId, isFollowed) => {
     setLoadingUserId(userId);
     try {
-      const endpoint = `/api/user/follow/${userId}`;
+      const endpoint = `/api/users/follow/${userId}`;
       const method = isFollowed ? "DELETE" : "POST";
 
       const res = await fetch(endpoint, { method });
@@ -58,6 +60,7 @@ const UsersList = () => {
     <div className="space-y-4 md:max-h-[calc(100dvh-240px)] max-h-[calc(100dvh-200px)] overflow-y-scroll rounded-xl scrollbar-hidden">
       {users?.map((user) => (
         <div
+          href={`/user/${user?._id}`}
           key={user._id}
           className="bg-neutral-700 rounded-xl p-4 flex items-center space-x-4 hover:bg-neutral-600 transition"
         >
@@ -71,13 +74,13 @@ const UsersList = () => {
           <div className="flex-grow">
             <h3 className="font-semibold text-sm text-wrap">{user.name}</h3>
           </div>
-          <button
+          <Button
             onClick={() => toggleFollow(user._id, user.isFollowed)}
-            className={`py-1 px-4 rounded-lg font-medium ${
+            className={`flex items-center justify-center rounded-lg font-semibold hover:text-white ${
               user.isFollowed
                 ? "bg-neutral-900 text-white"
                 : "bg-white text-neutral-900"
-            } flex items-center justify-center`}
+            } `}
             disabled={loadingUserId === user._id}
           >
             {loadingUserId === user._id ? (
@@ -91,7 +94,7 @@ const UsersList = () => {
             ) : (
               "Follow"
             )}
-          </button>
+          </Button>
         </div>
       ))}
     </div>
