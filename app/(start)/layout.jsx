@@ -5,9 +5,7 @@ const layout = ({ children }) => {
   return (
     <div>
       <Header />
-      <section className="min-h-[calc(100vh-72px)] bg-neutral-900 text-white">
-        {children}
-      </section>
+      <section className="min-h-[calc(100vh-72px)] ">{children}</section>
     </div>
   );
 };

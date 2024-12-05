@@ -70,15 +70,15 @@ const SpotifyProfilePage = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="bg-neutral-900 rounded-2xl p-8 shadow-2xl border border-neutral-800">
+      <div className="bg-neutral-900 rounded-2xl p-8 shadow-2xl border border-neutral-800 mx-4 ">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Profile Image */}
           <div className="flex flex-col items-center justify-center">
             <Image
               src={profileData.images?.[0]?.url || "/default-profile.png"}
               alt="Profile"
-              width={170}
-              height={170}
+              width={154}
+              height={154}
               className="rounded-full border-4 border-green-500 shadow-lg mb-4"
             />
             <h2 className="text-2xl font-semibold tracking-tight">
