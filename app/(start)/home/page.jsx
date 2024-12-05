@@ -82,7 +82,7 @@ const SpotifyInsightsPage = () => {
     return <ConnectingLoading />;
   }
 
-  if (session) {
+  if (!session) {
     return (
       <div className="flex justify-center items-center min-h-[calc(100vh-72px)] ">
         <div className="text-center space-y-4 p-8 bg-neutral-800 rounded-xl shadow-2xl">
