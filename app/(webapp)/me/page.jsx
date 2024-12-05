@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const SpotifyProfilePage = () => {
@@ -70,7 +71,7 @@ const SpotifyProfilePage = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="bg-neutral-900 rounded-2xl p-8 shadow-2xl border border-neutral-800 mx-4 ">
+      <div className="rounded-lg p-8 border border-neutral-800 mx-4">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Profile Image */}
           <div className="flex flex-col items-center justify-center">
@@ -111,13 +112,16 @@ const SpotifyProfilePage = () => {
                   <p className="font-medium">{profileData.country}</p>
                 </div>
               </div>
-              <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
+              <Link
+                href="/me/followers"
+                className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
+              >
                 <Users className="text-green-500" size={32} />
                 <div>
                   <p className="text-neutral-400 text-sm">Followers</p>
                   <p className="font-medium">{profileData.followers.total}</p>
                 </div>
-              </div>
+              </Link>
               <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
                 <CreditCard className="text-green-500" size={32} />
                 <div>

@@ -1,11 +1,11 @@
 "use client";
 
 import ConnectingLoading from "@/components/custom/ConnectingLoading";
-import Header from "@/components/custom/Header";
 import NowPlaying from "@/components/custom/NowPlaying";
 import PlaybackHistory from "@/components/custom/PlaybackHistory";
 import TopArtists from "@/components/custom/TopArtists";
 import TopTracks from "@/components/custom/TopTracks";
+import UsersList from "@/components/custom/UsersList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import spotifyAPI, { setAxiosToken } from "@/lib/api";
@@ -15,6 +15,7 @@ import {
   Music,
   PlayCircle,
   UserCircle2,
+  Users,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
@@ -29,6 +30,7 @@ const SpotifyInsightsPage = () => {
     { value: "top-tracks", icon: Music, label: "Top Tracks" },
     { value: "top-artists", icon: Headphones, label: "Top Artists" },
     { value: "playback-history", icon: Clock, label: "Play History" },
+    { value: "users", icon: Users, label: "Users" },
   ];
 
   const { data: session, status } = useSession();
@@ -99,7 +101,7 @@ const SpotifyInsightsPage = () => {
   return (
     <div className="max-w-6xl mx-auto p-4">
       <Tabs defaultValue="currently-playing" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 bg-neutral-800 mb-6 min-h-12 p-2">
+        <TabsList className="grid w-full grid-cols-5 bg-neutral-800 mb-6 min-h-12 p-2">
           {tabs.map(({ value, icon: Icon, label }) => (
             <TabsTrigger
               key={value}
@@ -135,6 +137,12 @@ const SpotifyInsightsPage = () => {
           className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
         >
           <PlaybackHistory playbackHistory={spotifyData?.playbackHistory} />
+        </TabsContent>
+        <TabsContent
+          value="users"
+          className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
+        >
+          <UsersList />
         </TabsContent>
       </Tabs>
     </div>
