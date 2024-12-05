@@ -58,10 +58,10 @@ const LoginForm = () => {
       <Card className="w-full max-w-sm mx-4">
         <CardContent>
           <h2 className="text-3xl font-bold text-center text-gray-800 my-6">
-            Login
+            Spotinsight
           </h2>
 
-          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
+          {/* <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
             <div>
               <Label
                 htmlFor="email"
@@ -111,9 +111,9 @@ const LoginForm = () => {
             <Button type="submit" className="w-full mt-4">
               Login
             </Button>
-          </form>
+          </form> */}
 
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <Button
               variant="outline"
               onClick={handleGoogleLogin}
@@ -121,7 +121,7 @@ const LoginForm = () => {
             >
               Login with Google
             </Button>
-          </div>
+          </div> */}
           <div className="mt-4">
             <Button
               onClick={handleSpotifyLogin}
@@ -131,7 +131,7 @@ const LoginForm = () => {
             </Button>
           </div>
 
-          <div className="mt-6 text-center text-gray-600">
+          {/*  <div className="mt-6 text-center text-gray-600">
             <span>Don&apos;t have an account? </span>
             <Link
               href="/auth/signup"
@@ -139,7 +139,7 @@ const LoginForm = () => {
             >
               Register
             </Link>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </div>
