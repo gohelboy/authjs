@@ -1,12 +1,12 @@
 import { Disc3 } from "lucide-react";
 import React from "react";
 
-const ConnectingLoading = () => {
+const ConnectingLoading = ({ message = "Connecting to Spotify..." }) => {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-neutral-900 to-neutral-800 text-white">
+    <div className="min-h-[calc(100vh-72px)] flex justify-center items-center">
       <div className="flex items-center space-x-3">
         <Disc3 className="animate-spin" size={32} />
-        <span className="text-xl">Connecting to Spotify...</span>
+        <span className="text-xl">{message}</span>
       </div>
     </div>
   );

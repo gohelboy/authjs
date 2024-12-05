@@ -82,12 +82,12 @@ const SpotifyInsightsPage = () => {
     return <ConnectingLoading />;
   }
 
-  if (!session) {
+  if (session) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-neutral-900 to-neutral-800 text-white">
+      <div className="flex justify-center items-center min-h-[calc(100vh-72px)] ">
         <div className="text-center space-y-4 p-8 bg-neutral-800 rounded-xl shadow-2xl">
           <UserCircle2 size={64} className="mx-auto text-blue-500" />
-          <h1 className="text-3xl font-bold">Welcome to Spotify Insights</h1>
+          <h1 className="text-3xl font-bold">Welcome to Spotinsights</h1>
           <p className="text-neutral-300">
             Please log in to view your profile and top tracks
           </p>
@@ -97,49 +97,46 @@ const SpotifyInsightsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-900 to-neutral-800 text-white">
-      <Header />
-      <div className="max-w-6xl mx-auto p-4">
-        <Tabs defaultValue="currently-playing" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-neutral-800 mb-6 min-h-12 p-2">
-            {tabs.map(({ value, icon: Icon, label }) => (
-              <TabsTrigger
-                key={value}
-                value={value}
-                className="flex items-center space-x-2 justify-center h-full"
-              >
-                <Icon size={16} />
-                <span className="hidden md:block">{label}</span>
-              </TabsTrigger>
-            ))}
-          </TabsList>
+    <div className="max-w-6xl mx-auto p-4">
+      <Tabs defaultValue="currently-playing" className="w-full">
+        <TabsList className="grid w-full grid-cols-4 bg-neutral-800 mb-6 min-h-12 p-2">
+          {tabs.map(({ value, icon: Icon, label }) => (
+            <TabsTrigger
+              key={value}
+              value={value}
+              className="flex items-center space-x-2 justify-center h-full"
+            >
+              <Icon size={16} />
+              <span className="hidden md:block">{label}</span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
 
-          <TabsContent
-            value="currently-playing"
-            className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
-          >
-            <NowPlaying currentlyPlaying={spotifyData.currentlyPlaying} />
-          </TabsContent>
-          <TabsContent
-            value="top-tracks"
-            className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
-          >
-            <TopTracks topTracks={spotifyData.topTracks} />
-          </TabsContent>
-          <TabsContent
-            value="top-artists"
-            className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
-          >
-            <TopArtists topArtists={spotifyData.topArtists} />
-          </TabsContent>
-          <TabsContent
-            value="playback-history"
-            className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
-          >
-            <PlaybackHistory playbackHistory={spotifyData.playbackHistory} />
-          </TabsContent>
-        </Tabs>
-      </div>
+        <TabsContent
+          value="currently-playing"
+          className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
+        >
+          <NowPlaying currentlyPlaying={spotifyData.currentlyPlaying} />
+        </TabsContent>
+        <TabsContent
+          value="top-tracks"
+          className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
+        >
+          <TopTracks topTracks={spotifyData.topTracks} />
+        </TabsContent>
+        <TabsContent
+          value="top-artists"
+          className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
+        >
+          <TopArtists topArtists={spotifyData.topArtists} />
+        </TabsContent>
+        <TabsContent
+          value="playback-history"
+          className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
+        >
+          <PlaybackHistory playbackHistory={spotifyData.playbackHistory} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
