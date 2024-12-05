@@ -51,15 +51,18 @@ const SpotifyProfilePage = () => {
 
   if (!profileData) {
     return (
-      <div className="flex items-center justify-cente">
+      <div className="flex items-center justify-center min-h-[calc(100vh-72px)] ">
         <div className="text-center">
           <Disc3 size={64} className="mx-auto mb-6 text-green-500" />
           <h1 className="text-4xl font-extralight tracking-tight text-white mb-4">
             Spotify Insights
           </h1>
-          <p className="text-lg text-neutral-400">
+          <p className="text-lg text-neutral-400 mb-6">
             Please log in to explore your music world
           </p>
+          <Button variant="destructive" onClick={() => signOut()} className="">
+            Logout <LogOut size={20} />
+          </Button>
         </div>
       </div>
     );
