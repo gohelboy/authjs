@@ -121,6 +121,7 @@ const handler = NextAuth({
         const existingUser = await User.findOne({ email: user.email });
         if (!existingUser) {
           const newUser = new User({
+            spotifyId: account.providerAccountId,
             email: user.email || "",
             name: user.name || "Spotify User",
             verified: true,
@@ -134,6 +135,24 @@ const handler = NextAuth({
 
       return true;
     },
+    async jwt({ token, account, user }) {
+      if (user) {
+        token.id = user._id;
+        token.email = user.email;
+        token.name = user.name;
+        token.image = user.image;
+        token.provider = account?.provider || user.provider;
+      }
+
+      // Spotify-specific handling
+      if (account?.provider === "spotify") {
+        token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
+        token.spotifyUserId = account.providerAccountId;
+      }
+
+      return token;
+    },
 
     async session({ session, token }) {
       session.user.id = token.id;
@@ -143,25 +162,9 @@ const handler = NextAuth({
       session.user.provider = token.provider;
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
+      session.user.spotifyUserId = token.spotifyUserId;
 
       return session;
-    },
-
-    async jwt({ token, account, user }) {
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.name = user.name;
-        token.image = user.image;
-        token.provider = user.provider;
-      }
-
-      if (account && account.provider === "spotify") {
-        token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token;
-      }
-
-      return token;
     },
   },
 });
