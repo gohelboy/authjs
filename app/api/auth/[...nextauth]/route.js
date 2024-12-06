@@ -30,7 +30,7 @@ const allScopes = [
   "ugc-image-upload",
 ];
 
-const handler = NextAuth({
+export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
@@ -115,8 +115,6 @@ const handler = NextAuth({
       }
 
       if (account.provider === "spotify") {
-        console.log({ user, account }, { user, account });
-
         await connectToDatabase();
         const existingUser = await User.findOne({ email: user.email });
         if (!existingUser) {
@@ -167,6 +165,8 @@ const handler = NextAuth({
       return session;
     },
   },
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

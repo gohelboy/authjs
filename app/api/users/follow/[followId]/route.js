@@ -5,7 +5,7 @@ import Follow from "@/lib/models/Follow";
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
 
-export async function POST(req, { params }) {
+export async function POST(req, context) {
   try {
     await connectToDatabase();
 
@@ -21,7 +21,7 @@ export async function POST(req, { params }) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { followId } = params;
+    const { followId } = await context.params;
 
     if (!followId) {
       return NextResponse.json(
@@ -67,7 +67,7 @@ export async function POST(req, { params }) {
   }
 }
 
-export async function DELETE(req, { params }) {
+export async function DELETE(req, context) {
   try {
     await connectToDatabase();
 
@@ -83,7 +83,7 @@ export async function DELETE(req, { params }) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { followId } = params;
+    const { followId } = await context.params;
 
     if (!followId) {
       return NextResponse.json(

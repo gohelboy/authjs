@@ -60,27 +60,27 @@ const UsersList = () => {
     <div className="space-y-4 md:max-h-[calc(100dvh-240px)] max-h-[calc(100dvh-200px)] overflow-y-scroll rounded-xl scrollbar-hidden">
       {users?.map((user) => (
         <div
-          href={`/user/${user?._id}`}
           key={user._id}
-          className="bg-neutral-700 rounded-xl p-4 flex items-center space-x-4 hover:bg-neutral-600 transition"
+          className="bg-neutral-700 rounded-xl p-4 flex items-center justify-between space-x-4 hover:bg-neutral-600 transition"
         >
-          <Image
-            src={"/user.jpg"}
-            alt={user.name}
-            width={56}
-            height={56}
-            className="rounded-full"
-          />
-          <div className="flex-grow">
-            <h3 className="font-semibold text-sm text-wrap">{user.name}</h3>
-          </div>
+          <Link
+            href={`/user/${user?._id}`}
+            className="flex items-center gap-3 hover:underline"
+          >
+            <Image
+              src={"/user.jpg"}
+              alt={user.name}
+              width={56}
+              height={56}
+              className="rounded-full"
+            />
+            <div className="flex-grow">
+              <h3 className="font-semibold text-sm text-wrap">{user.name}</h3>
+            </div>
+          </Link>
           <Button
             onClick={() => toggleFollow(user._id, user.isFollowed)}
-            className={`flex items-center justify-center rounded-lg font-semibold hover:text-white ${
-              user.isFollowed
-                ? "bg-neutral-900 text-white"
-                : "bg-white text-neutral-900"
-            } `}
+            className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900  `}
             disabled={loadingUserId === user._id}
           >
             {loadingUserId === user._id ? (

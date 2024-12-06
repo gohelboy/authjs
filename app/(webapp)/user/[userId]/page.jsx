@@ -17,9 +17,9 @@ const UserProfilePage = ({ params }) => {
   const fetchUserProfile = async () => {
     try {
       const res = await fetch(`/api/user/${userId}`);
-
-      setProfileData(res || {});
-      setIsFollowed(true);
+      const data = await res.json();
+      setProfileData(data || {});
+      setIsFollowed(data.isFollowed);
     } catch (error) {
       console.error("Error fetching user profile:", error);
     } finally {
@@ -31,8 +31,8 @@ const UserProfilePage = ({ params }) => {
     setLoadingFollow(true);
     try {
       const endpoint = isFollowed
-        ? `/api/user/unfollow/${userId}`
-        : `/api/user/follow/${userId}`;
+        ? `/api/users/follow/${userId}`
+        : `/api/users/follow/${userId}`;
       const method = isFollowed ? "DELETE" : "POST";
 
       const res = await fetch(endpoint, { method });
@@ -56,6 +56,8 @@ const UserProfilePage = ({ params }) => {
     return <div className="text-center text-white">Loading profile...</div>;
   }
 
+  console.log("profileData", profileData);
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="rounded-lg p-8 border border-neutral-800 mx-4">
@@ -63,17 +65,17 @@ const UserProfilePage = ({ params }) => {
           {/* Profile Image */}
           <div className="flex flex-col items-center justify-center">
             <Image
-              src={profileData.image || "/default-profile.png"}
+              src={profileData?.image || "/user.jpg"}
               alt="Profile"
               width={154}
               height={154}
               className="rounded-full border-4 border-green-500 shadow-lg mb-4"
             />
             <h2 className="text-2xl font-semibold tracking-tight">
-              {profileData.name}
+              {profileData?.display_name || "User"}
             </h2>
             <Link
-              href={profileData.profileLink || "#"}
+              href={profileData?.href || "#"}
               target="_blank"
               rel="noopener noreferrer"
               className="text-green-500 hover:underline text-sm mt-2"
@@ -89,37 +91,43 @@ const UserProfilePage = ({ params }) => {
                 <UserCircle2 className="text-green-500" size={32} />
                 <div>
                   <p className="text-neutral-400 text-sm">Email</p>
-                  <p className="font-medium">{profileData.email || "N/A"}</p>
+                  <p className="font-medium">{profileData?.email || "N/A"}</p>
                 </div>
               </div>
               <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
                 <MapPin className="text-green-500" size={32} />
                 <div>
                   <p className="text-neutral-400 text-sm">Country</p>
-                  <p className="font-medium">{profileData.country || "N/A"}</p>
+                  <p className="font-medium">{profileData?.country || "N/A"}</p>
                 </div>
               </div>
               <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
                 <Users className="text-green-500" size={32} />
                 <div>
                   <p className="text-neutral-400 text-sm">Followers</p>
-                  <p className="font-medium">{profileData.followers || 0}</p>
+                  <p className="font-medium">
+                    {profileData?.followers?.total || 0}
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Follow/Unfollow Button */}
             <Button
               onClick={toggleFollow}
+              className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900  `}
               disabled={loadingFollow}
-              variant={isFollowed ? "secondary" : "default"}
-              className="mt-6"
             >
-              {loadingFollow
-                ? "Processing..."
-                : isFollowed
-                ? "Unfollow"
-                : "Follow"}
+              {loadingFollow ? (
+                <span
+                  className={`loader inline-block w-4 h-4 border-2 rounded-full animate-spin ${
+                    isFollowed ? "border-t-white" : "border-t-neutral-900"
+                  }`}
+                ></span>
+              ) : isFollowed ? (
+                "Unfollow"
+              ) : (
+                "Follow"
+              )}
             </Button>
           </div>
         </div>

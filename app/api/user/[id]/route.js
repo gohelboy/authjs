@@ -1,39 +1,82 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { connectToDatabase } from "@/lib/db";
 import User from "@/lib/models/User";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { authOptions } from "../../auth/[...nextauth]/route";
+import Follow from "@/lib/models/Follow";
 
-export async function GET(req, { params }) {
+export async function GET(req, context) {
   try {
-    await connectToDatabase();
+    const { id } = await context.params;
+
+    if (!id) {
+      return NextResponse.json(
+        { message: "User ID is required" },
+        { status: 400 }
+      );
+    }
+
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = params;
-    if (!id) {
-      return NextResponse.json({ message: "id is required" }, { status: 400 });
-    }
-
+    await connectToDatabase();
     const user = await User.findById(id).select("-password");
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
+    const spotifyAccessToken = session.user.accessToken;
+    if (!spotifyAccessToken) {
+      return NextResponse.json(
+        { message: "Spotify access token not found in session" },
+        { status: 403 }
+      );
+    }
 
-    // TODO: Fetch user data from Spotify (if necessary)
-    // You can use the Spotify API (OAuth tokens) to fetch data like user's playlists or profile details
+    const spotifyUserId = user.spotifyId || "#";
 
-    return NextResponse.json(user, { status: 200 });
+    const spotifyUserData = await fetchSpotifyUserData(
+      spotifyAccessToken,
+      spotifyUserId
+    );
+
+    const followId = await Follow.findOne({ following: id });
+
+    const payload = {
+      isFollowed: followId ? true : false,
+      ...user?.toObject(),
+      ...spotifyUserData,
+    };
+
+    return NextResponse.json(payload, { status: 200 });
   } catch (error) {
-    // Catch any unexpected errors and log them for debugging
     console.error("Error fetching user profile:", error);
-
-    // Return a 500 error if something went wrong
     return NextResponse.json(
-      { message: "Error getting user", error: error.message },
+      { message: "Error fetching user profile", error: error.message },
       { status: 500 }
     );
+  }
+}
+
+// Helper function to fetch Spotify user data
+async function fetchSpotifyUserData(accessToken, userId) {
+  try {
+    const response = await fetch(`https://api.spotify.com/v1/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Spotify API error: ${response.status} - ${response.statusText}`
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching data from Spotify API:", error);
+    throw new Error("Failed to fetch Spotify user data");
   }
 }
