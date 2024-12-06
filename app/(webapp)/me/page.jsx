@@ -24,7 +24,12 @@ const SpotifyProfilePage = () => {
   const fetchProfile = async () => {
     if (!session) return;
     try {
-      const { data } = await spotifyAPI("/me");
+      const res = await fetch("/api/user/me");
+
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      const data = await res.json();
       setProfileData(data);
     } catch (error) {
       console.error("Failed to fetch profile data", error);
@@ -105,14 +110,14 @@ const SpotifyProfilePage = () => {
                   <p className="font-medium">{profileData.email}</p>
                 </div>
               </div>
-              <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
+              {/* <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
                 <MapPin className="text-green-500" size={32} />
                 <div>
                   <p className="text-neutral-400 text-sm">Country</p>
                   <p className="font-medium">{profileData.country}</p>
                 </div>
-              </div>
-              <Link
+              </div> */}
+              {/*  <Link
                 href="/me/followers"
                 className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
               >
@@ -121,8 +126,28 @@ const SpotifyProfilePage = () => {
                   <p className="text-neutral-400 text-sm">Followers</p>
                   <p className="font-medium">{profileData.followers.total}</p>
                 </div>
+              </Link> */}
+              <Link
+                href="/me/followers"
+                className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
+              >
+                <Users className="text-green-500" size={32} />
+                <div>
+                  <p className="text-neutral-400 text-sm">Followers</p>
+                  <p className="font-medium">{profileData.follower}</p>
+                </div>
               </Link>
-              <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
+              <Link
+                href="/me/following"
+                className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
+              >
+                <Users className="text-green-500" size={32} />
+                <div>
+                  <p className="text-neutral-400 text-sm">Following</p>
+                  <p className="font-medium">{profileData.following}</p>
+                </div>
+              </Link>
+              {/* <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
                 <CreditCard className="text-green-500" size={32} />
                 <div>
                   <p className="text-neutral-400 text-sm">Account Type</p>
@@ -130,7 +155,7 @@ const SpotifyProfilePage = () => {
                     {profileData.product}
                   </p>
                 </div>
-              </div>
+              </div> */}
 
               <Button
                 variant="destructive"

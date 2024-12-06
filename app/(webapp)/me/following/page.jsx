@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import ConnectingLoading from "@/components/custom/ConnectingLoading";
 
-const FollowersListPage = () => {
+const FollowingListPage = () => {
   const { data: session } = useSession();
-  const [followers, setFollowers] = useState([]);
+  const [followings, setFollowings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -14,16 +14,16 @@ const FollowersListPage = () => {
     if (!session) return;
 
     try {
-      const res = await fetch("/api/users/follow?type=follower");
+      const res = await fetch("/api/users/follow?type=following");
 
       if (!res.ok) {
-        throw new Error("Failed to fetch followers");
+        throw new Error("Failed to fetch followings");
       }
 
       const data = await res.json();
-      setFollowers(data || []);
+      setFollowings(data || []);
     } catch (error) {
-      setError("Failed to load followers");
+      setError("Failed to load followings");
     } finally {
       setLoading(false);
     }
@@ -34,7 +34,7 @@ const FollowersListPage = () => {
   }, [session]);
 
   if (loading) {
-    return <ConnectingLoading message="Loading followers..." />;
+    return <ConnectingLoading message="Loading followings..." />;
   }
 
   // Show error message if fetching fails
@@ -48,11 +48,11 @@ const FollowersListPage = () => {
 
   return (
     <div className="rounded-lg p-8 border border-neutral-800 bg-neutral-900 max-w-6xl mx-auto">
-      <h2 className="text-2xl font-semibold text-white mb-6">Followers</h2>
+      <h2 className="text-2xl font-semibold text-white mb-6">Followings</h2>
 
       {/* Render followed artists list */}
       <div className="space-y-4">
-        {followers.map((artist, index) => (
+        {followings.map((artist, index) => (
           <div
             key={index}
             className="flex items-center space-x-4 p-4 border-b border-neutral-800"
@@ -70,4 +70,4 @@ const FollowersListPage = () => {
   );
 };
 
-export default FollowersListPage;
+export default FollowingListPage;

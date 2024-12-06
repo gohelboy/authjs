@@ -7,24 +7,18 @@ import { connectToDatabase } from "@/lib/db";
 
 export async function GET(req) {
   try {
-    // Ensure database connection is established
     await connectToDatabase();
-
-    // Get session from NextAuth
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    // Fetch current user
     const currentUserEmail = session.user.email;
     const currentUser = await User.findOne({ email: currentUserEmail });
-
     if (!currentUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    // Fetch the list of users followed by the current user
     const followingIds = await Follow.find({
       follower: currentUser._id,
     })
@@ -34,14 +28,13 @@ export async function GET(req) {
     const followingIdsAsStrings = followingIds.map((id) => id.toString());
 
     const users = await User.find({ _id: { $ne: currentUser._id } })
-      .lean() // Use lean() to get plain JavaScript objects (faster and less memory-intensive)
-      .select("_id email name image") // Select only necessary fields
+      .lean()
+      .select("_id email name image")
       .exec();
 
-    // Attach follow status directly in the result
     const usersWithFollowStatus = users.map((user) => ({
       ...user,
-      isFollowed: followingIdsAsStrings.includes(user._id.toString()), // Compare as strings
+      isFollowed: followingIdsAsStrings.includes(user._id.toString()),
     }));
 
     return NextResponse.json(usersWithFollowStatus, { status: 200 });
