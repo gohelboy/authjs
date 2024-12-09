@@ -51,7 +51,7 @@ const DiscoverMap = () => {
   }
 
   return (
-    <div className="w-full h-[calc(100dvh-200px)]">
+    <div className="w-full h-[calc(100dvh-200px)] rounded-lg overflow-hidden">
       <MapContainer
         center={[location.latitude, location.longitude]}
         zoom={14}
