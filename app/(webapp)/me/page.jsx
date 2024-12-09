@@ -2,15 +2,9 @@
 
 import ConnectingLoading from "@/components/custom/ConnectingLoading";
 import { Button } from "@/components/ui/button";
-import spotifyAPI, { setAxiosToken } from "@/lib/api";
-import {
-  CreditCard,
-  Disc3,
-  LogOut,
-  MapPin,
-  UserCircle2,
-  Users,
-} from "lucide-react";
+import { setAxiosToken } from "@/lib/api";
+import { cn } from "@/lib/utils";
+import { Disc3, LocateFixed, LogOut, UserCircle2, Users } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,6 +14,9 @@ const SpotifyProfilePage = () => {
   const { data: session } = useSession();
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [location, setLocation] = useState(null);
 
   const fetchProfile = async () => {
     if (!session) return;
@@ -40,6 +37,52 @@ const SpotifyProfilePage = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const makeMeVisible = () => {
+    setIsVisible(!isVisible);
+
+    if (!isVisible) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            setLocation({ latitude, longitude });
+            console.log("Location fetched successfully:", {
+              latitude,
+              longitude,
+            });
+
+            // API call to update location in the database
+            try {
+              const response = await fetch("/api/user/me/location", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ latitude, longitude }),
+              });
+
+              if (!response.ok) {
+                throw new Error("Failed to update location");
+              }
+
+              const data = await response.json();
+              console.log("Location updated:", data);
+            } catch (error) {
+              console.error("Error updating location:", error);
+            }
+          },
+          (error) => {
+            console.error("Error fetching location:", error.message);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    } else {
+      setLocation(null);
     }
   };
 
@@ -110,23 +153,6 @@ const SpotifyProfilePage = () => {
                   <p className="font-medium">{profileData.email}</p>
                 </div>
               </div>
-              {/* <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
-                <MapPin className="text-green-500" size={32} />
-                <div>
-                  <p className="text-neutral-400 text-sm">Country</p>
-                  <p className="font-medium">{profileData.country}</p>
-                </div>
-              </div> */}
-              {/*  <Link
-                href="/me/followers"
-                className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
-              >
-                <Users className="text-green-500" size={32} />
-                <div>
-                  <p className="text-neutral-400 text-sm">Followers</p>
-                  <p className="font-medium">{profileData.followers.total}</p>
-                </div>
-              </Link> */}
               <Link
                 href="/me/followers"
                 className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
@@ -147,16 +173,26 @@ const SpotifyProfilePage = () => {
                   <p className="font-medium">{profileData.following}</p>
                 </div>
               </Link>
-              {/* <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
-                <CreditCard className="text-green-500" size={32} />
-                <div>
-                  <p className="text-neutral-400 text-sm">Account Type</p>
-                  <p className="font-medium capitalize">
-                    {profileData.product}
-                  </p>
-                </div>
-              </div> */}
-
+              <button
+                onClick={makeMeVisible}
+                className={cn(
+                  `rounded-xl p-4 flex items-center space-x-4`,
+                  isVisible ? "bg-green-500" : "bg-neutral-800"
+                )}
+              >
+                <LocateFixed
+                  className={cn(
+                    "text-green-500",
+                    isVisible ? "text-white" : "text-green-500"
+                  )}
+                  size={32}
+                />
+                <p
+                  className={cn(isVisible ? "text-white" : "text-neutral-400")}
+                >
+                  Visible
+                </p>
+              </button>
               <Button
                 variant="destructive"
                 onClick={() => signOut()}

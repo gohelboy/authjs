@@ -1,6 +1,7 @@
 "use client";
 
 import ConnectingLoading from "@/components/custom/ConnectingLoading";
+import DiscoverMap from "@/components/custom/DiscoverMap";
 import NowPlaying from "@/components/custom/NowPlaying";
 import PlaybackHistory from "@/components/custom/PlaybackHistory";
 import TopArtists from "@/components/custom/TopArtists";
@@ -11,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import spotifyAPI, { setAxiosToken } from "@/lib/api";
 import {
   Clock,
+  Compass,
   Headphones,
   Music,
   PlayCircle,
@@ -31,6 +33,7 @@ const SpotifyInsightsPage = () => {
     { value: "top-artists", icon: Headphones, label: "Top Artists" },
     { value: "playback-history", icon: Clock, label: "Play History" },
     { value: "users", icon: Users, label: "Users" },
+    { value: "discover", icon: Compass, label: "Discover" },
   ];
 
   const { data: session, status } = useSession();
@@ -101,7 +104,7 @@ const SpotifyInsightsPage = () => {
   return (
     <div className="max-w-6xl mx-auto p-4">
       <Tabs defaultValue="currently-playing" className="w-full">
-        <TabsList className="grid w-full grid-cols-5 bg-neutral-800 mb-6 min-h-12 p-2">
+        <TabsList className="grid w-full grid-cols-6 bg-neutral-800 mb-6 min-h-12 p-2">
           {tabs.map(({ value, icon: Icon, label }) => (
             <TabsTrigger
               key={value}
@@ -143,6 +146,12 @@ const SpotifyInsightsPage = () => {
           className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
         >
           <UsersList />
+        </TabsContent>
+        <TabsContent
+          value="discover"
+          className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
+        >
+          <DiscoverMap />
         </TabsContent>
       </Tabs>
     </div>

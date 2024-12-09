@@ -1,9 +1,9 @@
 import { connectToDatabase } from "@/lib/db";
+import Follow from "@/lib/models/Follow";
 import User from "@/lib/models/User";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/route";
-import Follow from "@/lib/models/Follow";
 
 export async function GET(req) {
   try {
@@ -54,7 +54,6 @@ export async function GET(req) {
   }
 }
 
-// Helper function to fetch Spotify user data
 async function fetchSpotifyUserData(accessToken, userId) {
   try {
     const response = await fetch(`https://api.spotify.com/v1/users/${userId}`, {
