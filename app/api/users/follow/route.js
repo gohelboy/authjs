@@ -5,6 +5,8 @@ import { NextResponse } from "next/server";
 import Follow from "@/lib/models/Follow";
 import User from "@/lib/models/User";
 
+export const dynamic = "force-dynamic";
+
 async function fetchUsers(userIds) {
   return await User.find({ _id: { $in: userIds } })
     .select("_id email name image")

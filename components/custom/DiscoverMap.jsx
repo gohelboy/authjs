@@ -32,13 +32,12 @@ const DiscoverMap = () => {
   };
 
   useEffect(() => {
-    if (navigator.geolocation) {
+    if (typeof window !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
         setLocation({ latitude, longitude });
       });
     }
-
     fetchNearbyUser();
   }, []);
 

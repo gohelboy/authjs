@@ -3,6 +3,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import User from "@/lib/models/User";
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
+export const dynamic = "force-dynamic";
 
 export async function GET(req) {
   try {

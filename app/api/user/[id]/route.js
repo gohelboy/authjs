@@ -5,6 +5,8 @@ import { NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/route";
 import Follow from "@/lib/models/Follow";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req, context) {
   try {
     const { id } = await context.params;

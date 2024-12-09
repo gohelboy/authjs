@@ -1,7 +1,7 @@
 "use client";
 
 import ConnectingLoading from "@/components/custom/ConnectingLoading";
-import DiscoverMap from "@/components/custom/DiscoverMap";
+
 import NowPlaying from "@/components/custom/NowPlaying";
 import PlaybackHistory from "@/components/custom/PlaybackHistory";
 import TopArtists from "@/components/custom/TopArtists";
@@ -20,7 +20,11 @@ import {
   Users,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 import { useEffect, useMemo, useState } from "react";
+const DiscoverMap = dynamic(() => import("@/components/custom/DiscoverMap"), {
+  ssr: false,
+});
 
 const SpotifyInsightsPage = () => {
   const tabs = [
