@@ -1,12 +1,10 @@
 "use client";
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import dynamic from "next/dynamic";
-import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { ArrowBigUp } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-// Dynamically import React-Leaflet components
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
   { ssr: false }
@@ -26,15 +24,12 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
 const DiscoverMap = () => {
   const [location, setLocation] = useState(null);
   const [nearbyUsers, setNearbyUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const mapRef = useRef(null); // Store map reference
+  const mapRef = useRef(null);
   const [heading, setHeading] = useState(0);
 
-  // Fetch nearby users - can be memoized using useCallback
   const fetchNearbyUsers = useCallback(async () => {
     try {
-      setLoading(true);
       const res = await fetch("/api/users/location");
       if (!res.ok) throw new Error("Failed to fetch nearby users");
       const data = await res.json();
@@ -42,10 +37,8 @@ const DiscoverMap = () => {
     } catch (error) {
       console.error(error);
       setError("Error fetching nearby users");
-    } finally {
-      setLoading(false);
     }
-  }, []); // Avoiding unnecessary re-renders for fetch
+  }, []);
 
   const updateMyLocationForOthers = useCallback(async (latitude, longitude) => {
     try {
@@ -66,15 +59,23 @@ const DiscoverMap = () => {
   }, []);
 
   useEffect(() => {
+    // Fetch nearby users every 5 seconds
+    const intervalId = setInterval(() => {
+      fetchNearbyUsers();
+    }, 5000);
+
+    // Cleanup on unmount
+    return () => clearInterval(intervalId);
+  }, [fetchNearbyUsers]);
+
+  const watchMyLocation = () => {
     if (navigator.geolocation) {
       const geoWatchId = navigator.geolocation.watchPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
           await updateMyLocationForOthers(latitude, longitude);
           setLocation({ latitude, longitude });
-          // fetchNearbyUsers(latitude, longitude);
 
-          // Update the map position directly
           if (mapRef.current) {
             const map = mapRef.current;
             map.setView([latitude, longitude], map.getZoom());
@@ -84,37 +85,33 @@ const DiscoverMap = () => {
           console.error("Geolocation error:", error);
           setError("Location permission denied or error occurred");
         },
-        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+        { enableHighAccuracy: true, maximumAge: 0 }
       );
 
-      // Cleanup the watchPosition when the component unmounts
       return () => {
         navigator.geolocation.clearWatch(geoWatchId);
       };
     } else {
       setError("Geolocation is not supported by this browser.");
     }
-  }, [updateMyLocationForOthers]); // Adding dependencies to useEffect
+  };
+
+  const updateMyOrientationForMe = (event) => {
+    if (event.alpha !== null) {
+      setHeading(event.alpha);
+    }
+  };
 
   useEffect(() => {
-    const handleOrientation = (event) => {
-      if (event.alpha !== null) {
-        setHeading(event.alpha); // Get the compass heading (rotation)
-      }
-    };
-
-    // Listen to device orientation events
-    window.addEventListener("deviceorientation", handleOrientation);
-
-    return () => {
-      // Clean up the event listener when the component is unmounted
-      window.removeEventListener("deviceorientation", handleOrientation);
-    };
+    watchMyLocation();
   }, []);
 
-  // if (loading) {
-  //   return <div className="text-center">Loading map and users...</div>;
-  // }
+  useEffect(() => {
+    window.addEventListener("deviceorientation", updateMyOrientationForMe);
+    return () => {
+      window.removeEventListener("deviceorientation", updateMyOrientationForMe);
+    };
+  }, []);
 
   if (error) {
     return <div className="text-center text-red-500">{error}</div>;
@@ -147,8 +144,8 @@ const DiscoverMap = () => {
           <path d="M12 19V6M5 12l7-7 7 7"></path>
         </svg>
       </div>`,
-            iconSize: [50, 60], // Size of the icon
-            iconAnchor: [25, 30], // Set anchor to the center (half of width, half of height)
+            iconSize: [50, 60],
+            iconAnchor: [25, 30],
           })}
         >
           <Popup>You are here!</Popup>
@@ -174,7 +171,7 @@ const DiscoverMap = () => {
                 </div>
               `,
               iconSize: [60, 70],
-              iconAnchor: [30, 70],
+              iconAnchor: [30, 35], // Centering the marker anchor (half of the size)
             })}
           >
             <Popup>
