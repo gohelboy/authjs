@@ -27,6 +27,7 @@ const DiscoverMap = () => {
   const [nearbyUsers, setNearbyUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [notification, setNotification] = useState(""); // Notification state
   const mapRef = useRef(null);
 
   const fetchNearbyUsers = async () => {
@@ -36,11 +37,14 @@ const DiscoverMap = () => {
       if (!res.ok) throw new Error("Failed to fetch nearby users");
       const data = await res.json();
       setNearbyUsers(data || []);
+      setNotification("Nearby users loaded successfully!");
     } catch (error) {
       console.error(error);
       setError("Error fetching nearby users");
+      setNotification("Failed to load nearby users.");
     } finally {
       setLoading(false);
+      setTimeout(() => setNotification(""), 3000); // Hide notification after 3 seconds
     }
   };
 
@@ -57,8 +61,12 @@ const DiscoverMap = () => {
           },
         }),
       });
+      setNotification("Your location has been updated.");
     } catch (error) {
       console.error("Error updating location:", error);
+      setNotification("Failed to update your location.");
+    } finally {
+      setTimeout(() => setNotification(""), 3000); // Hide notification after 3 seconds
     }
   };
 
@@ -102,7 +110,14 @@ const DiscoverMap = () => {
   }
 
   return (
-    <div className="w-full h-[calc(100dvh-200px)] rounded-lg overflow-hidden">
+    <div className="relative w-full h-[calc(100dvh-220px)] rounded-lg overflow-hidden">
+      {/* Notification Banner */}
+      {notification && (
+        <div className="absolute top-0 left-0 w-full bg-blue-500 text-white text-center py-2 z-10">
+          {notification}
+        </div>
+      )}
+
       <MapContainer
         center={[location.latitude, location.longitude]}
         zoom={14}
