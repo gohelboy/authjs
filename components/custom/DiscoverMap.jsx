@@ -117,13 +117,29 @@ const DiscoverMap = () => {
         whenCreated={(map) => (mapRef.current = map)} // Using useRef to store map object
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <Marker
+        {/* <Marker
           position={[location.latitude, location.longitude]}
           icon={L.divIcon({
             className: "custom-div-icon",
             html: `<div class="bg-green-500 text-white font-bold w-12 h-12 flex items-center justify-center rounded-full">
                   Me
                 </div>`,
+            iconSize: [50, 60],
+            iconAnchor: [25, 60],
+          })}
+        > */}
+        <Marker
+          position={[location.latitude, location.longitude]}
+          icon={L.divIcon({
+            className: "custom-div-icon",
+            html: `
+              <div class="relative w-12 h-12">
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" class="rotate-arrow">
+                    <path d="M12 2L16 6H13V10H11V6H8L12 2Z" fill="black" />
+                  </svg>
+                </div>
+              </div>`,
             iconSize: [50, 60],
             iconAnchor: [25, 60],
           })}
