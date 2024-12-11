@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -28,9 +28,10 @@ const DiscoverMap = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [notification, setNotification] = useState(""); // Notification state
-  const mapRef = useRef(null);
+  const mapRef = useRef(null); // Store map reference
 
-  const fetchNearbyUsers = async () => {
+  // Fetch nearby users - can be memoized using useCallback
+  const fetchNearbyUsers = useCallback(async () => {
     try {
       setLoading(true);
       const res = await fetch("/api/users/location");
@@ -46,9 +47,10 @@ const DiscoverMap = () => {
       setLoading(false);
       setTimeout(() => setNotification(""), 3000); // Hide notification after 3 seconds
     }
-  };
+  }, []); // Avoiding unnecessary re-renders for fetch
 
-  const updateMyLocationForOthers = async (latitude, longitude) => {
+  // Update location for others (API call)
+  const updateMyLocationForOthers = useCallback(async (latitude, longitude) => {
     try {
       await fetch("/api/users/location", {
         method: "PATCH",
@@ -68,7 +70,7 @@ const DiscoverMap = () => {
     } finally {
       setTimeout(() => setNotification(""), 3000); // Hide notification after 3 seconds
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -93,7 +95,7 @@ const DiscoverMap = () => {
     } else {
       setError("Geolocation is not supported by this browser.");
     }
-  }, []);
+  }, [updateMyLocationForOthers, fetchNearbyUsers]); // Adding dependencies to useEffect
 
   if (loading) {
     return <div className="text-center">Loading map and users...</div>;
@@ -110,7 +112,7 @@ const DiscoverMap = () => {
   }
 
   return (
-    <div className="relative w-full h-[calc(100dvh-220px)] rounded-lg overflow-hidden">
+    <div className="relative w-full h-[calc(100dvh-200px)] rounded-lg overflow-hidden">
       {/* Notification Banner */}
       {notification && (
         <div className="absolute top-0 left-0 w-full bg-blue-500 text-white text-center py-2 z-10">
@@ -122,7 +124,7 @@ const DiscoverMap = () => {
         center={[location.latitude, location.longitude]}
         zoom={14}
         style={{ height: "100%", width: "100%" }}
-        whenCreated={(map) => (mapRef.current = map)}
+        whenCreated={(map) => (mapRef.current = map)} // Using useRef to store map object
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Marker
