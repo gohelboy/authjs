@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import Image from "next/image";
 
 // Dynamically import React-Leaflet components
 const MapContainer = dynamic(
@@ -100,7 +101,9 @@ const DiscoverMap = () => {
           >
             <Popup>
               <div class="p-2">
-                <img
+                <Image
+                  width={54}
+                  height={54}
                   src={user.image}
                   alt={user.name}
                   class="w-16 h-16 rounded-full mx-auto"
