@@ -65,14 +65,20 @@ async function fetchSpotifyUserData(accessToken, userId) {
     });
 
     if (!response.ok) {
-      throw new Error(
-        `Spotify API error: ${response.status} - ${response.statusText}`
+      return NextResponse.json(
+        {
+          message: `Spotify API error: ${response.status} - ${response.statusText}`,
+        },
+        { status: 401 }
       );
     }
 
     return await response.json();
   } catch (error) {
     console.error("Error fetching data from Spotify API:", error);
-    throw new Error("Failed to fetch Spotify user data");
+    return NextResponse.json(
+      { message: "Error fetching data from Spotify API:" },
+      { status: 500 }
+    );
   }
 }

@@ -42,7 +42,7 @@ const Header = () => {
             className="flex items-center space-x-3 group cursor-pointer"
           >
             <Image
-              src={session?.user?.image || "/default-profile.png"}
+              src={session?.user?.image || "/user.jpg"}
               alt="Profile"
               width={40}
               height={40}

@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { MapPin, UserCircle2, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const UserProfilePage = ({ params }) => {
-  const { userId } = use(params);
+  const { userId } = params;
 
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);

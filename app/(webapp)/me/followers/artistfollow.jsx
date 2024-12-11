@@ -72,7 +72,7 @@ const FollowersListPage = () => {
             className="flex items-center space-x-4 p-4 border-b border-neutral-800"
           >
             <img
-              src={artist.images?.[0]?.url || "/default-profile.png"}
+              src={artist.images?.[0]?.url || "/user.jpg"}
               alt={artist.name}
               className="w-12 h-12 rounded-full border-2 border-green-500"
             />
