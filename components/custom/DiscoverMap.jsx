@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
@@ -22,31 +23,81 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
 });
 
 const DiscoverMap = () => {
-  const [location, setLocation] = useState();
+  const [location, setLocation] = useState(null);
   const [nearbyUsers, setNearbyUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const mapRef = useRef(null);
 
-  const fetchNearbyUser = async () => {
-    const res = await fetch("/api/users/location");
-    const data = await res.json();
-    setNearbyUsers(data || []);
+  const fetchNearbyUsers = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/users/location");
+      if (!res.ok) throw new Error("Failed to fetch nearby users");
+      const data = await res.json();
+      setNearbyUsers(data || []);
+    } catch (error) {
+      console.error(error);
+      setError("Error fetching nearby users");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateMyLocationForOthers = async (latitude, longitude) => {
+    try {
+      await fetch("/api/users/location", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          location: {
+            coordinates: [latitude, longitude],
+          },
+        }),
+      });
+    } catch (error) {
+      console.error("Error updating location:", error);
+    }
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined" && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        setLocation({ latitude, longitude });
-      });
+    if (navigator.geolocation) {
+      const geoWatchId = navigator.geolocation.watchPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          await updateMyLocationForOthers(latitude, longitude);
+          setLocation({ latitude, longitude });
+          fetchNearbyUsers(latitude, longitude);
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          setError("Location permission denied or error occurred");
+        },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+      );
+
+      // Cleanup the watchPosition when the component unmounts
+      return () => {
+        navigator.geolocation.clearWatch(geoWatchId);
+      };
+    } else {
+      setError("Geolocation is not supported by this browser.");
     }
-    fetchNearbyUser();
   }, []);
+
+  if (loading) {
+    return <div className="text-center">Loading map and users...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500">{error}</div>;
+  }
 
   if (!location) {
     return (
-      <h1 className="text-center text-lg mt-10">
-        Please allow location permissions...
-      </h1>
+      <div className="text-center">Please enable location permissions.</div>
     );
   }
 
@@ -59,15 +110,13 @@ const DiscoverMap = () => {
         whenCreated={(map) => (mapRef.current = map)}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-        {/* Current User Marker */}
         <Marker
           position={[location.latitude, location.longitude]}
           icon={L.divIcon({
             className: "custom-div-icon",
             html: `<div class="bg-green-500 text-white font-bold w-12 h-12 flex items-center justify-center rounded-full">
                   Me
-                </div> `,
+                </div>`,
             iconSize: [50, 60],
             iconAnchor: [25, 60],
           })}
@@ -75,7 +124,6 @@ const DiscoverMap = () => {
           <Popup>You are here!</Popup>
         </Marker>
 
-        {/* Nearby Users */}
         {nearbyUsers?.map((user) => (
           <Marker
             key={user._id}
@@ -100,18 +148,20 @@ const DiscoverMap = () => {
             })}
           >
             <Popup>
-              <div class="p-2">
+              <div className="p-2">
                 <Image
                   width={54}
                   height={54}
                   src={user.image}
                   alt={user.name}
-                  class="w-16 h-16 rounded-full mx-auto"
+                  className="w-16 h-16 rounded-full mx-auto"
                 />
-                <h3 class="text-center text-lg font-semibold mt-2">
-                  ${user.name}
+                <h3 className="text-center text-lg font-semibold mt-2">
+                  {user.name}
                 </h3>
-                <p class="text-center text-gray-600 text-sm">${user.email}</p>
+                <p className="text-center text-gray-600 text-sm">
+                  {user.email}
+                </p>
               </div>
             </Popup>
           </Marker>
