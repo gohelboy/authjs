@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback, memo } from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -126,50 +126,48 @@ const DiscoverMap = () => {
         </Marker>
 
         {nearbyUsers?.map((user) => (
-          <Marker
-            key={user._id}
-            position={[
-              user.location.coordinates[1],
-              user.location.coordinates[0],
-            ]}
-            icon={L.divIcon({
-              className: "custom-div-icon",
-              html: `
-                <div class="flex flex-col items-center">
-                  <img 
-                    src="${user.image}" 
-                    alt="${user.name}" 
-                    class="w-12 h-12 rounded-full border-2 border-blue-500" 
-                  />
-                  <span class="text-sm font-medium text-gray-800">${user.name}</span>
-                </div>
-              `,
-              iconSize: [60, 70],
-              iconAnchor: [30, 70],
-            })}
-          >
-            <Popup>
-              <div className="p-2">
-                <Image
-                  width={54}
-                  height={54}
-                  src={user.image}
-                  alt={user.name}
-                  className="w-16 h-16 rounded-full mx-auto"
-                />
-                <h3 className="text-center text-lg font-semibold mt-2">
-                  {user.name}
-                </h3>
-                <p className="text-center text-gray-600 text-sm">
-                  {user.email}
-                </p>
-              </div>
-            </Popup>
-          </Marker>
+          <MemoizedMarker key={user._id} user={user} />
         ))}
       </MapContainer>
     </div>
   );
 };
+
+const MemoizedMarker = memo(({ user }) => (
+  <Marker
+    position={[user.location.coordinates[1], user.location.coordinates[0]]}
+    icon={L.divIcon({
+      className: "custom-div-icon",
+      html: `
+        <div class="flex flex-col items-center">
+          <img 
+            src="${user.image}" 
+            alt="${user.name}" 
+            class="w-12 h-12 rounded-full border-2 border-blue-500" 
+          />
+          <span class="text-sm font-medium text-gray-800">${user.name}</span>
+        </div>
+      `,
+      iconSize: [60, 70],
+      iconAnchor: [30, 70],
+    })}
+  >
+    <Popup>
+      <div className="p-2">
+        <Image
+          width={54}
+          height={54}
+          src={user.image}
+          alt={user.name}
+          className="w-16 h-16 rounded-full mx-auto"
+        />
+        <h3 className="text-center text-lg font-semibold mt-2">{user.name}</h3>
+        <p className="text-center text-gray-600 text-sm">{user.email}</p>
+      </div>
+    </Popup>
+  </Marker>
+));
+
+MemoizedMarker.displayName = "map";
 
 export default DiscoverMap;
