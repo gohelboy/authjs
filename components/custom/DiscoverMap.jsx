@@ -28,6 +28,7 @@ const DiscoverMap = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const mapRef = useRef(null); // Store map reference
+  const [heading, setHeading] = useState(0);
 
   // Fetch nearby users - can be memoized using useCallback
   const fetchNearbyUsers = useCallback(async () => {
@@ -94,6 +95,22 @@ const DiscoverMap = () => {
     }
   }, [updateMyLocationForOthers]); // Adding dependencies to useEffect
 
+  useEffect(() => {
+    const handleOrientation = (event) => {
+      if (event.alpha !== null) {
+        setHeading(event.alpha); // Get the compass heading (rotation)
+      }
+    };
+
+    // Listen to device orientation events
+    window.addEventListener("deviceorientation", handleOrientation);
+
+    return () => {
+      // Clean up the event listener when the component is unmounted
+      window.removeEventListener("deviceorientation", handleOrientation);
+    };
+  }, []);
+
   // if (loading) {
   //   return <div className="text-center">Loading map and users...</div>;
   // }
@@ -133,12 +150,9 @@ const DiscoverMap = () => {
           icon={L.divIcon({
             className: "custom-div-icon",
             html: `
-              <div class="relative w-12 h-12">
-                <div class="absolute inset-0 flex items-center justify-center">
-                  <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" class="rotate-arrow">
-                    <path d="M12 2L16 6H13V10H11V6H8L12 2Z" fill="black" />
-                  </svg>
-                </div>
+              <div class="bg-green-500 text-white font-bold w-12 h-12 flex items-center justify-center rounded-full" 
+                   style="transform: rotate(${heading}deg)">
+                ↑
               </div>`,
             iconSize: [50, 60],
             iconAnchor: [25, 60],
