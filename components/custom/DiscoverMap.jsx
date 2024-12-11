@@ -119,7 +119,7 @@ const DiscoverMap = () => {
     <div className="relative w-full h-[calc(100dvh-200px)] rounded-lg overflow-hidden">
       <Button
         onClick={fetchNearbyUsers}
-        className="absolute bottom-5 right-5 z-[999]"
+        className="absolute bottom-5 right-5 z-[999] flex items-center justify-between"
       >
         <RefreshCcwDot /> Nearby Users
       </Button>
@@ -137,8 +137,8 @@ const DiscoverMap = () => {
           icon={L.divIcon({
             className: "custom-div-icon",
             html: `
-              <div class="bg-green-500 text-white font-bold flex items-center justify-center rounded-full" 
-                   style="transform: rotate(${heading}deg); width: 50px; height: 60px; display: flex; align-items: center; justify-content: center;">
+              <div class="bg-black text-white font-bold flex items-center justify-center rounded-full" 
+                   style="transform: rotate(${heading}deg); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 19V6M5 12l7-7 7 7"></path>
                 </svg>
