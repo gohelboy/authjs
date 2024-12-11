@@ -1,9 +1,11 @@
 "use client";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { RefreshCcwDot } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Button } from "../ui/button";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -59,14 +61,8 @@ const DiscoverMap = () => {
   }, []);
 
   useEffect(() => {
-    // Fetch nearby users every 5 seconds
-    const intervalId = setInterval(() => {
-      fetchNearbyUsers();
-    }, 5000);
-
-    // Cleanup on unmount
-    return () => clearInterval(intervalId);
-  }, [fetchNearbyUsers]);
+    watchMyLocation();
+  }, []);
 
   const watchMyLocation = () => {
     if (navigator.geolocation) {
@@ -103,10 +99,6 @@ const DiscoverMap = () => {
   };
 
   useEffect(() => {
-    watchMyLocation();
-  }, []);
-
-  useEffect(() => {
     window.addEventListener("deviceorientation", updateMyOrientationForMe);
     return () => {
       window.removeEventListener("deviceorientation", updateMyOrientationForMe);
@@ -125,9 +117,16 @@ const DiscoverMap = () => {
 
   return (
     <div className="relative w-full h-[calc(100dvh-200px)] rounded-lg overflow-hidden">
+      <Button
+        onClick={fetchNearbyUsers}
+        className="absolute bottom-5 right-5 z-[999]"
+      >
+        <RefreshCcwDot /> Nearby Users
+      </Button>
+
       <MapContainer
         center={[location.latitude, location.longitude]}
-        zoom={14}
+        zoom={16}
         style={{ height: "100%", width: "100%" }}
         whenCreated={(map) => (mapRef.current = map)} // Using useRef to store map object
       >
@@ -138,12 +137,12 @@ const DiscoverMap = () => {
           icon={L.divIcon({
             className: "custom-div-icon",
             html: `
-      <div class="bg-green-500 text-white font-bold flex items-center justify-center rounded-full" 
-           style="transform: rotate(${heading}deg); width: 50px; height: 60px; display: flex; align-items: center; justify-content: center;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 19V6M5 12l7-7 7 7"></path>
-        </svg>
-      </div>`,
+              <div class="bg-green-500 text-white font-bold flex items-center justify-center rounded-full" 
+                   style="transform: rotate(${heading}deg); width: 50px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 19V6M5 12l7-7 7 7"></path>
+                </svg>
+              </div>`,
             iconSize: [50, 60],
             iconAnchor: [25, 30],
           })}
