@@ -73,11 +73,11 @@ const SpotifyInsightsPage = () => {
 
       // Fetch Spotify data
       fetchSpotifyData(
-        "me/top/tracks?time_range=medium_term&limit=16",
+        "me/top/tracks?time_range=long_term&limit=16",
         "topTracks"
       );
       fetchSpotifyData(
-        "me/top/artists?time_range=medium_term&limit=16",
+        "me/top/artists?time_range=long_term&limit=16",
         "topArtists"
       );
       fetchSpotifyData("me/player/currently-playing", "currentlyPlaying");

@@ -20,7 +20,7 @@ export default function Home() {
           onClick={() => router.push("/auth/signin")}
           className="w-full py-3 text-lg font-semibold rounded-lg shadow-md bg-white text-gray-900 hover:text-white"
         >
-          Login to Continue
+          Get started
         </Button>
       </div>
     </div>
