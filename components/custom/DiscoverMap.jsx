@@ -162,11 +162,13 @@ const DiscoverMap = () => {
               html: `
                 <div class="flex flex-col items-center">
                   <img 
-                    src="${user.image}" 
+                    src="${user.image || "/user.jpg"}" 
                     alt="${user.name}" 
                     class="w-12 h-12 rounded-full border-2 border-blue-500" 
                   />
-                  <span class="text-sm font-medium text-gray-800">${user.name}</span>
+                  <span class="text-sm font-medium text-gray-800">${
+                    user.name
+                  }</span>
                 </div>
               `,
               iconSize: [60, 70],
@@ -178,7 +180,7 @@ const DiscoverMap = () => {
                 <Image
                   width={54}
                   height={54}
-                  src={user.image}
+                  src={user.image || "/user.jpg"}
                   alt={user.name}
                   className="w-16 h-16 rounded-full mx-auto"
                 />
