@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Image from "next/image";
+import { ArrowBigUp } from "lucide-react";
 
 // Dynamically import React-Leaflet components
 const MapContainer = dynamic(
@@ -145,14 +146,15 @@ const DiscoverMap = () => {
             iconAnchor: [25, 60],
           })}
         > */}
+
         <Marker
           position={[location.latitude, location.longitude]}
           icon={L.divIcon({
             className: "custom-div-icon",
             html: `
-              <div class="bg-green-500 text-white font-bold w-12 h-12 flex items-center justify-center rounded-full" 
+              <div class="bg-green-500 text-white font-bold size-11 flex items-center justify-center rounded-full" 
                    style="transform: rotate(${heading}deg)">
-                ↑
+                  <ArrowBigUp/>
               </div>`,
             iconSize: [50, 60],
             iconAnchor: [25, 60],
