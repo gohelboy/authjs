@@ -92,11 +92,11 @@ const DiscoverMap = () => {
     } else {
       setError("Geolocation is not supported by this browser.");
     }
-  }, [updateMyLocationForOthers, fetchNearbyUsers]); // Adding dependencies to useEffect
+  }, [updateMyLocationForOthers]); // Adding dependencies to useEffect
 
-  if (loading) {
-    return <div className="text-center">Loading map and users...</div>;
-  }
+  // if (loading) {
+  //   return <div className="text-center">Loading map and users...</div>;
+  // }
 
   if (error) {
     return <div className="text-center text-red-500">{error}</div>;
