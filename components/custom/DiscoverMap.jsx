@@ -135,29 +135,20 @@ const DiscoverMap = () => {
         whenCreated={(map) => (mapRef.current = map)} // Using useRef to store map object
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {/* <Marker
-          position={[location.latitude, location.longitude]}
-          icon={L.divIcon({
-            className: "custom-div-icon",
-            html: `<div class="bg-green-500 text-white font-bold w-12 h-12 flex items-center justify-center rounded-full">
-                  Me
-                </div>`,
-            iconSize: [50, 60],
-            iconAnchor: [25, 60],
-          })}
-        > */}
 
         <Marker
           position={[location.latitude, location.longitude]}
           icon={L.divIcon({
             className: "custom-div-icon",
             html: `
-              <div class="bg-green-500 text-white font-bold size-11 flex items-center justify-center rounded-full" 
-                   style="transform: rotate(${heading}deg)">
-                  <ArrowBigUp/>
-              </div>`,
-            iconSize: [50, 60],
-            iconAnchor: [25, 60],
+      <div class="bg-green-500 text-white font-bold flex items-center justify-center rounded-full" 
+           style="transform: rotate(${heading}deg); width: 50px; height: 60px; display: flex; align-items: center; justify-content: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 19V6M5 12l7-7 7 7"></path>
+        </svg>
+      </div>`,
+            iconSize: [50, 60], // Size of the icon
+            iconAnchor: [25, 30], // Set anchor to the center (half of width, half of height)
           })}
         >
           <Popup>You are here!</Popup>
