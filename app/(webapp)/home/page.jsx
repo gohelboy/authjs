@@ -43,8 +43,6 @@ const SpotifyInsightsPage = () => {
   const { data: session, status } = useSession();
   const { toast } = useToast();
   const [spotifyData, setSpotifyData] = useState({
-    topTracks: [],
-    topArtists: [],
     currentlyPlaying: null,
     playbackHistory: [],
   });
@@ -70,16 +68,6 @@ const SpotifyInsightsPage = () => {
   useEffect(() => {
     if (session?.user?.accessToken) {
       setAxiosToken(session.user.accessToken);
-
-      // Fetch Spotify data
-      fetchSpotifyData(
-        "me/top/tracks?time_range=long_term&limit=16",
-        "topTracks"
-      );
-      fetchSpotifyData(
-        "me/top/artists?time_range=long_term&limit=16",
-        "topArtists"
-      );
       fetchSpotifyData("me/player/currently-playing", "currentlyPlaying");
       fetchSpotifyData("me/player/recently-played?limit=24", "playbackHistory");
     }
@@ -129,15 +117,15 @@ const SpotifyInsightsPage = () => {
         </TabsContent>
         <TabsContent
           value="top-tracks"
-          className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
+          className="bg-neutral-800 rounded-2xl p-2 md:p-6 md:pt-2 shadow-2xl"
         >
-          <TopTracks topTracks={spotifyData?.topTracks} />
+          <TopTracks />
         </TabsContent>
         <TabsContent
           value="top-artists"
           className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
         >
-          <TopArtists topArtists={spotifyData?.topArtists} />
+          <TopArtists />
         </TabsContent>
         <TabsContent
           value="playback-history"
