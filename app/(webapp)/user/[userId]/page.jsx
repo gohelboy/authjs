@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { MapPin, UserCircle2, Users, UsersRound } from "lucide-react";
+import { Users, UsersRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -56,8 +56,6 @@ const UserProfilePage = ({ params }) => {
     return <div className="text-center text-white">Loading profile...</div>;
   }
 
-  console.log("profileData", profileData);
-
   return (
     <div className="max-w-6xl mx-auto">
       <div className="rounded-lg p-8 border border-neutral-800 mx-4">
@@ -74,14 +72,6 @@ const UserProfilePage = ({ params }) => {
             <h2 className="text-2xl font-semibold tracking-tight">
               {profileData?.name || "User"}
             </h2>
-            {/* <Link
-              href={profileData?.href || "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-500 hover:underline text-sm mt-2"
-            >
-              View on Spotify
-            </Link> */}
             <Button
               onClick={toggleFollow}
               className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900  mt-2`}
@@ -105,7 +95,7 @@ const UserProfilePage = ({ params }) => {
           <div className="md:col-span-2 space-y-6">
             <div className="grid grid-cols-2 gap-6">
               <Link
-                href="/me/followers"
+                href={`/user/${userId}/followers`}
                 className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
               >
                 <UsersRound className="text-green-500" size={32} />
@@ -116,7 +106,7 @@ const UserProfilePage = ({ params }) => {
                 </div>
               </Link>
               <Link
-                href="/me/following"
+                href={`/user/${userId}/followings`}
                 className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
               >
                 <Users className="text-green-500" size={32} />
