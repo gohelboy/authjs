@@ -19,11 +19,15 @@ export const metadata = {
   icons: {
     icon: "/favicon.png",
   },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-900 text-white`}
       >
