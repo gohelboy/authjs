@@ -4,7 +4,14 @@ import ConnectingLoading from "@/components/custom/ConnectingLoading";
 import { Button } from "@/components/ui/button";
 import { setAxiosToken } from "@/lib/api";
 import { cn } from "@/lib/utils";
-import { Disc3, LocateFixed, LogOut, UserCircle2, Users } from "lucide-react";
+import {
+  Disc3,
+  LocateFixed,
+  LogOut,
+  UserCircle2,
+  Users,
+  UsersRound,
+} from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -118,7 +125,7 @@ const SpotifyProfilePage = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto mt-7">
       <div className="rounded-lg p-8 border border-neutral-800 mx-4">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Profile Image */}
@@ -145,19 +152,20 @@ const SpotifyProfilePage = () => {
 
           {/* Profile Details */}
           <div className="md:col-span-2 space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
+            <div className="grid grid-cols-2 gap-6">
+              {/* <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
                 <UserCircle2 className="text-green-500" size={32} />
                 <div>
                   <p className="text-neutral-400 text-sm">Email</p>
                   <p className="font-medium">{profileData.email}</p>
                 </div>
-              </div>
+              </div> */}
               <Link
                 href="/me/followers"
                 className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
               >
-                <Users className="text-green-500" size={32} />
+                <UsersRound className="text-green-500" size={32} />
+
                 <div>
                   <p className="text-neutral-400 text-sm">Followers</p>
                   <p className="font-medium">{profileData.follower}</p>
@@ -173,7 +181,7 @@ const SpotifyProfilePage = () => {
                   <p className="font-medium">{profileData.following}</p>
                 </div>
               </Link>
-              <button
+              {/*  <button
                 onClick={makeMeVisible}
                 className={cn(
                   `rounded-xl p-4 flex items-center space-x-4`,
@@ -196,11 +204,18 @@ const SpotifyProfilePage = () => {
               <Button
                 variant="destructive"
                 onClick={() => signOut()}
-                className=""
+                className="h-full"
               >
                 Logout <LogOut size={20} />
-              </Button>
+              </Button> */}
             </div>
+            <Button
+              variant="destructive"
+              className="w-full"
+              onClick={() => signOut()}
+            >
+              Logout <LogOut size={20} />
+            </Button>
           </div>
         </div>
       </div>

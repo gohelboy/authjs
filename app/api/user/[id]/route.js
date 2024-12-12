@@ -36,6 +36,9 @@ export async function GET(req, context) {
       );
     }
 
+    const followingIds = await Follow.find({ follower: user?._id });
+    const followergIds = await Follow.find({ following: user?._id });
+
     const spotifyUserId = user.spotifyId || "#";
 
     const spotifyUserData = await fetchSpotifyUserData(
@@ -47,8 +50,11 @@ export async function GET(req, context) {
 
     const payload = {
       isFollowed: followId ? true : false,
+      follower: followingIds.length,
+      follower: followergIds.length,
       ...user?.toObject(),
-      ...spotifyUserData,
+
+      // ...spotifyUserData,
     };
 
     return NextResponse.json(payload, { status: 200 });

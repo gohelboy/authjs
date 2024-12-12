@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { MapPin, UserCircle2, Users } from "lucide-react";
+import { MapPin, UserCircle2, Users, UsersRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -72,49 +72,19 @@ const UserProfilePage = ({ params }) => {
               className="rounded-full border-4 border-green-500 shadow-lg mb-4"
             />
             <h2 className="text-2xl font-semibold tracking-tight">
-              {profileData?.display_name || "User"}
+              {profileData?.name || "User"}
             </h2>
-            <Link
+            {/* <Link
               href={profileData?.href || "#"}
               target="_blank"
               rel="noopener noreferrer"
               className="text-green-500 hover:underline text-sm mt-2"
             >
               View on Spotify
-            </Link>
-          </div>
-
-          {/* Profile Details */}
-          <div className="md:col-span-2 space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
-                <UserCircle2 className="text-green-500" size={32} />
-                <div>
-                  <p className="text-neutral-400 text-sm">Email</p>
-                  <p className="font-medium">{profileData?.email || "N/A"}</p>
-                </div>
-              </div>
-              <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
-                <MapPin className="text-green-500" size={32} />
-                <div>
-                  <p className="text-neutral-400 text-sm">Country</p>
-                  <p className="font-medium">{profileData?.country || "N/A"}</p>
-                </div>
-              </div>
-              <div className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4">
-                <Users className="text-green-500" size={32} />
-                <div>
-                  <p className="text-neutral-400 text-sm">Followers</p>
-                  <p className="font-medium">
-                    {profileData?.followers?.total || 0}
-                  </p>
-                </div>
-              </div>
-            </div>
-
+            </Link> */}
             <Button
               onClick={toggleFollow}
-              className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900  `}
+              className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900  mt-2`}
               disabled={loadingFollow}
             >
               {loadingFollow ? (
@@ -129,6 +99,33 @@ const UserProfilePage = ({ params }) => {
                 "Follow"
               )}
             </Button>
+          </div>
+
+          {/* Profile Details */}
+          <div className="md:col-span-2 space-y-6">
+            <div className="grid grid-cols-2 gap-6">
+              <Link
+                href="/me/followers"
+                className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
+              >
+                <UsersRound className="text-green-500" size={32} />
+
+                <div>
+                  <p className="text-neutral-400 text-sm">Followers</p>
+                  <p className="font-medium">{profileData?.follower || "0"}</p>
+                </div>
+              </Link>
+              <Link
+                href="/me/following"
+                className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
+              >
+                <Users className="text-green-500" size={32} />
+                <div>
+                  <p className="text-neutral-400 text-sm">Following</p>
+                  <p className="font-medium">{profileData?.following || "0"}</p>
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import ConnectingLoading from "@/components/custom/ConnectingLoading";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const FollowersListPage = () => {
   const { data: session } = useSession();
@@ -52,18 +54,21 @@ const FollowersListPage = () => {
 
       {/* Render followed artists list */}
       <div className="space-y-4">
-        {followers.map((artist, index) => (
-          <div
+        {followers?.map((user, index) => (
+          <Link
+            href={`/user/${user?._id}`}
             key={index}
-            className="flex items-center space-x-4 p-4 border-b border-neutral-800"
+            className="flex items-center space-x-4 p-4 border-b border-neutral-800 hover:underline"
           >
-            <img
-              src={artist.image || "/user.jpg"}
-              alt={artist.name}
+            <Image
+              width={48}
+              height={48}
+              src={user?.image || "/user.jpg"}
+              alt={user?.name}
               className="w-12 h-12 rounded-full border-2 border-green-500"
             />
-            <h3 className="text-lg font-semibold text-white">{artist.name}</h3>
-          </div>
+            <h3 className="text-lg font-semibold text-white">{user?.name}</h3>
+          </Link>
         ))}
       </div>
     </div>
