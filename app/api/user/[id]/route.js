@@ -50,8 +50,8 @@ export async function GET(req, context) {
 
     const payload = {
       isFollowed: followId ? true : false,
-      follower: followingIds.length,
-      follower: followergIds.length,
+      follower: followingIds.length || 0,
+      following: followergIds.length || 0,
       ...user?.toObject(),
 
       // ...spotifyUserData,

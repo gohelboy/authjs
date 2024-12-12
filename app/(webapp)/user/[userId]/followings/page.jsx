@@ -6,7 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const FollowingListPage = () => {
+const FollowingListPage = ({ params }) => {
+  const { userId } = params;
   const { data: session } = useSession();
   const [followings, setFollowings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ const FollowingListPage = () => {
     if (!session) return;
 
     try {
-      const res = await fetch("/api/users/follow?type=following");
+      const res = await fetch(`/api/users/${userId}/follow?type=following`);
 
       if (!res.ok) {
         throw new Error("Failed to fetch followings");

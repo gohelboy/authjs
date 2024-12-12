@@ -2,12 +2,17 @@
 
 import { Button } from "@/components/ui/button";
 import { Users, UsersRound } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const UserProfilePage = ({ params }) => {
   const { userId } = params;
+
+  const { data: session } = useSession();
+
+  console.log("session", session);
 
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -72,23 +77,26 @@ const UserProfilePage = ({ params }) => {
             <h2 className="text-2xl font-semibold tracking-tight">
               {profileData?.name || "User"}
             </h2>
-            <Button
-              onClick={toggleFollow}
-              className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900  mt-2`}
-              disabled={loadingFollow}
-            >
-              {loadingFollow ? (
-                <span
-                  className={`loader inline-block w-4 h-4 border-2 rounded-full animate-spin ${
-                    isFollowed ? "border-t-white" : "border-t-neutral-900"
-                  }`}
-                ></span>
-              ) : isFollowed ? (
-                "Unfollow"
-              ) : (
-                "Follow"
-              )}
-            </Button>
+
+            {session.user.email !== profileData?.email && (
+              <Button
+                onClick={toggleFollow}
+                className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900  mt-2`}
+                disabled={loadingFollow}
+              >
+                {loadingFollow ? (
+                  <span
+                    className={`loader inline-block w-4 h-4 border-2 rounded-full animate-spin ${
+                      isFollowed ? "border-t-white" : "border-t-neutral-900"
+                    }`}
+                  ></span>
+                ) : isFollowed ? (
+                  "Unfollow"
+                ) : (
+                  "Follow"
+                )}
+              </Button>
+            )}
           </div>
 
           {/* Profile Details */}
