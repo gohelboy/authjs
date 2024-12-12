@@ -4,7 +4,7 @@ import React from "react";
 
 const PlaybackHistory = ({ playbackHistory }) => {
   return (
-    <div className="space-y-4 md:max-h-[calc(100dvh-240px)] max-h-[calc(100dvh-200px)] overflow-y-scroll rounded-xl scrollbar-hidden">
+    <div className="space-y-4 md:max-h-[calc(100dvh-220px)] max-h-[calc(100dvh-180px)] overflow-y-scroll rounded-xl scrollbar-hidden">
       {playbackHistory?.map((item, index) => (
         <div
           key={`${item.track.id}-${index}`}

@@ -116,7 +116,7 @@ const DiscoverMap = () => {
   }
 
   return (
-    <div className="relative w-full h-[calc(100dvh-200px)] rounded-lg overflow-hidden">
+    <div className="relative w-full md:h-[calc(100dvh-220px)] h-[calc(100dvh-180px)] rounded-lg overflow-hidden">
       <Button
         onClick={fetchNearbyUsers}
         className="absolute bottom-5 right-5 z-[999] flex items-center justify-between"

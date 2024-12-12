@@ -26,7 +26,7 @@ const TopTracks = () => {
   const getRankStyle = useMemo(
     () => (rank) => {
       const baseStyle =
-        "absolute top-2 left-2 size-6 md:size-8 flex items-center justify-center rounded-full font-bold text-sm";
+        "absolute top-2 left-2 size-6 flex items-center justify-center rounded-full font-bold text-sm";
       const styles = [
         `${baseStyle} bg-yellow-400 text-black shadow-lg`,
         `${baseStyle} bg-gray-400 text-white shadow-md`,
@@ -51,17 +51,18 @@ const TopTracks = () => {
       <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
         {["short_term", "medium_term", "long_term"].map((range, idx) => (
           <Button
+            size="sm"
             key={range}
             onClick={() => changeTimeRange(range)}
             className={isActiveButton(range)}
           >
             <CalendarDays className="h-5 w-5" />
-            {["Last Month", "6 Months", "Year"][idx]}
+            {["Month", "6 Months", "Year"][idx]}
           </Button>
         ))}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-h-[calc(100dvh-240px)] overflow-y-auto scrollbar-hidden rounded-xl">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:max-h-[calc(100dvh-240px)] max-h-[calc(100dvh-220px)] overflow-y-scroll scrollbar-hidden rounded-xl">
         {tracks?.map((track, index) => (
           <div
             key={track?.id}
