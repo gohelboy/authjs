@@ -45,7 +45,7 @@ const TopTracks = () => {
 
   const isActiveButton = (range) =>
     timeRange == range
-      ? "bg-white text-[#171717] hover:bg-white/70 flex-1 transition-all"
+      ? "bg-white text-[#171717] hover:bg-white/70 flex-1 md:flex-initial md: transition-all"
       : "";
 
   return (
