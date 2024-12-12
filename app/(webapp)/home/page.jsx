@@ -117,13 +117,13 @@ const SpotifyInsightsPage = () => {
         </TabsContent>
         <TabsContent
           value="top-tracks"
-          className="bg-neutral-800 rounded-2xl p-2 md:p-6 md:pt-2 shadow-2xl"
+          className="bg-neutral-800 rounded-2xl shadow-2xl"
         >
           <TopTracks />
         </TabsContent>
         <TabsContent
           value="top-artists"
-          className="bg-neutral-800 rounded-2xl p-2 md:p-6 md:pt-2 shadow-2xl"
+          className="bg-neutral-800 rounded-2xl shadow-2xl"
         >
           <TopArtists />
         </TabsContent>

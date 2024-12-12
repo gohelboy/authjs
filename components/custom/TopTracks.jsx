@@ -47,8 +47,8 @@ const TopTracks = () => {
     timeRange == range ? "bg-white text-[#171717] hover:bg-white/70" : "";
 
   return (
-    <div className="relative">
-      <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+    <div className="relative ">
+      <div className="flex items-center justify-center md:justify-start gap-2 p-2 pt-4 px-6">
         {["short_term", "medium_term", "long_term"].map((range, idx) => (
           <Button
             size="sm"
@@ -62,7 +62,7 @@ const TopTracks = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:max-h-[calc(100dvh-240px)] max-h-[calc(100dvh-220px)] overflow-y-scroll scrollbar-hidden rounded-xl">
+      <div className="p-2 md:p-6 md:pt-2 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:max-h-[calc(100dvh-220px)] max-h-[calc(100dvh-220px)] overflow-y-scroll scrollbar-hidden rounded-xl">
         {tracks?.map((track, index) => (
           <div
             key={track?.id}
