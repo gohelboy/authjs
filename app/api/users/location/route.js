@@ -39,11 +39,7 @@ export async function PATCH(req) {
     if (!session) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-
     const { location } = await req.json();
-
-    console.log("location", location);
-
     const [latitude, longitude] = location.coordinates;
     if (
       latitude < -90 ||

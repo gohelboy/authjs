@@ -9,11 +9,7 @@ import { useEffect, useState } from "react";
 
 const UserProfilePage = ({ params }) => {
   const { userId } = params;
-
   const { data: session } = useSession();
-
-  console.log("session", session);
-
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFollowed, setIsFollowed] = useState(false);
