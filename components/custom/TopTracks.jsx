@@ -44,11 +44,13 @@ const TopTracks = () => {
   };
 
   const isActiveButton = (range) =>
-    timeRange == range ? "bg-white text-[#171717] hover:bg-white/70" : "";
+    timeRange == range
+      ? "bg-white text-[#171717] hover:bg-white/70 flex-1 transition-all"
+      : "";
 
   return (
     <div className="relative ">
-      <div className="flex items-center justify-center md:justify-start gap-2 p-2 pt-4 px-6">
+      <div className="flex items-center justify-center md:justify-start gap-2 p-2 pt-4 md:px-6">
         {["short_term", "medium_term", "long_term"].map((range, idx) => (
           <Button
             size="sm"
