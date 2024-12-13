@@ -8,8 +8,6 @@ import TopArtists from "@/components/custom/TopArtists";
 import TopTracks from "@/components/custom/TopTracks";
 import UsersList from "@/components/custom/UsersList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from "@/hooks/use-toast";
-import spotifyAPI, { setAxiosToken } from "@/lib/api";
 import {
   Clock,
   Compass,
@@ -21,7 +19,7 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 const DiscoverMap = dynamic(() => import("@/components/custom/DiscoverMap"), {
   ssr: false,
 });
@@ -41,37 +39,6 @@ const SpotifyInsightsPage = () => {
   ];
 
   const { data: session, status } = useSession();
-  const { toast } = useToast();
-  const [spotifyData, setSpotifyData] = useState({
-    currentlyPlaying: null,
-    playbackHistory: [],
-  });
-
-  const fetchSpotifyData = async (endpoint, key) => {
-    try {
-      const { data } = await spotifyAPI.get(endpoint);
-      setSpotifyData((prev) => ({
-        ...prev,
-        [key]: key === "currentlyPlaying" ? data.item : data.items || [],
-      }));
-    } catch {
-      toast({
-        title: "Spotify Sync Error",
-        description: `Unable to fetch ${key
-          .replace(/([A-Z])/g, " $1")
-          .toLowerCase()}`,
-        variant: "destructive",
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (session?.user?.accessToken) {
-      setAxiosToken(session.user.accessToken);
-      fetchSpotifyData("me/player/currently-playing", "currentlyPlaying");
-      fetchSpotifyData("me/player/recently-played?limit=24", "playbackHistory");
-    }
-  }, [session]);
 
   const isLoading = useMemo(() => status === "loading", [status]);
 
@@ -113,7 +80,7 @@ const SpotifyInsightsPage = () => {
           value="currently-playing"
           className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
         >
-          <NowPlaying currentlyPlaying={spotifyData?.currentlyPlaying} />
+          <NowPlaying  />
         </TabsContent>
         <TabsContent
           value="top-tracks"
@@ -131,7 +98,7 @@ const SpotifyInsightsPage = () => {
           value="playback-history"
           className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
         >
-          <PlaybackHistory playbackHistory={spotifyData?.playbackHistory} />
+          <PlaybackHistory />
         </TabsContent>
         <TabsContent
           value="users"
