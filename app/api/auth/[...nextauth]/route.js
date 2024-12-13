@@ -114,22 +114,32 @@ export const authOptions = {
         }
       }
 
+      // Inside signIn callback for Spotify provider
       if (account.provider === "spotify") {
         await connectToDatabase();
         const existingUser = await User.findOne({ email: user.email });
+
         if (!existingUser) {
           const newUser = new User({
-            spotifyId: account.providerAccountId,
-            email: user.email || "",
-            name: user.name || "Spotify User",
+            spotifyId: user.id,
+            email: user.email,
+            password: user.email, // You might want to use a hashed password here
+            spotifyAccessToken: account.access_token, // Correct field names
+            spotifyRefreshToken: account.refresh_token, // Correct field names
+            name: user.display_name,
+            image: user.image || account.image,
+            provider: account?.provider,
             verified: true,
-            password: user.email || "",
-            image: user.image || "",
-            provider: "spotify",
           });
           await newUser.save();
+        } else {
+          existingUser.spotifyAccessToken = account.access_token; // Correct field names
+          existingUser.spotifyRefreshToken = account.refresh_token; // Correct field names
+          await existingUser.save();
         }
       }
+
+
 
       return true;
     },
