@@ -33,6 +33,7 @@ export async function GET(req) {
       .select("_id email name image")
       .exec();
 
+
     const usersWithFollowStatus = users.map((user) => ({
       ...user,
       isFollowed: followingIdsAsStrings.includes(user._id.toString()),

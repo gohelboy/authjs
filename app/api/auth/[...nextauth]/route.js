@@ -126,13 +126,14 @@ export const authOptions = {
             password: user.email, // You might want to use a hashed password here
             spotifyAccessToken: account.access_token, // Correct field names
             spotifyRefreshToken: account.refresh_token, // Correct field names
-            name: user.display_name,
+            name: user.name || account.display_name,
             image: user.image || account.image,
             provider: account?.provider,
             verified: true,
           });
           await newUser.save();
         } else {
+          existingUser.name = user.name || account.display_name;
           existingUser.spotifyAccessToken = account.access_token; // Correct field names
           existingUser.spotifyRefreshToken = account.refresh_token; // Correct field names
           await existingUser.save();

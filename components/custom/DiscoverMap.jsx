@@ -35,6 +35,9 @@ const DiscoverMap = () => {
       const res = await fetch("/api/users/location");
       if (!res.ok) throw new Error("Failed to fetch nearby users");
       const data = await res.json();
+
+      console.log("data", data)
+
       setNearbyUsers(data || []);
     } catch (error) {
       console.error(error);
@@ -166,9 +169,8 @@ const DiscoverMap = () => {
                     alt="${user.name}" 
                     class="w-12 h-12 rounded-full border-2 border-blue-500" 
                   />
-                  <span class="text-sm font-medium text-gray-800">${
-                    user.name
-                  }</span>
+                  <span class="text-sm font-medium text-gray-800">${user.name
+                }</span>
                 </div>
               `,
               iconSize: [60, 70],
