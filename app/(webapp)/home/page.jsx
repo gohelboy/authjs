@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useMemo, useState } from "react";
 const DiscoverMap = dynamic(() => import("@/components/custom/DiscoverMap"), {
@@ -43,7 +44,7 @@ const SpotifyInsightsPage = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(tabs[0].value);
   const isLoading = useMemo(() => status === "loading", [status]);
-
+  const searchParams = useSearchParams();
   useEffect(() => {
     const tabFromUrl = searchParams.get("tab");
     if (tabFromUrl && tabs.find((tab) => tab.value === tabFromUrl)) {
