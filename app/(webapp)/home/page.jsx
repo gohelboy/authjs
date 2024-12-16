@@ -19,7 +19,9 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
-import { useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 const DiscoverMap = dynamic(() => import("@/components/custom/DiscoverMap"), {
   ssr: false,
 });
@@ -39,8 +41,23 @@ const SpotifyInsightsPage = () => {
   ];
 
   const { data: session, status } = useSession();
-
+  const searchParams = useSearchParams();
+  const router = useRouter()
+  const [activeTab, setActiveTab] = useState(tabs[0].value);
   const isLoading = useMemo(() => status === "loading", [status]);
+
+  useEffect(() => {
+    const tabFromUrl = searchParams.get("tab");
+    if (tabFromUrl && tabs.find((tab) => tab.value === tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [searchParams]);
+
+  const handleTabChange = (value) => {
+    setActiveTab(value);
+    router.push(`?tab=${value}`, undefined, { shallow: true });
+  };
+
 
   if (isLoading) {
     return <ConnectingLoading />;
@@ -62,7 +79,12 @@ const SpotifyInsightsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-4">
-      <Tabs defaultValue="currently-playing" className="w-full ">
+      <Tabs
+        value={activeTab}
+        onValueChange={handleTabChange}
+        defaultValue="currently-playing"
+        className="w-full"
+      >
         <TabsList className="grid w-full grid-cols-6 bg-neutral-800 min-h-12 p-2 mb-3">
           {tabs.map(({ value, icon: Icon, label }) => (
             <TabsTrigger
@@ -80,7 +102,7 @@ const SpotifyInsightsPage = () => {
           value="currently-playing"
           className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
         >
-          <NowPlaying  />
+          <NowPlaying />
         </TabsContent>
         <TabsContent
           value="top-tracks"

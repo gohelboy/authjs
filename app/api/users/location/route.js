@@ -3,6 +3,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import User from "@/lib/models/User";
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/db";
+import { refreshSpotifyToken } from "@/lib/helper";
 export const dynamic = "force-dynamic";
 
 
@@ -62,37 +63,7 @@ async function fetchRecentlyPlayed(accessToken) {
   }
 }
 
-// Refresh Spotify access token
-async function refreshSpotifyToken(refreshToken, clientId, clientSecret) {
-  const url = "https://accounts.spotify.com/api/token";
-  const body = new URLSearchParams({
-    grant_type: "refresh_token",
-    refresh_token: refreshToken,
-  });
 
-  const headers = {
-    Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
-    "Content-Type": "application/x-www-form-urlencoded",
-  };
-
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      body,
-      headers,
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error refreshing token: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data.access_token; // Return new access token
-  } catch (error) {
-    console.error("Error refreshing Spotify token:", error);
-    return null;
-  }
-}
 
 // Main GET handler
 export async function GET(req) {
@@ -125,11 +96,7 @@ export async function GET(req) {
           if (checkToken?.error) {
             console.log("Refreshing access token for user:", user.email);
 
-            accessToken = await refreshSpotifyToken(
-              user.spotifyRefreshToken,
-              process.env.SPOTIFY_CLIENT_ID,
-              process.env.SPOTIFY_CLIENT_SECRET
-            );
+            accessToken = await refreshSpotifyToken(user.spotifyRefreshToken);
 
             if (accessToken) {
               user.spotifyAccessToken = accessToken;

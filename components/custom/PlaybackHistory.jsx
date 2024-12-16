@@ -1,4 +1,3 @@
-import spotifyAPI, { setAxiosToken } from "@/lib/api";
 import { formatTimeAgo } from "@/lib/helper";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -9,17 +8,15 @@ const PlaybackHistory = () => {
   const [playbackHistory, setPlaybackHistory] = useState([])
 
 
-  const fetchPlaybakcHistory = async() => {
-    const { data } = await spotifyAPI.get('me/player/recently-played?limit=24');
-    setPlaybackHistory(data?.items || [])
+  const fetchPlaybakcHistory = async () => {
+    const response = await fetch(`/api/user/${session.user.id}/play-history?limit=24`);
+    const data = await response.json()
+    setPlaybackHistory(data?.data?.items || [])
   }
 
-  useEffect(()=>{
-    if (session?.user?.accessToken) {
-          setAxiosToken(session.user.accessToken); 
-          fetchPlaybakcHistory()
-        }
-  },[])
+  useEffect(() => {
+    fetchPlaybakcHistory()
+  }, [])
 
   return (
     <div className="space-y-4 md:max-h-[calc(100dvh-220px)] max-h-[calc(100dvh-180px)] overflow-y-scroll rounded-xl scrollbar-hidden">

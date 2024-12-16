@@ -1,23 +1,20 @@
-import spotifyAPI, { setAxiosToken } from "@/lib/api";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const NowPlaying = () => {
- const { data: session } = useSession();
+  const { data: session } = useSession();
   const [currentlyPlaying, setCurrentlyPlaying] = useState({})
 
-  const fetchCurrentPlayingData = async() => {
-    const { data } = await spotifyAPI.get('me/player/currently-playing');
-    setCurrentlyPlaying(data?.item || {})
+  const fetchCurrentPlayingData = async () => {
+    const response = await fetch(`api/user/${session?.user.id}/current-playing`);
+    const data = await response.json()
+    setCurrentlyPlaying(data?.data?.item || {})
   }
 
-  useEffect(()=>{
-    if (session?.user?.accessToken) {
-          setAxiosToken(session.user.accessToken); 
-          fetchCurrentPlayingData()
-        }
-  },[])
+  useEffect(() => {
+    fetchCurrentPlayingData()
+  }, [])
 
   return (
     <div className="flex flex-col items-center space-y-4 md:flex-row md:space-x-4 md:space-y-0">

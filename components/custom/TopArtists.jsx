@@ -1,27 +1,26 @@
-import spotifyAPI from "@/lib/api";
 import { CalendarDays } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { useSession } from "next-auth/react";
 
 const TopArtists = () => {
+  const { data: session } = useSession()
   const [topArtistsList, setTopArtistsList] = useState([]);
-
   const [timeRange, setTimeRange] = useState("short_term");
 
-  const fetchTopArtists = async (range) => {
+  const fetchTopArtists = async () => {
     try {
-      const { data } = await spotifyAPI.get(
-        `me/top/artists?time_range=${range}&limit=18`
-      );
-      setTopArtistsList(data.items || []);
+      const response = await fetch(`api/user/${session.user.id}/top-artists?time_range=${timeRange}&limit=18`);
+      const data = await response.json();
+      setTopArtistsList(data?.data?.items || []);
     } catch (err) {
       console.error(err);
     }
   };
 
   useEffect(() => {
-    fetchTopArtists(timeRange);
+    fetchTopArtists();
   }, [timeRange]);
 
   const getRankStyle = (rank) => {

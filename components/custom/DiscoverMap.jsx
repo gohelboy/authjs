@@ -36,9 +36,6 @@ const DiscoverMap = () => {
       const res = await fetch("/api/users/location");
       if (!res.ok) throw new Error("Failed to fetch nearby users");
       const data = await res.json();
-
-      console.log("data", data)
-
       setNearbyUsers(data || []);
     } catch (error) {
       console.error(error);

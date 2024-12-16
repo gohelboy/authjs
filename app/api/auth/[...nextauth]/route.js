@@ -135,19 +135,28 @@ export const authOptions = {
         } else {
           existingUser.name = account.display_name || user.name;
           existingUser.image = account.image || user.image;
-          existingUser.spotifyAccessToken = account.access_token; // Correct field names
-          existingUser.spotifyRefreshToken = account.refresh_token; // Correct field names
+          existingUser.spotifyAccessToken = account.access_token;
+          existingUser.spotifyRefreshToken = account.refresh_token;
           await existingUser.save();
         }
       }
 
-
-
       return true;
     },
     async jwt({ token, account, user }) {
+
+
+
+      if (account?.provider === "spotify") {
+        const dbUser = await User.findOne({ email: user.email });
+
+        if (dbUser) {
+          token.id = dbUser._id.toString();
+        }
+      }
+
+      // Add MongoDB _id to the token
       if (user) {
-        token.id = user._id;
         token.email = user.email;
         token.name = user.name;
         token.image = user.image;
@@ -165,7 +174,8 @@ export const authOptions = {
     },
 
     async session({ session, token }) {
-      session.user.id = token.id;
+      // Add MongoDB _id to the session
+      session.user.id = token.id; // This will now be the MongoDB _id
       session.user.email = token.email;
       session.user.name = token.name;
       session.user.image = token.image;

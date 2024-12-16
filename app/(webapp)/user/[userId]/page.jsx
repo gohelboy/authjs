@@ -77,8 +77,8 @@ const UserProfilePage = ({ params }) => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="rounded-lg p-8 border border-neutral-800 mx-4 md:mx-0 my-4">
+    <div className="max-w-6xl md:mx-auto mx-4">
+      <div className="rounded-lg p-8 border border-neutral-800  my-4">
         <div className="grid md:grid-cols-3 md:gap-8">
           {/* Profile Image */}
           <div className="flex gap-8 items-center  md:justify-center ">
@@ -165,10 +165,8 @@ const UserProfilePage = ({ params }) => {
           </div>
         </div>
       </div>
-
-
       <div>
-        <Tabs defaultValue="currently-playing" className="w-full ">
+        <Tabs defaultValue="currently-playing" className="w-full">
           <TabsList className="grid w-full grid-cols-4 bg-neutral-800 min-h-12 p-2 mb-3">
             {tabs.map(({ value, icon: Icon, label }) => (
               <TabsTrigger
@@ -209,7 +207,6 @@ const UserProfilePage = ({ params }) => {
 
         </Tabs>
       </div>
-
     </div>
   );
 };

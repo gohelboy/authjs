@@ -1,5 +1,5 @@
-import spotifyAPI from "@/lib/api";
 import { CalendarDays } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "../ui/button";
@@ -7,13 +7,13 @@ import { Button } from "../ui/button";
 const TopTracks = () => {
   const [tracks, setTracks] = useState([]);
   const [timeRange, setTimeRange] = useState("short_term");
+  const { data: session } = useSession()
 
   const fetchTopTracks = async (range) => {
     try {
-      const { data } = await spotifyAPI.get(
-        `me/top/tracks?time_range=${timeRange}&limit=18`
-      );
-      setTracks(data.items || []);
+      const response = await fetch(`api/user/${session.user.id}/top-tracks?time_range=${timeRange}&limit=${18}`);
+      const data = await response.json()
+      setTracks(data?.data?.items || []);
     } catch (err) {
       console.error(err);
     }
