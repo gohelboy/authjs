@@ -19,9 +19,8 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 const DiscoverMap = dynamic(() => import("@/components/custom/DiscoverMap"), {
   ssr: false,
 });
@@ -77,64 +76,62 @@ const SpotifyInsightsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-4">
-      <Suspense fallback={<ConnectingLoading />}>
-        <Tabs
-          value={activeTab}
-          onValueChange={handleTabChange}
-          defaultValue="currently-playing"
-          className="w-full"
-        >
-          <TabsList className="grid w-full grid-cols-6 bg-neutral-800 min-h-12 p-2 mb-3">
-            {tabs.map(({ value, icon: Icon, label }) => (
-              <TabsTrigger
-                key={value}
-                value={value}
-                className="flex items-center space-x-2 justify-center h-full"
-              >
-                <Icon size={16} />
-                <span className="hidden md:block">{label}</span>
-              </TabsTrigger>
-            ))}
-          </TabsList>
+      <Tabs
+        value={activeTab}
+        onValueChange={handleTabChange}
+        defaultValue="currently-playing"
+        className="w-full"
+      >
+        <TabsList className="grid w-full grid-cols-6 bg-neutral-800 min-h-12 p-2 mb-3">
+          {tabs.map(({ value, icon: Icon, label }) => (
+            <TabsTrigger
+              key={value}
+              value={value}
+              className="flex items-center space-x-2 justify-center h-full"
+            >
+              <Icon size={16} />
+              <span className="hidden md:block">{label}</span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
 
-          <TabsContent
-            value="currently-playing"
-            className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
-          >
-            <NowPlaying />
-          </TabsContent>
-          <TabsContent
-            value="top-tracks"
-            className="bg-neutral-800 rounded-2xl shadow-2xl"
-          >
-            <TopTracks />
-          </TabsContent>
-          <TabsContent
-            value="top-artists"
-            className="bg-neutral-800 rounded-2xl shadow-2xl"
-          >
-            <TopArtists />
-          </TabsContent>
-          <TabsContent
-            value="playback-history"
-            className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
-          >
-            <PlaybackHistory />
-          </TabsContent>
-          <TabsContent
-            value="users"
-            className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
-          >
-            <UsersList />
-          </TabsContent>
-          <TabsContent
-            value="discover"
-            className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
-          >
-            <DiscoverMap />
-          </TabsContent>
-        </Tabs>
-      </Suspense>
+        <TabsContent
+          value="currently-playing"
+          className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
+        >
+          <NowPlaying />
+        </TabsContent>
+        <TabsContent
+          value="top-tracks"
+          className="bg-neutral-800 rounded-2xl shadow-2xl"
+        >
+          <TopTracks />
+        </TabsContent>
+        <TabsContent
+          value="top-artists"
+          className="bg-neutral-800 rounded-2xl shadow-2xl"
+        >
+          <TopArtists />
+        </TabsContent>
+        <TabsContent
+          value="playback-history"
+          className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
+        >
+          <PlaybackHistory />
+        </TabsContent>
+        <TabsContent
+          value="users"
+          className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
+        >
+          <UsersList />
+        </TabsContent>
+        <TabsContent
+          value="discover"
+          className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
+        >
+          <DiscoverMap />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
