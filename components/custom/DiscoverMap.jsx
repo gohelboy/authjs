@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -118,6 +119,7 @@ const DiscoverMap = () => {
     );
   }
 
+
   return (
     <div className="relative w-full md:h-[calc(100dvh-220px)] h-[calc(100dvh-180px)] rounded-lg overflow-hidden">
       <Button
@@ -169,8 +171,7 @@ const DiscoverMap = () => {
                     alt="${user.name}" 
                     class="w-12 h-12 rounded-full border-2 border-blue-500" 
                   />
-                  <span class="text-sm font-medium text-gray-800">${user.name
-                }</span>
+                  <span class="text-sm font-medium text-gray-800 text-center">${user.name}</span>
                 </div>
               `,
               iconSize: [60, 70],
@@ -178,7 +179,7 @@ const DiscoverMap = () => {
             })}
           >
             <Popup>
-              <div className="p-2">
+              <div className="p-2 flex flex-col gap-2 items-center justify-center">
                 <Image
                   width={54}
                   height={54}
@@ -189,9 +190,7 @@ const DiscoverMap = () => {
                 <h3 className="text-center text-lg font-semibold mt-2">
                   {user.name}
                 </h3>
-                <p className="text-center text-gray-600 text-sm">
-                  {user.email}
-                </p>
+                <Link size="sm" href={`/user/${user?._id}`}>View</Link>
               </div>
             </Popup>
           </Marker>
