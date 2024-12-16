@@ -99,25 +99,25 @@ const SpotifyInsightsPage = () => {
           value="currently-playing"
           className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
         >
-          <NowPlaying />
+          <NowPlaying id={session.user?.id} />
         </TabsContent>
         <TabsContent
           value="top-tracks"
           className="bg-neutral-800 rounded-2xl shadow-2xl"
         >
-          <TopTracks />
+          <TopTracks id={session.user?.id} />
         </TabsContent>
         <TabsContent
           value="top-artists"
           className="bg-neutral-800 rounded-2xl shadow-2xl"
         >
-          <TopArtists />
+          <TopArtists id={session.user?.id} />
         </TabsContent>
         <TabsContent
           value="playback-history"
           className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
         >
-          <PlaybackHistory />
+          <PlaybackHistory id={session.user?.id} />
         </TabsContent>
         <TabsContent
           value="users"

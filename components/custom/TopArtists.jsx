@@ -2,16 +2,14 @@ import { CalendarDays } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { useSession } from "next-auth/react";
 
-const TopArtists = () => {
-  const { data: session } = useSession()
+const TopArtists = ({ id, me = true }) => {
   const [topArtistsList, setTopArtistsList] = useState([]);
-  const [timeRange, setTimeRange] = useState("short_term");
+  const [timeRange, setTimeRange] = useState(me ? "short_term" : "long_term");
 
   const fetchTopArtists = async () => {
     try {
-      const response = await fetch(`api/user/${session.user.id}/top-artists?time_range=${timeRange}&limit=18`);
+      const response = await fetch(`/api/user/${id}/top-artists?time_range=${timeRange}&limit=18$me=${me}`);
       const data = await response.json();
       setTopArtistsList(data?.data?.items || []);
     } catch (err) {
@@ -50,19 +48,19 @@ const TopArtists = () => {
 
   return (
     <div className="relative">
-      <div className="flex items-center justify-center md:justify-start gap-2 p-2 md:pt-4 md:px-6">
+      {me && <div className="flex items-center justify-center md:justify-start gap-2 p-2 md:pt-4 md:px-6">
         {["short_term", "medium_term", "long_term"].map((range, idx) => (
           <Button
             size="sm"
             key={range}
             onClick={() => changeTimeRange(range)}
-            className={`${isActiveButton(range)} `}
+            className={isActiveButton(range)}
           >
             <CalendarDays className="h-5 w-5" />
             {["Month", "6 Months", "Year"][idx]}
           </Button>
         ))}
-      </div>
+      </div>}
       <div className="p-2 md:p-6 md:pt-2 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:max-h-[calc(100dvh-220px)] max-h-[calc(100dvh-220px)] overflow-y-scroll scrollbar-hidden rounded-3xl">
         {topArtistsList?.map((artist, index) => (
           <div

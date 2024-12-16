@@ -1,17 +1,16 @@
 import { CalendarDays } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "../ui/button";
 
-const TopTracks = () => {
+const TopTracks = ({ id, me = true }) => {
   const [tracks, setTracks] = useState([]);
-  const [timeRange, setTimeRange] = useState("short_term");
-  const { data: session } = useSession()
+  const [timeRange, setTimeRange] = useState(me ? "short_term" : "long_term");
 
-  const fetchTopTracks = async (range) => {
+
+  const fetchTopTracks = async () => {
     try {
-      const response = await fetch(`api/user/${session.user.id}/top-tracks?time_range=${timeRange}&limit=${18}`);
+      const response = await fetch(`/api/user/${id}/top-tracks?time_range=${timeRange}&limit=${18}&me=${me}`);
       const data = await response.json()
       setTracks(data?.data?.items || []);
     } catch (err) {
@@ -50,7 +49,7 @@ const TopTracks = () => {
 
   return (
     <div className="relative ">
-      <div className="flex items-center justify-center md:justify-start gap-2 p-2 md:pt-4 md:px-6">
+      {me && <div className="flex items-center justify-center md:justify-start gap-2 p-2 md:pt-4 md:px-6">
         {["short_term", "medium_term", "long_term"].map((range, idx) => (
           <Button
             size="sm"
@@ -62,7 +61,7 @@ const TopTracks = () => {
             {["Month", "6 Months", "Year"][idx]}
           </Button>
         ))}
-      </div>
+      </div>}
 
       <div className="p-2 md:p-6 md:pt-2 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:max-h-[calc(100dvh-220px)] max-h-[calc(100dvh-220px)] overflow-y-scroll scrollbar-hidden rounded-3xl">
         {tracks?.map((track, index) => (

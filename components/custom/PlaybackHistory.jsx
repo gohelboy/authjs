@@ -1,15 +1,12 @@
 import { formatTimeAgo } from "@/lib/helper";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const PlaybackHistory = () => {
-  const { data: session } = useSession();
+const PlaybackHistory = ({ id, me = true }) => {
   const [playbackHistory, setPlaybackHistory] = useState([])
 
-
   const fetchPlaybakcHistory = async () => {
-    const response = await fetch(`/api/user/${session.user.id}/play-history?limit=24`);
+    const response = await fetch(`/api/user/${id}/play-history?limit=24&me=${me}`);
     const data = await response.json()
     setPlaybackHistory(data?.data?.items || [])
   }

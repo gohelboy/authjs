@@ -1,5 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { connectToDatabase } from "@/lib/db";
+import { refreshSpotifyToken } from "@/lib/helper";
 import User from "@/lib/models/User";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -8,12 +9,16 @@ export async function GET(req, { params }) {
     try {
         const { id } = params;
 
+        const { searchParams } = new URL(req.url);
+        const me = searchParams.get("me") === "true" ? true : false;
+
         if (!id) {
             return NextResponse.json(
                 { message: "User ID is required" },
                 { status: 400 }
             );
         }
+
 
         const session = await getServerSession(authOptions);
         if (!session) {
@@ -26,7 +31,16 @@ export async function GET(req, { params }) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
-        const currentPlay = await fetchCurrentPlaying(session.user);
+        let accessToken = me ? session.user.accessToken : user.spotifyAccessToken;
+        let refreshToken = user.spotifyRefreshToken;
+
+        const tokenResponse = await refreshSpotifyToken(refreshToken);
+        accessToken = tokenResponse;
+
+        user.spotifyAccessToken = accessToken;
+        await user.save();
+
+        const currentPlay = await fetchCurrentPlaying(accessToken);
 
         return NextResponse.json(
             { message: "Current play", data: currentPlay },
@@ -42,15 +56,11 @@ export async function GET(req, { params }) {
     }
 }
 
-const fetchCurrentPlaying = async (session) => {
+const fetchCurrentPlaying = async (token) => {
     try {
         const response = await fetch(
             `https://api.spotify.com/v1/me/player/currently-playing`,
-            {
-                headers: {
-                    Authorization: `Bearer ${session?.accessToken}`,
-                },
-            }
+            { headers: { Authorization: `Bearer ${token}` } }
         );
         const data = await response.json();
         return data;

@@ -78,10 +78,10 @@ const UserProfilePage = ({ params }) => {
 
   return (
     <div className="max-w-6xl md:mx-auto mx-4">
-      <div className="rounded-lg p-8 border border-neutral-800  my-4">
+      <div className="rounded-lg p-2 md:p-8 border border-neutral-800  my-4">
         <div className="grid md:grid-cols-3 md:gap-8">
           {/* Profile Image */}
-          <div className="flex gap-8 items-center  md:justify-center ">
+          <div className="flex gap-8 items-center p-3 md:justify-center ">
             <Image
               src={profileData?.image || "/user.jpg"}
               alt="Profile"
@@ -115,7 +115,7 @@ const UserProfilePage = ({ params }) => {
           </div>
 
           {/* Profile Details */}
-          <div className="md:col-span-2 space-y-6">
+          <div className="md:col-span-2 md:space-y-6">
             <div className="items-center gap-3 hidden md:flex">
               <h2 className="text-2xl font-semibold tracking-tight">
                 {profileData?.name || "User"}
@@ -184,25 +184,25 @@ const UserProfilePage = ({ params }) => {
             value="currently-playing"
             className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
           >
-            <NowPlaying />
+            <NowPlaying id={userId} me={false} />
           </TabsContent>
           <TabsContent
             value="top-tracks"
             className="bg-neutral-800 rounded-2xl shadow-2xl"
           >
-            <TopTracks />
+            <TopTracks id={userId} me={false} />
           </TabsContent>
           <TabsContent
             value="top-artists"
             className="bg-neutral-800 rounded-2xl shadow-2xl"
           >
-            <TopArtists />
+            <TopArtists id={userId} me={false} />
           </TabsContent>
           <TabsContent
             value="playback-history"
             className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
           >
-            <PlaybackHistory />
+            <PlaybackHistory id={userId} me={false} />
           </TabsContent>
 
         </Tabs>

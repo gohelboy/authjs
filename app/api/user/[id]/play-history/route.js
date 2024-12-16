@@ -1,5 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { connectToDatabase } from "@/lib/db";
+import { refreshSpotifyToken } from "@/lib/helper";
 import User from "@/lib/models/User";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -9,6 +10,7 @@ export async function GET(req, { params }) {
         const { id } = params;
         const { searchParams } = new URL(req.url);
         const limit = parseInt(searchParams.get("limit")) || 50;
+        const me = searchParams.get("me") === "true" ? true : false;
 
         if (!id) {
             return NextResponse.json(
@@ -28,7 +30,16 @@ export async function GET(req, { params }) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
-        const history = await fetchPlayHistory(session.user, limit);
+        let accessToken = me ? session.user.accessToken : user.spotifyAccessToken;
+        let refreshToken = user.spotifyRefreshToken;
+
+        const tokenResponse = await refreshSpotifyToken(refreshToken);
+        accessToken = tokenResponse;
+
+        user.spotifyAccessToken = accessToken;
+        await user.save();
+
+        const history = await fetchPlayHistory(accessToken, limit);
         return NextResponse.json(
             { message: "Play history", data: history },
             { status: 200 }
@@ -43,13 +54,13 @@ export async function GET(req, { params }) {
     }
 }
 
-const fetchPlayHistory = async (session, limit) => {
+const fetchPlayHistory = async (token, limit) => {
     try {
         const response = await fetch(
             `https://api.spotify.com/v1/me/player/recently-played?limit=${limit}`,
             {
                 headers: {
-                    Authorization: `Bearer ${session?.accessToken}`,
+                    Authorization: `Bearer ${token}`,
                 },
             }
         );

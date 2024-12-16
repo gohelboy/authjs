@@ -1,13 +1,11 @@
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const NowPlaying = () => {
-  const { data: session } = useSession();
+const NowPlaying = ({ id, me = true }) => {
   const [currentlyPlaying, setCurrentlyPlaying] = useState({})
 
   const fetchCurrentPlayingData = async () => {
-    const response = await fetch(`api/user/${session?.user.id}/current-playing`);
+    const response = await fetch(`/api/user/${id}/current-playing?me=${me}`);
     const data = await response.json()
     setCurrentlyPlaying(data?.data?.item || {})
   }
