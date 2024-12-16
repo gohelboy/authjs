@@ -133,7 +133,8 @@ export const authOptions = {
           });
           await newUser.save();
         } else {
-          existingUser.name = user.name || account.display_name;
+          existingUser.name = account.display_name || user.name;
+          existingUser.image = account.image || user.image;
           existingUser.spotifyAccessToken = account.access_token; // Correct field names
           existingUser.spotifyRefreshToken = account.refresh_token; // Correct field names
           await existingUser.save();
