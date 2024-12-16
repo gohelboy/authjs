@@ -123,9 +123,9 @@ export const authOptions = {
           const newUser = new User({
             spotifyId: user.id,
             email: user.email,
-            password: user.email, // You might want to use a hashed password here
-            spotifyAccessToken: account.access_token, // Correct field names
-            spotifyRefreshToken: account.refresh_token, // Correct field names
+            password: user.email,
+            spotifyAccessToken: account.access_token,
+            spotifyRefreshToken: account.refresh_token,
             name: user.name || account.display_name,
             image: user.image || account.image,
             provider: account?.provider,

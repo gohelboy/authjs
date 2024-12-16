@@ -68,7 +68,7 @@ const UsersList = () => {
             className="flex items-center gap-3 hover:underline"
           >
             <Image
-              src={"/user.jpg"}
+              src={user.image || "/user.jpg"}
               alt={user.name}
               width={56}
               height={56}
@@ -85,9 +85,8 @@ const UsersList = () => {
           >
             {loadingUserId === user._id ? (
               <span
-                className={`loader inline-block w-4 h-4 border-2 rounded-full animate-spin ${
-                  user.isFollowed ? "border-t-white" : "border-t-neutral-900"
-                }`}
+                className={`loader inline-block w-4 h-4 border-2 rounded-full animate-spin ${user.isFollowed ? "border-t-white" : "border-t-neutral-900"
+                  }`}
               ></span>
             ) : user.isFollowed ? (
               "Unfollow"
