@@ -57,7 +57,7 @@ const SpotifyProfilePage = () => {
 
   if (!profileData) {
     return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-72px)] ">
+      <div className="flex items-center justify-center min-h-[calc(100vh-90px)]">
         <div className="text-center">
           <Disc3 size={64} className="mx-auto mb-6 text-green-500" />
           <h1 className="text-4xl font-extralight tracking-tight text-white mb-4">

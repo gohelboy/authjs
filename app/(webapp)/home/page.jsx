@@ -62,7 +62,7 @@ const SpotifyInsightsPage = () => {
 
   if (!session) {
     return (
-      <div className="flex justify-center items-center min-h-[calc(100vh-72px)] ">
+      <div className="flex justify-center items-center min-h-[calc(100vh-90px)]">
         <div className="text-center space-y-4 p-8 bg-neutral-800 rounded-xl shadow-2xl">
           <UserCircle2 size={64} className="mx-auto text-blue-500" />
           <h1 className="text-3xl font-bold">Welcome to Spotinsights</h1>

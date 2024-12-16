@@ -6,7 +6,7 @@ const layout = ({ children }) => {
     <div>
       <Header />
       <Suspense>
-        <section className="min-h-[calc(100vh-72px)] ">{children}</section>
+        <section className="min-h-[calc(100vh-90px)]">{children}</section>
       </Suspense>
     </div>
   );
