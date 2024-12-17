@@ -1,9 +1,10 @@
 import { connectToDatabase } from "@/lib/db";
+import { refreshSpotifyToken } from "@/lib/helper";
+import Follow from "@/lib/models/Follow";
 import User from "@/lib/models/User";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/route";
-import Follow from "@/lib/models/Follow";
 
 export const dynamic = "force-dynamic";
 
@@ -28,32 +29,32 @@ export async function GET(req, context) {
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
-    const spotifyAccessToken = session.user.accessToken;
-    if (!spotifyAccessToken) {
-      return NextResponse.json(
-        { message: "Spotify access token not found in session" },
-        { status: 403 }
-      );
-    }
+
+
+    let accessToken = user.spotifyAccessToken;
+    let refreshToken = user.spotifyRefreshToken;
+    const newAccessToken = await refreshSpotifyToken(refreshToken);
+    accessToken = newAccessToken;
+
+    user.spotifyAccessToken = accessToken;
+    await user.save();
+
 
     const followingIds = await Follow.find({ follower: user?._id });
     const followergIds = await Follow.find({ following: user?._id });
-
+    const followId = await Follow.findOne({ following: id });
     const spotifyUserId = user.spotifyId || "#";
 
-    const spotifyUserData = await fetchSpotifyUserData(
-      spotifyAccessToken,
-      spotifyUserId
-    );
 
-    const followId = await Follow.findOne({ following: id });
+    //spotify users data
+    const spotifyUserData = await fetchSpotifyUserData(accessToken, spotifyUserId);
+
 
     const payload = {
       isFollowed: followId ? true : false,
       following: followingIds.length || 0,
       follower: followergIds.length || 0,
       ...user?.toObject(),
-
       // ...spotifyUserData,
     };
 
@@ -75,12 +76,6 @@ async function fetchSpotifyUserData(accessToken, userId) {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-
-    if (!response.ok) {
-      throw new Error(
-        `Spotify API error: ${response.status} - ${response.statusText}`
-      );
-    }
 
     return await response.json();
   } catch (error) {

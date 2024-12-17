@@ -16,7 +16,7 @@ const PlaybackHistory = ({ id, me = true }) => {
   }, [])
 
   return (
-    <div className={`flex flex-col gap-2 md:max-h-[calc(100dvh-220px)] ${me ? "max-h-[calc(100dvh-220px)]" : "max-h-[calc(100dvh-424px)]"} overflow-y-scroll scrollbar-hidden rounded-3xl`}>
+    <div className={`flex flex-col gap-2 md:max-h-[calc(100dvh-220px)] ${me ? "max-h-[calc(100dvh-180px)]" : "max-h-[calc(100dvh-390px)]"} overflow-y-scroll scrollbar-hidden rounded-xl`}>
       {playbackHistory.length > 0 && playbackHistory?.map((item, index) => (
         <div
           key={`${item.track.id}-${index}`}

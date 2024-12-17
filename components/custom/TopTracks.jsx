@@ -63,7 +63,8 @@ const TopTracks = ({ id, me = true }) => {
         ))}
       </div>}
 
-      <div className={`p-2 md:p-6 md:pt-2 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:max-h-[calc(100dvh-220px)] ${me ? "max-h-[calc(100dvh-220px)]" : "max-h-[calc(100dvh-424px)]"} overflow-y-scroll scrollbar-hidden rounded-3xl`}>
+      <div className={`p-2 md:p-6 md:pt-2 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:max-h-[calc(100dvh-220px)] 
+      ${me ? "max-h-[calc(100dvh-220px)]" : "max-h-[calc(100dvh-390px)]"} overflow-y-scroll scrollbar-hidden rounded-3xl`}>
         {tracks?.map((track, index) => (
           <div
             key={track?.id}

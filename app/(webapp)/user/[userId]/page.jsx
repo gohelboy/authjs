@@ -87,16 +87,17 @@ const UserProfilePage = ({ params }) => {
               alt="Profile"
               width={154}
               height={154}
-              className="rounded-full size-28 md:size-36 border-4 border-green-500 shadow-lg mb-4"
+              className="rounded-full size-24 md:size-36 border-4 border-green-500 shadow-lg mb-4"
             />
-            <div className="flex items-center md:gap-3 md:flex-row flex-col md:hidden">
-              <h2 className="text-2xl font-semibold tracking-tight">
+            <div className="flex  md:gap-3 md:flex-row flex-col md:hidden">
+              <h2 className="text-lg md:text-2xl font-semibold tracking-tight">
                 {profileData?.name || "User"}
               </h2>
               {session.user.email !== profileData?.email && (
                 <Button
+                  size="sm"
                   onClick={toggleFollow}
-                  className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900  mt-2`}
+                  className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900 mt-2`}
                   disabled={loadingFollow}
                 >
                   {loadingFollow ? (
@@ -123,7 +124,7 @@ const UserProfilePage = ({ params }) => {
               {session.user.email !== profileData?.email && (
                 <Button
                   onClick={toggleFollow}
-                  className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900  mt-2`}
+                  className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900`}
                   disabled={loadingFollow}
                 >
                   {loadingFollow ? (
@@ -142,7 +143,7 @@ const UserProfilePage = ({ params }) => {
             <div className="grid grid-cols-2 gap-6">
               <Link
                 href={`/user/${userId}/followers`}
-                className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
+                className="bg-neutral-800 rounded-xl p-2 justify-center flex items-center space-x-4 hover:underline"
               >
                 <UsersRound className="text-green-500" size={32} />
 
@@ -153,7 +154,7 @@ const UserProfilePage = ({ params }) => {
               </Link>
               <Link
                 href={`/user/${userId}/followings`}
-                className="bg-neutral-800 rounded-xl p-4 flex items-center space-x-4 hover:underline"
+                className="bg-neutral-800 rounded-xl p-2 justify-center flex items-center space-x-4 hover:underline"
               >
                 <Users className="text-green-500" size={32} />
                 <div>
