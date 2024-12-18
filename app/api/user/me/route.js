@@ -43,7 +43,7 @@ export async function GET(req) {
       following: following || 0,
       follower: follower || 0,
       ...user?.toObject(),
-      ...spotifyUserData,
+      // ...spotifyUserData,
     };
 
     return NextResponse.json(payload, { status: 200 });

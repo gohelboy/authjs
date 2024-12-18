@@ -19,7 +19,6 @@ const SpotifyProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [isVisible, setIsVisible] = useState(false);
 
   const fetchProfile = async () => {
     if (!session) return;
@@ -81,23 +80,23 @@ const SpotifyProfilePage = () => {
           {/* Profile Image */}
           <div className="flex flex-col items-center justify-center">
             <Image
-              src={profileData?.images?.[0]?.url || "/user.jpg"}
+              src={profileData?.image || "/user.jpg"}
               alt="Profile"
               width={154}
               height={154}
               className="rounded-full border-4 border-green-500 shadow-lg mb-4"
             />
             <h2 className="text-2xl font-semibold tracking-tight">
-              {profileData?.display_name}
+              {profileData?.name}
             </h2>
-            <a
+            {/* <a
               href={profileData?.external_urls?.spotify}
               target="_blank"
               rel="noopener noreferrer"
               className="text-green-500 hover:underline text-sm mt-2"
             >
               View on spotify
-            </a>
+            </a> */}
           </div>
 
           {/* Profile Details */}
