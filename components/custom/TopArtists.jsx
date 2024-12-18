@@ -9,7 +9,7 @@ const TopArtists = ({ id, me = true }) => {
 
   const fetchTopArtists = async () => {
     try {
-      const response = await fetch(`/api/user/${id}/top-artists?time_range=${timeRange}&limit=18$me=${me}`);
+      const response = await fetch(`/api/user/${id}/top-artists?time_range=${timeRange}&limit=${50}$me=${me}`);
       const data = await response.json();
       setTopArtistsList(data?.data?.items || []);
     } catch (err) {
@@ -67,7 +67,7 @@ const TopArtists = ({ id, me = true }) => {
         {topArtistsList?.map((artist, index) => (
           <div
             key={artist?.id}
-            className="bg-neutral-700 rounded-xl p-4 text-center transform transition hover:bg-black hover:scale-105 relative group"
+            className="scroll-item-animation bg-neutral-700 rounded-xl p-4 text-center transform transition hover:bg-black hover:scale-105 relative group"
           >
             <div className={getRankStyle(index + 1)}>{index + 1}</div>
             <Image

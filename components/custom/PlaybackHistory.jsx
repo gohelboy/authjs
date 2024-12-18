@@ -6,7 +6,7 @@ const PlaybackHistory = ({ id, me = true }) => {
   const [playbackHistory, setPlaybackHistory] = useState([])
 
   const fetchPlaybakcHistory = async () => {
-    const response = await fetch(`/api/user/${id}/play-history?limit=24&me=${me}`);
+    const response = await fetch(`/api/user/${id}/play-history?limit=${50}&me=${me}`);
     const data = await response.json()
     setPlaybackHistory(data?.data?.items || [])
   }
@@ -20,7 +20,7 @@ const PlaybackHistory = ({ id, me = true }) => {
       {playbackHistory.length > 0 && playbackHistory?.map((item, index) => (
         <div
           key={`${item.track.id}-${index}`}
-          className="bg-neutral-700 rounded-xl p-4 flex items-center space-x-4 hover:bg-neutral-600 transition"
+          className="scroll-item-animation bg-neutral-700 rounded-xl p-4 flex items-center space-x-4 hover:bg-neutral-600 transition"
         >
           <Image
             src={item.track.album.images[0]?.url || "/default-album.png"}

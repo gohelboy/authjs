@@ -10,7 +10,7 @@ const TopTracks = ({ id, me = true }) => {
 
   const fetchTopTracks = async () => {
     try {
-      const response = await fetch(`/api/user/${id}/top-tracks?time_range=${timeRange}&limit=${18}&me=${me}`);
+      const response = await fetch(`/api/user/${id}/top-tracks?time_range=${timeRange}&limit=${50}&me=${me}`);
       const data = await response.json()
       setTracks(data?.data?.items || []);
     } catch (err) {
@@ -68,7 +68,7 @@ const TopTracks = ({ id, me = true }) => {
         {tracks?.map((track, index) => (
           <div
             key={track?.id}
-            className="bg-neutral-700 rounded-xl p-4 text-center transform transition hover:bg-black hover:scale-105"
+            className="bg-neutral-700 rounded-xl p-4 text-center transform transition hover:bg-black hover:scale-105 scroll-item-animation"
           >
             <div className={getRankStyle(index + 1)}>{index + 1}</div>
             <Image

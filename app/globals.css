@@ -97,3 +97,33 @@ body {
   -ms-overflow-style: none; /* For Internet Explorer 10+ */
   scrollbar-width: none; /* For Firefox */
 }
+
+.scroll-item-animation {
+  animation: slideIn linear, slideOut linear;
+  animation-timeline: view();
+  animation-range: entry, exit;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}

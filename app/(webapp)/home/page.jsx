@@ -56,7 +56,7 @@ const SpotifyInsightsPage = () => {
     router.push(`?tab=${value}`, undefined, { shallow: true });
   };
 
-  if (isLoading) {
+  if (!isLoading) {
     return <ConnectingLoading />;
   }
 
