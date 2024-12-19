@@ -1,18 +1,24 @@
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 const NowPlaying = ({ id, me = true }) => {
-  const [currentlyPlaying, setCurrentlyPlaying] = useState({})
+  const { data: currentlyPlaying, isLoading, error } = useQuery({
+    queryKey: ['me-current-playing', id, me],
+    queryFn: async () => {
+      const response = await fetch(`/api/user/${id}/current-playing?me=${me}`);
+      const data = await response.json();
+      return data?.data?.item || {};
+    },
+    enabled: !!id,
+  });
 
-  const fetchCurrentPlayingData = async () => {
-    const response = await fetch(`/api/user/${id}/current-playing?me=${me}`);
-    const data = await response.json()
-    setCurrentlyPlaying(data?.data?.item || {})
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  useEffect(() => {
-    fetchCurrentPlayingData()
-  }, [])
+  if (error) {
+    return <div>Error fetching current playing data</div>;
+  }
 
   return (
     <div className="flex flex-col items-center space-y-4 md:flex-row md:space-x-4 md:space-y-0">
