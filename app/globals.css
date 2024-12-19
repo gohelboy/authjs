@@ -108,6 +108,7 @@ body {
   0% {
     opacity: 0;
     transform: translateY(50px);
+    scale: 0.9;
   }
 
   100% {
@@ -125,5 +126,6 @@ body {
   100% {
     opacity: 0;
     transform: translateY(-50px);
+    scale: 0.9;
   }
 }
