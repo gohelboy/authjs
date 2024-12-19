@@ -89,14 +89,6 @@ const SpotifyProfilePage = () => {
             <h2 className="text-2xl font-semibold tracking-tight">
               {profileData?.name}
             </h2>
-            {/* <a
-              href={profileData?.external_urls?.spotify}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-500 hover:underline text-sm mt-2"
-            >
-              View on spotify
-            </a> */}
           </div>
 
           {/* Profile Details */}

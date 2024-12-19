@@ -7,7 +7,7 @@ import TopTracks from "@/components/custom/TopTracks";
 import { Button } from "@/components/ui/button";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tabs } from "@radix-ui/react-tabs";
-import { Clock, Headphones, Music, PlayCircle, Users, UsersRound } from "lucide-react";
+import { Clock, Headphones, Music, PlayCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -78,94 +78,66 @@ const UserProfilePage = ({ params }) => {
 
   return (
     <div className="max-w-6xl md:mx-auto mx-4">
-      <div className="rounded-lg p-2 md:p-8 border border-neutral-800  my-4">
-        <div className="grid md:grid-cols-3 md:gap-8">
+      <div className="rounded-lg md:p-8 border border-neutral-800 my-4 p-3">
+        <div className="grid grid-cols-3 gap-2 items-center">
           {/* Profile Image */}
-          <div className="flex gap-8 items-center p-3 md:justify-center ">
+          <div className="flex flex-col gap-3 items-center">
             <Image
               src={profileData?.image || "/user.jpg"}
               alt="Profile"
               width={154}
               height={154}
-              className="rounded-full size-24 md:size-36 border-4 border-green-500 shadow-lg mb-4"
+              className="rounded-full size-[70px] md:size-36 border-4 border-green-500 shadow-lg"
             />
-            <div className="flex  md:gap-3 md:flex-row flex-col md:hidden">
-              <h2 className="text-lg md:text-2xl font-semibold tracking-tight">
-                {profileData?.name || "User"}
-              </h2>
-              {session.user.email !== profileData?.email && (
-                <Button
-                  size="sm"
-                  onClick={toggleFollow}
-                  className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900 mt-2`}
-                  disabled={loadingFollow}
-                >
-                  {loadingFollow ? (
-                    <span
-                      className={`loader inline-block w-4 h-4 border-2 rounded-full animate-spin ${isFollowed ? "border-t-white" : "border-t-neutral-900"
-                        }`}
-                    ></span>
-                  ) : isFollowed ? (
-                    "Unfollow"
-                  ) : (
-                    "Follow"
-                  )}
-                </Button>
-              )}
+            <div>
+              <h2 className="text-center text-sm">{profileData?.name || "User"}</h2>
             </div>
           </div>
-
           {/* Profile Details */}
-          <div className="md:col-span-2 md:space-y-6">
-            <div className="items-center gap-3 hidden md:flex">
-              <h2 className="text-2xl font-semibold tracking-tight">
-                {profileData?.name || "User"}
-              </h2>
-              {session.user.email !== profileData?.email && (
-                <Button
-                  onClick={toggleFollow}
-                  className={`flex items-center justify-center rounded-lg font-semibold hover:text-white bg-white text-neutral-900`}
-                  disabled={loadingFollow}
-                >
-                  {loadingFollow ? (
-                    <span
-                      className={`loader inline-block w-4 h-4 border-2 rounded-full animate-spin ${isFollowed ? "border-t-white" : "border-t-neutral-900"
-                        }`}
-                    ></span>
-                  ) : isFollowed ? (
-                    "Unfollow"
-                  ) : (
-                    "Follow"
-                  )}
-                </Button>
-              )}
-            </div>
-            <div className="grid grid-cols-2 gap-6">
-              <Link
-                href={`/user/${userId}/followers`}
-                className="bg-neutral-800 rounded-xl p-2 justify-center flex items-center space-x-4 hover:underline"
+          <div className="grid col-span-2 grid-cols-2 gap-3 h-fit w-full ">
+            <Link
+              href={`/user/${userId}/followers`}
+              className="bg-neutral-800 rounded-xl p-1 justify-center flex items-center hover:underline"
+            >
+              <div>
+                <p className="text-neutral-400 text-sm">Followers</p>
+                <p className="font-medium">{profileData?.follower || "0"}</p>
+              </div>
+            </Link>
+            <Link
+              href={`/user/${userId}/followings`}
+              className="bg-neutral-800 rounded-xl p-1 justify-center flex items-center hover:underline"
+            >
+              <div>
+                <p className="text-neutral-400 text-sm">Following</p>
+                <p className="font-medium">{profileData?.following || "0"}</p>
+              </div>
+            </Link>
+            {session.user.email !== profileData?.email && (
+              <Button
+                size="sm"
+                onClick={toggleFollow}
+                className={`flex items-center justify-center col-span-2 rounded-lg font-semibold hover:text-white bg-white text-neutral-900`}
+                disabled={loadingFollow}
               >
-                <UsersRound className="text-green-500" size={32} />
-
-                <div>
-                  <p className="text-neutral-400 text-sm">Followers</p>
-                  <p className="font-medium">{profileData?.follower || "0"}</p>
-                </div>
-              </Link>
-              <Link
-                href={`/user/${userId}/followings`}
-                className="bg-neutral-800 rounded-xl p-2 justify-center flex items-center space-x-4 hover:underline"
-              >
-                <Users className="text-green-500" size={32} />
-                <div>
-                  <p className="text-neutral-400 text-sm">Following</p>
-                  <p className="font-medium">{profileData?.following || "0"}</p>
-                </div>
-              </Link>
-            </div>
+                {loadingFollow ? (
+                  <span
+                    className={`loader inline-block w-4 h-4 border-2 rounded-full animate-spin ${isFollowed ? "border-t-white" : "border-t-neutral-900"
+                      }`}
+                  ></span>
+                ) : isFollowed ? (
+                  "Unfollow"
+                ) : (
+                  "Follow"
+                )}
+              </Button>
+            )}
           </div>
         </div>
       </div>
+
+
+
       <div>
         <Tabs defaultValue="currently-playing" className="w-full">
           <TabsList className="grid w-full grid-cols-4 bg-neutral-800 min-h-12 p-2 mb-3">
