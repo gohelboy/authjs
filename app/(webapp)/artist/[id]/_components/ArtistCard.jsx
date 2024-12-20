@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const formatFollowers = (count) => {
     if (count >= 1_000_000) {
@@ -95,7 +96,7 @@ const ArtistCard = () => {
                         <div className="relative flex gap-4 md:gap-24">
                             {/* Image with Play Button */}
                             <div className="relative group min-w-fit">
-                                <div className="relative">
+                                <Link href={artist?.external_urls?.spotify || "#"} className="relative">
                                     {/* Artist Image */}
                                     <Image
                                         src={artist?.images?.[0]?.url || "/user.jpg"}
@@ -117,15 +118,12 @@ const ArtistCard = () => {
                                     </div>
 
                                     {/* Play Button Overlay */}
-                                    <Button
-                                        className="transition-all flex items-center justify-center opacity-0 
-                      group-hover:opacity-70 w-full h-full absolute top-1/2 left-1/2 
-                      transform -translate-y-1/2 -translate-x-1/2 text-white z-20 rounded-2xl"
+                                    <Button className="transition-all flex items-center justify-center opacity-0  group-hover:opacity-70 w-full h-full absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white z-20 rounded-2xl"
                                     >
                                         <Play size={36} />
                                         <span>Play</span>
                                     </Button>
-                                </div>
+                                </Link>
                             </div>
 
                             {/* Artist Details */}
