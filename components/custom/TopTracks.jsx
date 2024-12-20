@@ -12,7 +12,7 @@ const TopTracks = ({ id, me = true }) => {
     queryFn: async () => {
       const response = await fetch(`/api/user/${id}/top-tracks?time_range=${timeRange}&limit=50&me=${me}`);
       const data = await response.json();
-      return data?.data?.items || [];
+      return data?.data || [];
     },
     enabled: !!id, // Ensures the query only runs when `id` is available
   });
@@ -78,7 +78,7 @@ const TopTracks = ({ id, me = true }) => {
           >
             <div className={getRankStyle(index + 1)}>{index + 1}</div>
             <Image
-              src={track?.album?.images[0]?.url || "/user.jpg"}
+              src={track?.image || "/user.jpg"}
               alt={track?.name}
               width={150}
               height={150}
@@ -86,7 +86,7 @@ const TopTracks = ({ id, me = true }) => {
             />
             <h3 className="font-semibold text-sm truncate">{track?.name}</h3>
             <p className="text-xs text-neutral-400 truncate">
-              {track?.artists?.map((artist) => artist.name).join(", ")}
+              {track?.artist}
             </p>
           </div>
         ))}

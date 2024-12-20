@@ -41,9 +41,19 @@ export async function GET(req, { params }) {
         user.spotifyAccessToken = accessToken;
         await user.save();
 
-        const topTracks = await fetchTopArtists(accessToken, time_range, limit);
+        const topArtists = await fetchTopArtists(accessToken, time_range, limit);
+
+        const simplifiedArtists = topArtists?.items?.map((artist) => ({
+            id: artist.id,
+            name: artist.name,
+            image:
+                artist.images.length >= 3 ? artist.images[2].url : artist.images.length > 0 ? artist.images[0].url : null,
+        }));
+
+
+
         return NextResponse.json(
-            { message: "Top Tracks", data: topTracks },
+            { message: "Top Tracks", data: simplifiedArtists },
             { status: 200 }
         );
 

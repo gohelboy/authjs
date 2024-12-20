@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import Link from "next/link";
 
 const TopArtists = ({ id, me = true }) => {
   const [timeRange, setTimeRange] = useState(me ? "short_term" : "long_term");
@@ -12,9 +13,9 @@ const TopArtists = ({ id, me = true }) => {
     queryFn: async () => {
       const response = await fetch(`/api/user/${id}/top-artists?time_range=${timeRange}&limit=50&me=${me}`);
       const data = await response.json();
-      return data?.data?.items || [];
+      return data?.data || [];
     },
-    enabled: !!id, // Ensures the query only runs when `id` is available
+    enabled: !!id,
   });
 
   const getRankStyle = (rank) => {
@@ -74,13 +75,14 @@ const TopArtists = ({ id, me = true }) => {
       ${me ? "max-h-[calc(100dvh-220px)]" : "max-h-[calc(100dvh-310px)]"} overflow-y-scroll scrollbar-hidden rounded-3xl`}
       >
         {topArtistsList?.map((artist, index) => (
-          <div
+          <Link
+            href={`/artist/${artist?.id}/albums`}
             key={artist?.id}
             className="scroll-item-animation bg-neutral-700 rounded-xl p-4 text-center transform transition hover:bg-black hover:scale-105 relative group"
           >
             <div className={getRankStyle(index + 1)}>{index + 1}</div>
             <Image
-              src={artist?.images[0]?.url || "/user.png"}
+              src={artist?.image || "/user.png"}
               alt={artist?.name}
               width={150}
               height={150}
@@ -88,10 +90,7 @@ const TopArtists = ({ id, me = true }) => {
             />
 
             <h3 className="font-semibold text-sm truncate">{artist?.name}</h3>
-            <p className="text-xs text-neutral-400">
-              Popularity: {artist?.popularity}
-            </p>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

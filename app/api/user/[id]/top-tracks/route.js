@@ -42,8 +42,18 @@ export async function GET(req, { params }) {
         await user.save();
 
         const topTracks = await fetchTopTracks(accessToken, time_range, limit);
+
+        const simplifiedTracks = topTracks?.items?.map((tracks) => {
+            return {
+                id: tracks.id,
+                name: tracks.name,
+                artist: tracks?.artists[0]?.name,
+                image: tracks?.album?.images[1]?.url || null
+            }
+        })
+
         return NextResponse.json(
-            { message: "Top Tracks", data: topTracks },
+            { message: "Top Tracks", data: simplifiedTracks },
             { status: 200 }
         );
 
