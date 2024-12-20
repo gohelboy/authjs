@@ -74,7 +74,10 @@ const ArtistCard = () => {
         enabled: !!id, // Prevent fetching if ID is unavailable
     });
 
-    const [activeTab, setActiveTab] = useState(tabs[0].value);
+    const [activeTab, setActiveTab] = useState(() => {
+        const pathTab = pathname.split("/").pop()
+        return tabs.some(tab => tab.value === pathTab) ? pathTab : tabs[0].value;
+    });
 
     const handleTabChange = (value) => {
         setActiveTab(value);
