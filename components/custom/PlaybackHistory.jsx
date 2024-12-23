@@ -22,7 +22,7 @@ const PlaybackHistory = ({ id, me = true }) => {
   }
 
   return (
-    <div className={`flex flex-col gap-2 p-2 md:p-6 md:max-h-[calc(100dvh-165px)] ${me ? "max-h-[calc(100dvh-180px)]" : "max-h-[calc(100dvh-310px)]"} overflow-y-scroll scrollbar-hidden rounded-xl`}>
+    <div className={`flex flex-col p-2 sm:p-0 gap-3 ${me ? "max-h-[calc(100dvh-170px)] md:max-h-[calc(100dvh-220px)]" : "max-h-[calc(100dvh-320px)]  md:max-h-[calc(100dvh-470px)]"} overflow-y-scroll scrollbar-hidden rounded-xl`}>
       {playbackHistory.length > 0 ? (
         playbackHistory.map((item, index) => (
           <div
