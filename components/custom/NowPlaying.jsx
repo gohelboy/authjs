@@ -53,14 +53,16 @@ const NowPlaying = ({ id, me = true }) => {
   return (
     <div className="relative w-full mx-auto overflow-hidden rounded-xl p-8 ">
       {/* Background Image with Blur */}
-      {albumImageUrl && <Image
-        src={albumImageUrl || "/user.jpg"}
-        alt="background"
-        loading="eager"
-        fill
-        className="object-cover scale-110 opacity-30"
-      />}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" />
+      <div className="w-full h-full">
+        {albumImageUrl && <Image
+          src={albumImageUrl || "/user.jpg"}
+          alt="background"
+          loading="eager"
+          fill
+          className="object-cover scale-110 opacity-30"
+        />}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" />
+      </div>
 
       {Object.keys(currentlyPlaying).length > 0 ? <div className="flex flex-col md:flex-row items-center gap-6 relative">
         <div className="relative group">
