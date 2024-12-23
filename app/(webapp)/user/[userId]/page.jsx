@@ -21,7 +21,6 @@ const UserProfilePage = ({ params }) => {
   const [isFollowed, setIsFollowed] = useState(false);
   const [loadingFollow, setLoadingFollow] = useState(false);
 
-
   const tabs = [
     {
       value: "currently-playing",
@@ -155,7 +154,7 @@ const UserProfilePage = ({ params }) => {
 
           <TabsContent
             value="currently-playing"
-            className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
+            className="bg-neutral-800 rounded-2xl shadow-2xl"
           >
             <NowPlaying id={userId} me={false} />
           </TabsContent>

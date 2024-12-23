@@ -97,7 +97,7 @@ const SpotifyInsightsPage = () => {
 
         <TabsContent
           value="currently-playing"
-          className="bg-neutral-800 rounded-2xl p-6 shadow-2xl"
+          className="bg-neutral-800 rounded-2xl p-1 shadow-2xl"
         >
           <NowPlaying id={session.user?.id} />
         </TabsContent>

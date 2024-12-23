@@ -59,7 +59,7 @@ export async function GET(req, { params }) {
 const fetchCurrentPlaying = async (token) => {
     try {
         const response = await fetch(
-            `https://api.spotify.com/v1/me/player/currently-playing`,
+            `https://api.spotify.com/v1/me/player`,
             { headers: { Authorization: `Bearer ${token}` } }
         );
         const data = await response.json();
