@@ -45,16 +45,18 @@ const NowPlaying = ({ id, me = true }) => {
   const progressMs = currentlyPlaying?.progress_ms;
   const isPlaying = currentlyPlaying?.is_playing;
   const spotifyLink = currentlyPlaying?.item?.external_urls?.spotify;
-  const albumImageUrl = track?.album?.images?.[0]?.url;
+  const albumImageUrl = track?.album?.images?.[0]?.url || track?.album?.images?.[1]?.url || track?.album?.images?.[2]?.url || "/user.jpg";
   const progressPercentage = (progressMs / track?.duration_ms) * 100;
+
+  console.log("albumImageUrl", albumImageUrl)
 
   return (
     <div className="relative w-full mx-auto overflow-hidden rounded-xl p-8 ">
       {/* Background Image with Blur */}
       {albumImageUrl && <Image
-        src={albumImageUrl}
+        src={albumImageUrl || "/user.jpg"}
         alt="background"
-        fill
+        fill="true"
         className="object-cover scale-110 opacity-30"
       />}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" />
