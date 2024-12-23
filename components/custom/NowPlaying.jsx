@@ -56,7 +56,8 @@ const NowPlaying = ({ id, me = true }) => {
       {albumImageUrl && <Image
         src={albumImageUrl || "/user.jpg"}
         alt="background"
-        fill="true"
+        loading="eager"
+        fill
         className="object-cover scale-110 opacity-30"
       />}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" />

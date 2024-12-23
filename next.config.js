@@ -1,4 +1,3 @@
-// next.config.js
 const withPWA = require("next-pwa")({
   dest: "public",
   disable: false, // Enable PWA for all environments
@@ -15,4 +14,5 @@ const nextConfig = {
   },
 };
 
+// Combine withPWA with nextConfig
 module.exports = withPWA(nextConfig);
