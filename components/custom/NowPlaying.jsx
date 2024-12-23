@@ -53,7 +53,7 @@ const NowPlaying = ({ id, me = true }) => {
   return (
     <div className="relative w-full mx-auto overflow-hidden rounded-xl p-8 ">
       {/* Background Image with Blur */}
-      <div className="w-full h-full">
+      <div className="w-96 h-60">
         {albumImageUrl && <Image
           src={albumImageUrl || "/user.jpg"}
           alt="background"
