@@ -173,7 +173,7 @@ const UserProfilePage = ({ params }) => {
           </TabsContent>
           <TabsContent
             value="playback-history"
-            className="bg-neutral-800 rounded-2xl p-2 md:p-6 shadow-2xl"
+            className="bg-neutral-800 rounded-2xl shadow-2xl"
           >
             <PlaybackHistory id={userId} me={false} />
           </TabsContent>
