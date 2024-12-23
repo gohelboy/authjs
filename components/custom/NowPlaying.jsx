@@ -51,15 +51,11 @@ const NowPlaying = ({ id, me = true }) => {
   console.log("albumImageUrl", albumImageUrl)
 
   return (
-    <div className="relative w-full mx-auto overflow-hidden rounded-xl p-8 ">
+    <div className="relative w-full mx-auto overflow-hidden rounded-xl p-10">
       {/* Background Image with Blur */}
-      <div className="w-96 h-60">
-        {albumImageUrl && <Image
-          src={albumImageUrl || "/user.jpg"}
-          alt="background"
-          loading="eager"
-          fill
-          className="object-cover scale-110 opacity-30"
+      <div>
+        {albumImageUrl && <img src={albumImageUrl || "/user.jpg"} alt={track?.name}
+          className="object-cover w-full h-full inset-0 absolute scale-110 opacity-30"
         />}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" />
       </div>
