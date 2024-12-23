@@ -63,12 +63,10 @@ const NowPlaying = ({ id, me = true }) => {
       {Object.keys(currentlyPlaying).length > 0 ? <div className="flex flex-col md:flex-row items-center gap-6 relative">
         <div className="relative group">
           <div className="absolute -inset-1 rounded-full opacity-75 blur-lg bg-black/50 group-hover:opacity-100 transition duration-1000" />
-          <Image
+          <img
             src={albumImageUrl}
             alt={track?.name}
-            width={192}
-            height={192}
-            className={`relative rounded-full ${isPlaying && "slow-spin"} shadow-lg transition-transform duration-300 group-hover:scale-105`}
+            className={`relative size-48 rounded-full ${isPlaying && "slow-spin"} shadow-lg transition-transform duration-300 group-hover:scale-105`}
           />
           <Link href={spotifyLink || "#"} passHref>
             <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer flex items-center justify-center" target="_blank">
