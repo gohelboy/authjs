@@ -25,9 +25,7 @@ const getRankStyle = (rank) => {
 
 const TimeDurationTabs = memo(({ range, changeTimeRange }) => {
   const isActiveButton = (newRange) =>
-    range === newRange
-      ? "bg-white text-[#171717] hover:bg-white/70 flex-1 md:flex-initial transition-all"
-      : "";
+    range === newRange && "bg-white text-[#171717] rounded-lg hover:bg-white/70 flex-1 md:flex-initial transition-all";
 
   return (
     <div className="flex items-center justify-center md:justify-start gap-2 p-2 md:pt-4 md:px-6">
