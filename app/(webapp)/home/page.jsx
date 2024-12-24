@@ -75,26 +75,13 @@ const SpotifyInsightsPage = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
+    <div className="max-w-6xl h-[calc(100dvh-100px)] mx-4 sm:mx-auto relative">
       <Tabs
         value={activeTab}
         onValueChange={handleTabChange}
         defaultValue="currently-playing"
-        className="w-full"
+        className="w-full "
       >
-        <TabsList className="grid w-full grid-cols-6 bg-neutral-800 min-h-12 p-2 mb-3">
-          {tabs.map(({ value, icon: Icon, label }) => (
-            <TabsTrigger
-              key={value}
-              value={value}
-              className="flex items-center space-x-2 justify-center h-full"
-            >
-              <Icon size={16} />
-              <span className="hidden md:block">{label}</span>
-            </TabsTrigger>
-          ))}
-        </TabsList>
-
         <TabsContent
           value="currently-playing"
           className="bg-neutral-800 rounded-2xl p-1 shadow-2xl"
@@ -131,6 +118,20 @@ const SpotifyInsightsPage = () => {
         >
           <DiscoverMap />
         </TabsContent>
+
+
+        <TabsList className="grid w-full grid-cols-6 bg-neutral-800 min-h-12 p-2 absolute left-0 bottom-0">
+          {tabs.map(({ value, icon: Icon, label }) => (
+            <TabsTrigger
+              key={value}
+              value={value}
+              className="flex items-center space-x-2 justify-center h-full"
+            >
+              <Icon size={16} />
+              <span className="hidden md:block">{label}</span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
       </Tabs>
     </div>
   );
