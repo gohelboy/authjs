@@ -80,12 +80,10 @@ const ListItemTrackCard = memo(({ track, index }) => {
       className="bg-neutral-700 rounded-xl p-4 text-center transform transition hover:bg-black hover:scale-105 scroll-item-animation"
     >
       {!added_at && <div className={getRankStyle(index + 1)}>{index + 1}</div>}
-      <Image
+      <img
         src={image || "/user.jpg"}
         alt={name}
-        width={150}
-        height={150}
-        className="rounded-lg mx-auto mb-2 object-cover"
+        className="size-28 sm:size-40 rounded-lg mx-auto mb-2 object-cover"
       />
       <h3 className="font-semibold text-sm truncate">{name}</h3>
       <p className="text-xs text-neutral-400 truncate">{artist}</p>

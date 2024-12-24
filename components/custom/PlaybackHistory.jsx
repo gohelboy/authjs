@@ -13,12 +13,10 @@ const ListItemRecentPlaySong = memo(({ item }) => {
       key={id}
       className="scroll-item-animation bg-neutral-700 rounded-xl p-2 flex items-center space-x-4 hover:bg-neutral-600 transition"
     >
-      <Image
+      <img
         src={album.images[0]?.url || "/default-album.png"}
         alt={name}
-        width={78}
-        height={78}
-        className="rounded-lg object-cover"
+        className="size-20 rounded-lg object-cover"
       />
       <div className="flex-grow flex flex-col gap-1">
         <h3 className="font-semibold text-sm text-wrap">{name}</h3>

@@ -44,10 +44,8 @@ const ArtistTopTracks = () => {
                             key={index}
                             className="scroll-item-animation bg-neutral-700 rounded-xl p-2 flex items-center space-x-4 hover:bg-neutral-600 transition"
                         >
-                            <Image
+                            <img
                                 src={track?.album?.images[0]?.url || "/user.jpg"}
-                                width={180}
-                                height={180}
                                 alt={track?.href}
                                 className="size-20 rounded-xl min-w-fit"
                             />

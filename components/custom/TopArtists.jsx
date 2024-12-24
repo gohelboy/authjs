@@ -56,11 +56,9 @@ const ListItemArtistCard = memo(({ artist, index }) => {
       className="scroll-item-animation bg-neutral-700 rounded-xl p-4 text-center transform transition hover:bg-black hover:scale-105 relative group"
     >
       <div className={getRankStyle(index + 1)}>{index + 1}</div>
-      <Image
+      <img
         src={image || "/user.png"}
         alt={name}
-        width={150}
-        height={150}
         className="rounded-full size-24 md:size-[156px] mx-auto mb-2 group-hover:scale-110 transition-transform object-cover"
       />
       <h3 className="font-semibold text-sm truncate">{name}</h3>
