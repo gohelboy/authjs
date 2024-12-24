@@ -3,20 +3,20 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { Input } from "../ui/input";
-import { Search } from "lucide-react";
+import { AudioLines, Search } from "lucide-react";
 
 const Header = () => {
   const { data: session } = useSession();
 
   return (
     <div className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-lg text-white shadow-md">
-      <div className="max-w-6xl mx-auto flex justify-between items-center p-4">
+      <div className="max-w-6xl mx-auto flex justify-between items-center pb-1 p-4 sm:pb-4">
         {/* Brand Logo or Title */}
         <Link
           href={"/home"}
-          className="text-2xl font-semibold hover:text-green-400 transition"
+          className="text-2xl flex items-center justify-center gap-1 font-semibold hover:text-green-400 transition"
         >
-          Insights
+          <AudioLines /> Insights
         </Link>
 
         {/* Search Bar */}

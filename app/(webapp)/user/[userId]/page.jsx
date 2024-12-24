@@ -86,10 +86,10 @@ const UserProfilePage = ({ params }) => {
               alt="Profile"
               width={154}
               height={154}
-              className="rounded-full size-[70px] md:size-36 border-4 border-green-500 shadow-lg"
+              className="rounded-full size-[70px] md:size-36 border border-white shadow-lg"
             />
             <div>
-              <h2 className="text-center text-sm">{profileData?.name || "User"}</h2>
+              <h2 className="text-center text-xs sm:text-sm">{profileData?.name || "User"}</h2>
             </div>
           </div>
           {/* Profile Details */}
