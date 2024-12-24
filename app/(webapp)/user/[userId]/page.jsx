@@ -7,7 +7,7 @@ import TopTracks from "@/components/custom/TopTracks";
 import { Button } from "@/components/ui/button";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tabs } from "@radix-ui/react-tabs";
-import { Clock, Headphones, Music, PlayCircle } from "lucide-react";
+import { Clock, MicVocal, Music, PlayCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,7 +28,7 @@ const UserProfilePage = ({ params }) => {
       label: "Now Playing",
     },
     { value: "top-tracks", icon: Music, label: "Top Tracks" },
-    { value: "top-artists", icon: Headphones, label: "Top Artists" },
+    { value: "top-artists", icon: MicVocal, label: "Top Artists" },
     { value: "playback-history", icon: Clock, label: "Play History" },
 
   ];

@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Clock,
   Compass,
-  Headphones,
+  MicVocal,
   Music,
   PlayCircle,
   UserCircle2,
@@ -33,7 +33,7 @@ const SpotifyInsightsPage = () => {
       label: "Now Playing",
     },
     { value: "top-tracks", icon: Music, label: "Top Tracks" },
-    { value: "top-artists", icon: Headphones, label: "Top Artists" },
+    { value: "top-artists", icon: MicVocal, label: "Top Artists" },
     { value: "playback-history", icon: Clock, label: "Play History" },
     { value: "users", icon: Users, label: "Users" },
     { value: "discover", icon: Compass, label: "Discover" },
