@@ -9,7 +9,7 @@ const Header = () => {
   const { data: session } = useSession();
 
   return (
-    <div className="sticky top-0 z-50 bg-neutral-900/80 backdrop-blur-lg text-white shadow-md">
+    <div className="sticky top-0 z-50">
       <div className="max-w-6xl mx-auto flex justify-between items-center pb-2 p-4 sm:pb-4">
         {/* Brand Logo or Title */}
         <Link
