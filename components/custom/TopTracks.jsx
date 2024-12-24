@@ -79,7 +79,7 @@ const ListItemTrackCard = memo(({ track, index }) => {
       key={id}
       className="bg-neutral-700 rounded-xl p-4 text-center transform transition hover:bg-black hover:scale-105 scroll-item-animation"
     >
-      <div className={getRankStyle(index + 1)}>{index + 1}</div>
+      {!added_at && <div className={getRankStyle(index + 1)}>{index + 1}</div>}
       <Image
         src={image || "/user.jpg"}
         alt={name}
