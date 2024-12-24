@@ -20,7 +20,7 @@ const ListItemRecentPlaySong = memo(({ item }) => {
         height={78}
         className="rounded-lg object-cover"
       />
-      <div className="flex-grow">
+      <div className="flex-grow flex flex-col gap-1">
         <h3 className="font-semibold text-sm text-wrap">{name}</h3>
         <p className="text-xs text-neutral-400 text-wrap">
           {artists.map((artist) => artist.name).join(", ")}
@@ -61,7 +61,7 @@ const PlaybackHistory = ({ id, me = true }) => {
   return (
     <div
       className={`flex flex-col p-2 gap-3 ${me
-        ? "max-h-[calc(100dvh-150px)] md:max-h-[calc(100dvh-170px)]"
+        ? "max-h-[calc(100dvh-150px)] md:max-h-[calc(100dvh-150px)]"
         : "max-h-[calc(100dvh-300px)] md:max-h-[calc(100dvh-420px)]"
         } overflow-y-scroll scrollbar-hidden rounded-xl`}
     >
