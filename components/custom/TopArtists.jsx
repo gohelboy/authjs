@@ -63,7 +63,7 @@ const ListItemArtistCard = memo(({ artist, index }) => {
         alt={name}
         width={150}
         height={150}
-        className="rounded-full size-24 md:size-[156px] mx-auto mb-2 group-hover:scale-110 transition-transform"
+        className="rounded-full size-24 md:size-[156px] mx-auto mb-2 group-hover:scale-110 transition-transform object-cover"
       />
       <h3 className="font-semibold text-sm truncate">{name}</h3>
     </Link>

@@ -72,7 +72,7 @@ const UsersList = () => {
               alt={user.name}
               width={56}
               height={56}
-              className="rounded-full"
+              className="rounded-full object-cover"
             />
             <div className="flex-grow">
               <h3 className="font-semibold text-sm text-wrap">{user.name}</h3>

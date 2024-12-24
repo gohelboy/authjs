@@ -51,7 +51,7 @@ const ListItemTrackCard = memo(({ track, index }) => {
         alt={name}
         width={150}
         height={150}
-        className="rounded-lg mx-auto mb-2"
+        className="rounded-lg mx-auto mb-2 object-cover"
       />
       <h3 className="font-semibold text-sm truncate">{name}</h3>
       <p className="text-xs text-neutral-400 truncate">

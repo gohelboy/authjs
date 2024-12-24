@@ -33,7 +33,7 @@ const NowPlaying = ({ id, me = true }) => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="p-2">Loading...</div>;
   }
 
   if (error) {
@@ -47,8 +47,6 @@ const NowPlaying = ({ id, me = true }) => {
   const spotifyLink = currentlyPlaying?.item?.external_urls?.spotify;
   const albumImageUrl = track?.album?.images?.[0]?.url || track?.album?.images?.[1]?.url || track?.album?.images?.[2]?.url || "/user.jpg";
   const progressPercentage = (progressMs / track?.duration_ms) * 100;
-
-  console.log("albumImageUrl", albumImageUrl)
 
   return (
     <div className={`relative ${me ? "h-[calc(100dvh-160px)] sm:h-auto" : "h-auto"} w-full mx-auto overflow-hidden rounded-xl p-10`}>
@@ -66,7 +64,7 @@ const NowPlaying = ({ id, me = true }) => {
           <img
             src={albumImageUrl}
             alt={track?.name}
-            className={`relative size-48 rounded-full ${isPlaying && "slow-spin"} shadow-lg transition-transform duration-300 group-hover:scale-105`}
+            className={`relative size-48 rounded-full ${isPlaying && "slow-spin"} object-cover shadow-lg transition-transform duration-300 group-hover:scale-105`}
           />
           <Link href={spotifyLink || "#"} passHref>
             <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer flex items-center justify-center" target="_blank">

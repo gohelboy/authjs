@@ -18,7 +18,7 @@ const ListItemRecentPlaySong = memo(({ item }) => {
         alt={name}
         width={78}
         height={78}
-        className="rounded-lg"
+        className="rounded-lg object-cover"
       />
       <div className="flex-grow">
         <h3 className="font-semibold text-sm text-wrap">{name}</h3>
