@@ -51,7 +51,7 @@ const NowPlaying = ({ id, me = true }) => {
   console.log("albumImageUrl", albumImageUrl)
 
   return (
-    <div className={`relative ${me ? "h-[calc(100dvh-170px)]" : "h-auto"} w-full mx-auto overflow-hidden rounded-xl p-10`}>
+    <div className={`relative ${me ? "h-[calc(100dvh-160px)]" : "h-auto"} w-full mx-auto overflow-hidden rounded-xl p-10`}>
       {/* Background Image with Blur */}
       <div>
         {albumImageUrl && <img src={albumImageUrl || "/user.jpg"} alt={track?.name}

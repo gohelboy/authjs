@@ -75,7 +75,7 @@ const SpotifyInsightsPage = () => {
   }
 
   return (
-    <div className="max-w-6xl h-[calc(100dvh-100px)] mx-4 sm:mx-auto relative">
+    <div className="max-w-6xl h-[calc(100dvh-90px)] mx-4 sm:mx-auto relative">
       <Tabs
         value={activeTab}
         onValueChange={handleTabChange}
