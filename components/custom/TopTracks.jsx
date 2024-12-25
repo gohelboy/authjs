@@ -27,29 +27,29 @@ const TimeDurationTabs = memo(({ range, changeTimeRange, showSaved, handleShowSa
   ];
 
   return (
-    <div className={`p-2 md:pt-4 md:px-6 flex ${showSaved ? "justify-end" : "justify-between"} items-center gap-2`}>
-      {!showSaved && (
+    <div className={`p-2 md:pt-4 md:px-6 flex justify-between items-center gap-2`}>
+      {!showSaved ? (
         <div className="flex items-center gap-2">
           {timeRanges.map(({ key, label }) => (
             <Button
               key={key}
               size="sm"
               onClick={() => changeTimeRange(key)}
-              className={range === key ? "bg-white text-[#171717] rounded-lg hover:bg-white/70 flex-1 md:flex-initial transition-all" : ""}
+              className={range === key ? "bg-white font-semibold text-[#171717] rounded-lg hover:bg-white/70 flex-1 md:flex-initial transition-all" : ""}
             >
               <CalendarDays className="h-5 w-5" />
               {label}
             </Button>
           ))}
         </div>
-      )}
+      ) : <h2 className="text-lg font-semibold">Liked</h2>}
       <Button
         onClick={handleShowSave}
         className="bg-white hover:bg-white rounded-lg text-black"
         size="sm"
       >
         <Heart fill="black" />
-        <span className="hidden sm:block">Saved</span>
+        {/* <span className="hidden sm:block">Liked</span> */}
       </Button>
     </div>
   );

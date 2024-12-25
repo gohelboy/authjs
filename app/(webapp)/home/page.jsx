@@ -125,7 +125,7 @@ const SpotifyInsightsPage = () => {
             <TabsTrigger
               key={value}
               value={value}
-              className="flex items-center space-x-2 justify-center h-full"
+              className="flex items-center space-x-2 justify-center font-semibold h-full"
             >
               <Icon size={16} />
               <span className="hidden md:block">{label}</span>
