@@ -3,6 +3,7 @@ import { CalendarDays, Heart } from "lucide-react";
 import Image from "next/image";
 import { memo, useState } from "react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 // Rank style utility function
 const getRankStyle = (rank) => {
@@ -75,7 +76,7 @@ const ListItemTrackCard = memo(({ track, index }) => {
   const { id, image, name, artist, added_at = "" } = track;
 
   return (
-    <div
+    <Link href={`/track/${id}`}
       key={id}
       className="bg-neutral-700 rounded-xl p-4 text-center transform transition hover:bg-black hover:scale-105 scroll-item-animation"
     >
@@ -88,7 +89,7 @@ const ListItemTrackCard = memo(({ track, index }) => {
       <h3 className="font-semibold text-sm truncate">{name}</h3>
       <p className="text-xs text-neutral-400 truncate">{artist}</p>
       {added_at && <p className="text-xs text-neutral-400 truncate">{formatTimestamp(added_at)}</p>}
-    </div>
+    </Link>
   );
 });
 ListItemTrackCard.displayName = "ListItemTrackCard";

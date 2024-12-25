@@ -2,6 +2,7 @@ import { formatTimeAgo } from "@/lib/helper";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { memo } from "react";
+import Link from "next/link";
 
 // Memoized recent play song list item component
 const ListItemRecentPlaySong = memo(({ item }) => {
@@ -9,7 +10,7 @@ const ListItemRecentPlaySong = memo(({ item }) => {
   const { id, name, album, artists } = track;
 
   return (
-    <div
+    <Link href={`/track/${id}`}
       key={id}
       className="scroll-item-animation bg-neutral-700 rounded-xl p-2 flex items-center space-x-4 hover:bg-neutral-600 transition"
     >
@@ -30,7 +31,7 @@ const ListItemRecentPlaySong = memo(({ item }) => {
           {context?.type === "playlist" ? `Played from playlist` : context?.type}
         </p>
       </div>
-    </div>
+    </Link>
   );
 });
 ListItemRecentPlaySong.displayName = "ListItemRecentPlaySong";

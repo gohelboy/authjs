@@ -4,6 +4,7 @@ import { AudioLines, Timer } from 'lucide-react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 
 function formatDuration(durationMs) {
     const totalSeconds = Math.floor(durationMs / 1000);
@@ -40,7 +41,8 @@ const ArtistTopTracks = () => {
             <div className="grid gap-2">
                 {artistTopTracks.length > 0 &&
                     artistTopTracks.map((track, index) => (
-                        <div
+                        <Link
+                            href={`/track/${track?.id}`}
                             key={index}
                             className="scroll-item-animation bg-neutral-700 rounded-xl p-2 flex items-center space-x-4 hover:bg-neutral-600 transition"
                         >
@@ -58,7 +60,7 @@ const ArtistTopTracks = () => {
                                     <AudioLines className="size-3" /> Popularity :<b>{track?.popularity}</b>
                                 </p>
                             </div>
-                        </div>
+                        </Link>
                     ))}
             </div>
         </div>
