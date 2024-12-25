@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   BarChart3,
   Computer,
@@ -10,7 +10,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 
 const formatTime = (ms) => {
@@ -23,6 +23,8 @@ const formatTime = (ms) => {
 const NowPlaying = ({ id, me = true }) => {
   const [localProgressMs, setLocalProgressMs] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const progressInterval = useRef(null);
+  const autoRefreshTimeout = useRef(null);
 
   const { data: currentlyPlaying, isLoading, error, refetch } = useQuery({
     queryKey: ["me-current-playing", id, me],
@@ -32,24 +34,52 @@ const NowPlaying = ({ id, me = true }) => {
       return data?.data || {};
     },
     enabled: !!id,
+    refetchInterval: 30000,
   });
+
+  const clearTimers = useCallback(() => {
+    if (progressInterval.current) {
+      clearInterval(progressInterval.current);
+      progressInterval.current = null;
+    }
+    if (autoRefreshTimeout.current) {
+      clearTimeout(autoRefreshTimeout.current);
+      autoRefreshTimeout.current = null;
+    }
+  }, []);
+
+
+
+  const startProgressTimer = useCallback(() => {
+    //to increament progressbar locally
+    progressInterval.current = setInterval(() => setLocalProgressMs(prev => prev + 1000), 1000);
+  }, []);
+
+
+  const setupAutoRefresh = useCallback((duration_ms, progress_ms) => {
+    // refetch song if song is ended
+    if (!duration_ms || !progress_ms) return;
+    const remainingTime = duration_ms - progress_ms;
+    const BUFFER_TIME = 1000;
+    autoRefreshTimeout.current = setTimeout(() => refetch(), remainingTime + BUFFER_TIME);
+  }, [refetch]);
 
   useEffect(() => {
     if (currentlyPlaying) {
-      setLocalProgressMs(currentlyPlaying?.progress_ms || 0);
-      setIsPlaying(currentlyPlaying?.is_playing || false);
-    }
-  }, [currentlyPlaying]);
+      const { progress_ms, is_playing, item } = currentlyPlaying;
 
-  useEffect(() => {
-    let interval;
-    if (isPlaying) {
-      interval = setInterval(() => {
-        setLocalProgressMs((prev) => prev + 1000);
-      }, 1000);
+      clearTimers();
+      setLocalProgressMs(progress_ms || 0);
+      setIsPlaying(is_playing || false);
+
+      if (is_playing) {
+        startProgressTimer();
+        setupAutoRefresh(item?.duration_ms, progress_ms);
+      }
     }
-    return () => clearInterval(interval);
-  }, [isPlaying]);
+
+    return () => clearTimers();
+  }, [currentlyPlaying, clearTimers, startProgressTimer, setupAutoRefresh]);
 
   if (isLoading) {
     return <div className="p-2">Loading...</div>;
@@ -59,27 +89,24 @@ const NowPlaying = ({ id, me = true }) => {
     return <div>Error fetching current playing data</div>;
   }
 
-  const track = currentlyPlaying?.item;
-  const device = currentlyPlaying?.device;
+  const { item: track, device } = currentlyPlaying || {};
   const spotifyLink = track?.external_urls?.spotify;
   const albumImageUrl =
     track?.album?.images?.[0]?.url ||
     track?.album?.images?.[1]?.url ||
     track?.album?.images?.[2]?.url ||
     "/user.jpg";
-  const progressPercentage =
-    (localProgressMs / track?.duration_ms) * 100;
+  const progressPercentage = Math.min((localProgressMs / (track?.duration_ms || 1)) * 100, 100);
 
   return (
     <div
-      className={`relative ${me ? "h-[calc(100dvh-160px)] sm:h-auto" : "h-auto"
-        } w-full mx-auto overflow-hidden rounded-xl p-10`}
+      className={`relative ${me ? "h-[calc(100dvh-160px)] sm:h-auto" : "h-auto"} 
+        w-full mx-auto overflow-hidden rounded-xl p-10`}
     >
-      {/* Background Image with Blur */}
       <div>
         {albumImageUrl && (
           <img
-            src={albumImageUrl || "/user.jpg"}
+            src={albumImageUrl}
             alt={track?.name}
             className="object-cover w-full h-full inset-0 absolute scale-110 opacity-30"
           />
@@ -88,18 +115,19 @@ const NowPlaying = ({ id, me = true }) => {
       </div>
 
       {Object.keys(currentlyPlaying).length > 0 ? (
-        <div className="h-full relative flex flex-col items-center justify-between sm:justify-start md:flex-row gap-6 ">
+        <div className="h-full relative flex flex-col items-center justify-between sm:justify-start md:flex-row gap-6">
           <div className="relative group">
             <div className="absolute -inset-1 rounded-full opacity-75 blur-lg bg-black/50 group-hover:opacity-100 transition duration-1000" />
             <img
               src={albumImageUrl}
               alt={track?.name}
-              className={`relative size-48 rounded-full ${isPlaying && "slow-spin"
-                } object-cover shadow-lg transition-transform duration-300 group-hover:scale-105`}
+              className={`relative size-48 rounded-full ${isPlaying ? "slow-spin" : ""} 
+                object-cover shadow-lg transition-transform duration-300 group-hover:scale-105`}
             />
             <Link href={spotifyLink || "#"} passHref>
               <div
-                className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer flex items-center justify-center"
+                className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 
+                  transition-opacity duration-300 cursor-pointer flex items-center justify-center"
                 target="_blank"
               >
                 {isPlaying ? (
@@ -129,13 +157,14 @@ const NowPlaying = ({ id, me = true }) => {
                 Popularity: {track?.popularity}%
               </p>
             </div>
+
             <div className="space-y-2">
               <div className="relative h-2 group">
-                {/* Main progress bar container */}
                 <div className="absolute inset-0 bg-neutral-800 rounded-full overflow-hidden">
-                  {/* Progress gradient */}
                   <div
-                    className="h-full bg-gradient-to-r from-green-700 to-green-400 rounded-full animate-gradient-x transition-all duration-500 group-hover:shadow-[0_0_15px_rgba(74,222,128,0.5)]"
+                    className="h-full bg-gradient-to-r from-green-700 to-green-400 rounded-full 
+                      animate-gradient-x transition-all duration-500 
+                      group-hover:shadow-[0_0_15px_rgba(74,222,128,0.5)]"
                     style={{ width: `${progressPercentage}%` }}
                   ></div>
                 </div>
@@ -150,19 +179,21 @@ const NowPlaying = ({ id, me = true }) => {
             <div className="flex items-center justify-between">
               <Button
                 size="sm"
-                className="flex items-center justify-center gap-1 w-fit bg-white/5 text-green-400 px-2 py-1 rounded text-xs backdrop-blur-sm border border-white/10"
+                className="flex items-center justify-center gap-1 w-fit bg-white/5 text-green-400 
+                  px-2 py-1 rounded text-xs backdrop-blur-sm border border-white/10"
               >
                 {device?.type === "Smartphone" ? (
                   <Smartphone className="w-4 h-4" />
                 ) : (
                   <Computer className="w-4 h-4" />
-                )}{" "}
+                )}
                 {device?.name}
               </Button>
               <Button
                 size="sm"
                 onClick={() => refetch()}
-                className="flex items-center justify-center gap-1 w-fit bg-white/5 text-green-400 px-2 py-1 rounded text-xs backdrop-blur-sm border border-white/10"
+                className="flex items-center justify-center gap-1 w-fit bg-white/5 text-green-400 
+                  px-2 py-1 rounded text-xs backdrop-blur-sm border border-white/10"
               >
                 <RefreshCcwDot className="w-4 h-4" /> Reload
               </Button>
