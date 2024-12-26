@@ -1,15 +1,14 @@
 "use client";
+import { AudioLines, Search } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { Input } from "../ui/input";
-import { AudioLines, Search } from "lucide-react";
 
 const Header = () => {
   const { data: session } = useSession();
 
   return (
-    <div className="sticky top-0 z-50">
+    <div className="sticky top-0 z-50 bg-neutral-900/70 backdrop-blur-lg">
       <div className="max-w-6xl mx-auto flex justify-between items-center pb-2 p-4 sm:pb-4">
         {/* Brand Logo or Title */}
         <Link
@@ -39,12 +38,12 @@ const Header = () => {
         <div className="flex items-center space-x-4">
           <Link
             href={"/me"}
-            className="flex items-center space-x-3 group cursor-pointer"
+            className="flex items-center space-x-2 group cursor-pointer"
           >
             <img
               src={session?.user?.image || "/user.jpg"}
               alt="Profile"
-              className="rounded-full border-2 border-green-500 group-hover:scale-105 transition-transform"
+              className="size-10 rounded-full border-2 border-green-500 group-hover:scale-105 transition-transform"
             />
             <div className="hidden md:flex flex-col items-start">
               <p className="text-sm font-medium group-hover:text-green-400 transition">

@@ -10,7 +10,6 @@ import {
   UsersRound
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -82,7 +81,7 @@ const SpotifyProfilePage = () => {
             <img
               src={profileData?.image || "/user.jpg"}
               alt="Profile"
-              className="rounded-full border-4 border-green-500 shadow-lg mb-4"
+              className="size-36 rounded-full border-4 border-green-500 shadow-lg mb-4"
             />
             <h2 className="text-2xl font-semibold tracking-tight">
               {profileData?.name}

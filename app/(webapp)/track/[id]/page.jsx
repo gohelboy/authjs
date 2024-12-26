@@ -4,462 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import { AudioLines, Book, Calendar, Clock, Disc, Globe, Play, UserRound } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-/* const data = {
-    "album": {
-        "tracks": [
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 467586,
-                "explicit": false,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/2X485T9Z5Ly0xyaghN73ed"
-                },
-                "href": "https://api.spotify.com/v1/tracks/2X485T9Z5Ly0xyaghN73ed",
-                "id": "2X485T9Z5Ly0xyaghN73ed",
-                "name": "Let It Happen",
-                "preview_url": null,
-                "track_number": 1,
-                "type": "track",
-                "uri": "spotify:track:2X485T9Z5Ly0xyaghN73ed",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 107533,
-                "explicit": false,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/1cCbsojaA6GIT7Y3zuMJ1q"
-                },
-                "href": "https://api.spotify.com/v1/tracks/1cCbsojaA6GIT7Y3zuMJ1q",
-                "id": "1cCbsojaA6GIT7Y3zuMJ1q",
-                "name": "Nangs",
-                "preview_url": null,
-                "track_number": 2,
-                "type": "track",
-                "uri": "spotify:track:1cCbsojaA6GIT7Y3zuMJ1q",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 255413,
-                "explicit": false,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/1UYj8qTWjneZJDVjUMwMub"
-                },
-                "href": "https://api.spotify.com/v1/tracks/1UYj8qTWjneZJDVjUMwMub",
-                "id": "1UYj8qTWjneZJDVjUMwMub",
-                "name": "The Moment",
-                "preview_url": null,
-                "track_number": 3,
-                "type": "track",
-                "uri": "spotify:track:1UYj8qTWjneZJDVjUMwMub",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 270680,
-                "explicit": true,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/0xtIp0lgccN85GfGOekS5L"
-                },
-                "href": "https://api.spotify.com/v1/tracks/0xtIp0lgccN85GfGOekS5L",
-                "id": "0xtIp0lgccN85GfGOekS5L",
-                "name": "Yes I'm Changing",
-                "preview_url": null,
-                "track_number": 4,
-                "type": "track",
-                "uri": "spotify:track:0xtIp0lgccN85GfGOekS5L",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 318591,
-                "explicit": false,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/5M4yti0QxgqJieUYaEXcpw"
-                },
-                "href": "https://api.spotify.com/v1/tracks/5M4yti0QxgqJieUYaEXcpw",
-                "id": "5M4yti0QxgqJieUYaEXcpw",
-                "name": "Eventually",
-                "preview_url": null,
-                "track_number": 5,
-                "type": "track",
-                "uri": "spotify:track:5M4yti0QxgqJieUYaEXcpw",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 55413,
-                "explicit": false,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/79chzfFIIq7cHkqcYYORk0"
-                },
-                "href": "https://api.spotify.com/v1/tracks/79chzfFIIq7cHkqcYYORk0",
-                "id": "79chzfFIIq7cHkqcYYORk0",
-                "name": "Gossip",
-                "preview_url": null,
-                "track_number": 6,
-                "type": "track",
-                "uri": "spotify:track:79chzfFIIq7cHkqcYYORk0",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 216320,
-                "explicit": true,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/6K4t31amVTZDgR3sKmwUJJ"
-                },
-                "href": "https://api.spotify.com/v1/tracks/6K4t31amVTZDgR3sKmwUJJ",
-                "id": "6K4t31amVTZDgR3sKmwUJJ",
-                "name": "The Less I Know The Better",
-                "preview_url": null,
-                "track_number": 7,
-                "type": "track",
-                "uri": "spotify:track:6K4t31amVTZDgR3sKmwUJJ",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 228040,
-                "explicit": false,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/4a9fW33mYR8LhXBOLUhbfF"
-                },
-                "href": "https://api.spotify.com/v1/tracks/4a9fW33mYR8LhXBOLUhbfF",
-                "id": "4a9fW33mYR8LhXBOLUhbfF",
-                "name": "Past Life",
-                "preview_url": null,
-                "track_number": 8,
-                "type": "track",
-                "uri": "spotify:track:4a9fW33mYR8LhXBOLUhbfF",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 108546,
-                "explicit": false,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/2gNfxysfBRfl9Lvi9T3v6R"
-                },
-                "href": "https://api.spotify.com/v1/tracks/2gNfxysfBRfl9Lvi9T3v6R",
-                "id": "2gNfxysfBRfl9Lvi9T3v6R",
-                "name": "Disciples",
-                "preview_url": null,
-                "track_number": 9,
-                "type": "track",
-                "uri": "spotify:track:2gNfxysfBRfl9Lvi9T3v6R",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 241986,
-                "explicit": true,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/2O99aywAVBhaPrsiJ6zbSS"
-                },
-                "href": "https://api.spotify.com/v1/tracks/2O99aywAVBhaPrsiJ6zbSS",
-                "id": "2O99aywAVBhaPrsiJ6zbSS",
-                "name": "'Cause I'm A Man",
-                "preview_url": null,
-                "track_number": 10,
-                "type": "track",
-                "uri": "spotify:track:2O99aywAVBhaPrsiJ6zbSS",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 252026,
-                "explicit": false,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/3I7OmVsk4Hm5LBbs2GmhlD"
-                },
-                "href": "https://api.spotify.com/v1/tracks/3I7OmVsk4Hm5LBbs2GmhlD",
-                "id": "3I7OmVsk4Hm5LBbs2GmhlD",
-                "name": "Reality In Motion",
-                "preview_url": null,
-                "track_number": 11,
-                "type": "track",
-                "uri": "spotify:track:3I7OmVsk4Hm5LBbs2GmhlD",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 185773,
-                "explicit": true,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/5h9hkYIBWTZYFRmF6Iz1gt"
-                },
-                "href": "https://api.spotify.com/v1/tracks/5h9hkYIBWTZYFRmF6Iz1gt",
-                "id": "5h9hkYIBWTZYFRmF6Iz1gt",
-                "name": "Love/Paranoia",
-                "preview_url": null,
-                "track_number": 12,
-                "type": "track",
-                "uri": "spotify:track:5h9hkYIBWTZYFRmF6Iz1gt",
-                "is_local": false
-            },
-            {
-                "artists": [
-                    {
-                        "external_urls": {
-                            "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                        },
-                        "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                        "id": "5INjqkS1o8h1imAzPqGZBb",
-                        "name": "Tame Impala",
-                        "type": "artist",
-                        "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-                    }
-                ],
-                "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-                "disc_number": 1,
-                "duration_ms": 363240,
-                "explicit": false,
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/track/52ojopYMUzeNcudsoz7O9D"
-                },
-                "href": "https://api.spotify.com/v1/tracks/52ojopYMUzeNcudsoz7O9D",
-                "id": "52ojopYMUzeNcudsoz7O9D",
-                "name": "New Person, Same Old Mistakes",
-                "preview_url": null,
-                "track_number": 13,
-                "type": "track",
-                "uri": "spotify:track:52ojopYMUzeNcudsoz7O9D",
-                "is_local": false
-            }
-        ],
-        "album_type": "album",
-        "total_tracks": 13,
-        "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-        "external_urls": {
-            "spotify": "https://open.spotify.com/album/79dL7FLiJFOO0EoehUHQBv"
-        },
-        "href": "https://api.spotify.com/v1/albums/79dL7FLiJFOO0EoehUHQBv",
-        "id": "79dL7FLiJFOO0EoehUHQBv",
-        "images": [
-            {
-                "url": "https://i.scdn.co/image/ab67616d0000b2739e1cfc756886ac782e363d79",
-                "height": 640,
-                "width": 640
-            },
-            {
-                "url": "https://i.scdn.co/image/ab67616d00001e029e1cfc756886ac782e363d79",
-                "height": 300,
-                "width": 300
-            },
-            {
-                "url": "https://i.scdn.co/image/ab67616d000048519e1cfc756886ac782e363d79",
-                "height": 64,
-                "width": 64
-            }
-        ],
-        "name": "Currents",
-        "release_date": "2015-07-17",
-        "release_date_precision": "day",
-        "type": "album",
-        "uri": "spotify:album:79dL7FLiJFOO0EoehUHQBv",
-        "artists": [
-            {
-                "external_urls": {
-                    "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-                },
-                "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-                "id": "5INjqkS1o8h1imAzPqGZBb",
-                "name": "Tame Impala",
-                "type": "artist",
-                "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-            }
-        ]
-    },
-    "artists": [
-        {
-            "external_urls": {
-                "spotify": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb"
-            },
-            "href": "https://api.spotify.com/v1/artists/5INjqkS1o8h1imAzPqGZBb",
-            "id": "5INjqkS1o8h1imAzPqGZBb",
-            "name": "Tame Impala",
-            "type": "artist",
-            "uri": "spotify:artist:5INjqkS1o8h1imAzPqGZBb"
-        }
-    ],
-    "available_markets": ["AR", "AU", "AT", "BE", "BO", "BR", "BG", "CA", "CL", "CO", "CR", "CY", "CZ", "DK", "DO", "DE", "EC", "EE", "SV", "FI", "FR", "GR", "GT", "HN", "HK", "HU", "IS", "IE", "IT", "LV", "LT", "LU", "MY", "MT", "MX", "NL", "NZ", "NI", "NO", "PA", "PY", "PE", "PH", "PL", "PT", "SG", "SK", "ES", "SE", "CH", "TW", "TR", "UY", "US", "GB", "AD", "LI", "MC", "ID", "JP", "TH", "VN", "RO", "IL", "ZA", "SA", "AE", "BH", "QA", "OM", "KW", "EG", "MA", "DZ", "TN", "LB", "JO", "PS", "IN", "BY", "KZ", "MD", "UA", "AL", "BA", "HR", "ME", "MK", "RS", "SI", "KR", "BD", "PK", "LK", "GH", "KE", "NG", "TZ", "UG", "AG", "AM", "BS", "BB", "BZ", "BT", "BW", "BF", "CV", "CW", "DM", "FJ", "GM", "GE", "GD", "GW", "GY", "HT", "JM", "KI", "LS", "LR", "MW", "MV", "ML", "MH", "FM", "NA", "NR", "NE", "PW", "PG", "WS", "SM", "ST", "SN", "SC", "SL", "SB", "KN", "LC", "VC", "SR", "TL", "TO", "TT", "TV", "VU", "AZ", "BN", "BI", "KH", "CM", "TD", "KM", "GQ", "SZ", "GA", "GN", "KG", "LA", "MO", "MR", "MN", "NP", "RW", "TG", "UZ", "ZW", "BJ", "MG", "MU", "MZ", "AO", "CI", "DJ", "ZM", "CD", "CG", "IQ", "LY", "TJ", "VE", "ET", "XK"],
-    "disc_number": 1,
-    "duration_ms": 216320,
-    "explicit": true,
-    "external_ids": {
-        "isrc": "AUUM71500303"
-    },
-    "external_urls": {
-        "spotify": "https://open.spotify.com/track/6K4t31amVTZDgR3sKmwUJJ"
-    },
-    "href": "https://api.spotify.com/v1/tracks/6K4t31amVTZDgR3sKmwUJJ",
-    "id": "6K4t31amVTZDgR3sKmwUJJ",
-    "name": "The Less I Know The Better",
-    "popularity": 82,
-    "preview_url": null,
-    "track_number": 7,
-    "type": "track",
-    "uri": "spotify:track:6K4t31amVTZDgR3sKmwUJJ",
-    "is_local": false
-} */
 
 const fetchTrackDetails = async ({ queryKey }) => {
     const [, id] = queryKey;
@@ -485,7 +29,7 @@ const TrackPage = ({ params }) => {
     };
 
 
-    const { data: trackDetails, isLoading, isError } = useQuery({
+    const { data: trackDetails } = useQuery({
         queryKey: ['artist', id],
         queryFn: fetchTrackDetails,
         enabled: !!id,
@@ -501,7 +45,7 @@ const TrackPage = ({ params }) => {
                             <img
                                 src={trackDetails?.album?.image || "/user.jpg"}
                                 alt="artist"
-                                className="size-36 md:size-64 object-cover relative rounded-2xl z-10"
+                                className="size-36 md:size-64 object-cover relative rounded-full z-10"
                             />
 
                             {/* Spinning Record */}
@@ -511,12 +55,12 @@ const TrackPage = ({ params }) => {
                                     width={128}
                                     height={128}
                                     alt="record"
-                                    className="size-52 object-cover slow-spin"
+                                    className="size-52 object-cover slow-spin "
                                 />
                             </div>
 
                             {/* Play Button Overlay */}
-                            <Button className="transition-all flex items-center justify-center opacity-0  group-hover:opacity-70 w-full h-full absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white z-20 rounded-2xl"
+                            <Button className="transition-all flex items-center justify-center opacity-0  group-hover:opacity-70 w-full h-full absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white z-20 rounded-full"
                             >
                                 <Play size={36} />
                                 <span>Play</span>
@@ -574,7 +118,7 @@ const TrackPage = ({ params }) => {
                             <img
                                 src={trackDetails?.album?.image || "/user.jpg"}
                                 alt="artist"
-                                className="size-28 sm:size-auto object-cover relative rounded-2xl z-10"
+                                className="size-24 sm:size-52 object-cover relative rounded-2xl z-10"
                             />
 
                             {/* Play Button Overlay */}
@@ -603,29 +147,30 @@ const TrackPage = ({ params }) => {
                             </div>
                         </div>
                     </div>
-                    {trackDetails?.tracks?.length > 0 && <div className="flex-1 flex flex-col gap-2 overflow-y-scroll max-h-[calc(100vh-400px)] sm:max-h-[calc(100vh-430px)] scrollbar-hidden">
-                        {trackDetails?.tracks?.map((track) => {
-                            return <div key={track?.id}
-                                className="scroll-item-animation bg-neutral-700 rounded-xl p-2 flex items-center space-x-4 hover:bg-neutral-600 transition"
-                            >
-                                <Link href={track?.track_url || "#"} className="flex items-center gap-4">
-                                    <img
-                                        src={trackDetails?.image || "/user.jpg"}
-                                        alt={track?.name}
-                                        className="size-14 sm:size-20 rounded-lg object-cover"
-                                    />
-                                </Link>
-                                <div className="flex-grow flex flex-col gap-1">
-                                    <h3 className="font-semibold text-sm text-wrap">{track?.name}</h3>
-                                    <p className="text-neutral-400 text-xs flex items-center gap-1">
-                                        <Clock className="size-3 md:size-4" />
-                                        <span>{formatDuration(track?.duration)}</span>
-                                    </p>
+                    {trackDetails?.tracks?.length > 0 &&
+                        <div className="flex-1 flex flex-col gap-2 overflow-y-scroll max-h-[calc(100vh-390px)] sm:max-h-[calc(100vh-430px)] scrollbar-hidden">
+                            {trackDetails?.tracks?.map((track) => {
+                                return <div key={track?.id}
+                                    className="scroll-item-animation bg-neutral-700 rounded-xl p-2 flex items-center space-x-4 hover:bg-neutral-600 transition"
+                                >
+                                    <Link href={track?.track_url || "#"} className="flex items-center gap-4">
+                                        <img
+                                            src={trackDetails?.image || "/user.jpg"}
+                                            alt={track?.name}
+                                            className="size-14 sm:size-20 min-w-fit rounded-lg object-cover rounded-full"
+                                        />
+                                    </Link>
+                                    <div className="flex-grow flex flex-col gap-1">
+                                        <h3 className="font-semibold text-xs sm:text-sm text-wrap">{track?.name}</h3>
+                                        <p className="text-neutral-400 text-xs flex items-center gap-1">
+                                            <Clock className="size-3 md:size-4" />
+                                            <span>{formatDuration(track?.duration)}</span>
+                                        </p>
 
+                                    </div>
                                 </div>
-                            </div>
-                        })}
-                    </div>}
+                            })}
+                        </div>}
                 </div>
             </div>
         </div>
