@@ -215,7 +215,7 @@ const TrackPage = ({ params }) => {
                             </Button>
                         </Link>
                         <div>
-                            <h1 className="text-md md:text-3xl  font-semibold">
+                            <h1 className="text-md md:text-2xl text-wrap text-wrap max-w-52 font-semibold">
                                 {trackDetails?.album?.name}
                             </h1>
                             <div className="mt-2 space-y-1">
@@ -226,14 +226,17 @@ const TrackPage = ({ params }) => {
                                         <span className="text-white">{trackDetails?.artist?.name}</span>
                                     </Link>
                                 </p>
-                                <p className="text-neutral-400 text-xs md:text-sm flex items-center gap-2">
-                                    <Disc className="size-3 md:size-4" />
-                                    <span className='hidden sm:block'>Track:</span> <span className="text-white">{trackDetails?.total_tracks}</span>
-                                </p>
-                                <p className="text-neutral-400 text-xs md:text-sm flex items-center gap-2">
-                                    <Calendar className="size-3 md:size-4" />
-                                    <span className='hidden sm:block'>Released:</span> <span className="text-white">{formatDate(trackDetails?.album?.release_date)}</span>
-                                </p>
+                                <div className="flex sm:flex-col gap-2 sm:gap-1">
+                                    <p className="text-neutral-400 text-xs md:text-sm flex items-center gap-2">
+                                        <Disc className="size-3 md:size-4" />
+                                        <span className='hidden sm:block'>Track:</span> <span className="text-white">{trackDetails?.total_tracks}</span>
+                                    </p>
+                                    <p className="block sm:hidden">|</p>
+                                    <p className="text-neutral-400 text-xs md:text-sm flex items-center gap-2">
+                                        <Calendar className="size-3 md:size-4" />
+                                        <span className='hidden sm:block'>Released:</span> <span className="text-white">{formatDate(trackDetails?.album?.release_date)}</span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
