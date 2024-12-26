@@ -37,34 +37,33 @@ const TrackPage = ({ params }) => {
 
     return (
         <div className='flex flex-col gap-4 max-w-6xl mx-4 md:mx-auto'>
-            <div className='bg-neutral-800 w-full rounded-xl p-2 sm:p-4 relative overflow-hidden'>
-                <div className='relative flex flex-row sm:flex-row gap-4 sm:gap-24 z-[10]'>
+            <div className='bg-neutral-800 w-full rounded-xl p-4 sm:p-6 relative overflow-hidden'>
+                <div className='relative flex flex-row items-center sm:flex-row gap-4 sm:gap-7 z-[10]'>
                     <div className="relative group min-w-fit">
-                        <Link href={trackDetails?.track_url || "#"} className="relative">
-                            {/* Artist Image */}
-                            <img
-                                src={trackDetails?.album?.image || "/user.jpg"}
-                                alt="artist"
-                                className="size-36 md:size-64 object-cover relative rounded-full z-10"
-                            />
+                        <Link href={trackDetails?.track_url || "#"}>
+                            <div className='relative slow-spin'>
+                                {/* Artist Image */}
+                                <img
+                                    src={trackDetails?.album?.image || "/user.jpg"}
+                                    alt="track"
+                                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover size-20 sm:size-36 rounded-full z-10"
+                                />
 
-                            {/* Spinning Record */}
-                            <div className="hidden md:block absolute -right-16 top-1/2 -translate-y-1/2">
+                                {/* Spinning Record */}
                                 <Image
                                     src="/record.svg"
                                     width={128}
                                     height={128}
                                     alt="record"
-                                    className="size-52 object-cover slow-spin "
+                                    className="size-28 sm:size-52 object-cover"
                                 />
+                                {/* Play Button Overlay */}
+                                <Button className="transition-all flex items-center justify-center opacity-0  group-hover:opacity-70 w-full h-full absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white z-20 rounded-full"
+                                >
+                                    <Play size={36} />
+                                    <span>Play</span>
+                                </Button>
                             </div>
-
-                            {/* Play Button Overlay */}
-                            <Button className="transition-all flex items-center justify-center opacity-0  group-hover:opacity-70 w-full h-full absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 text-white z-20 rounded-full"
-                            >
-                                <Play size={36} />
-                                <span>Play</span>
-                            </Button>
                         </Link>
                     </div>
                     <div className="md:my-4 flex-1">
@@ -148,7 +147,7 @@ const TrackPage = ({ params }) => {
                         </div>
                     </div>
                     {trackDetails?.tracks?.length > 0 &&
-                        <div className="flex-1 flex flex-col gap-2 overflow-y-scroll max-h-[calc(100vh-390px)] sm:max-h-[calc(100vh-430px)] scrollbar-hidden">
+                        <div className="flex-1 flex flex-col gap-2 overflow-y-scroll max-h-[calc(100vh-370px)] sm:max-h-[calc(100vh-400px)] scrollbar-hidden">
                             {trackDetails?.tracks?.map((track) => {
                                 return <div key={track?.id}
                                     className="scroll-item-animation bg-neutral-700 rounded-xl p-2 flex items-center space-x-4 hover:bg-neutral-600 transition"

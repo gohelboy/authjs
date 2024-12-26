@@ -70,7 +70,7 @@ const UsersList = () => {
             <img
               src={user.image || "/user.jpg"}
               alt={user.name}
-              className="rounded-full object-cover"
+              className="size-14 rounded-full object-cover"
             />
             <div className="flex-grow">
               <h3 className="font-semibold text-sm text-wrap">{user.name}</h3>
