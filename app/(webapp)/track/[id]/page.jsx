@@ -144,7 +144,7 @@ const TrackPage = ({ params }) => {
                     </div>
                     <div className="md:my-4 flex-1">
                         <h1 className="text-xl md:text-5xl font-semibold">{trackDetails?.name}</h1>
-                        <div className="mt-2 grid gap-2 md:grid-cols-2 space-y-1">
+                        <div className="mt-2 grid gap-1 md:grid-cols-2 space-y-1">
                             <div className="flex items-center gap-2 text-neutral-400 text-xs md:text-sm ">
                                 <UserRound className="size-3 md:size-4" />
                                 <span className='hidden sm:block'>Artist:</span>
