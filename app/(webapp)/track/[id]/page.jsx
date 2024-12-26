@@ -215,7 +215,7 @@ const TrackPage = ({ params }) => {
                             </Button>
                         </Link>
                         <div>
-                            <h1 className="text-md md:text-2xl text-wrap text-wrap max-w-52 font-semibold">
+                            <h1 className="text-md md:text-2xl text-wrap max-w-52 font-semibold">
                                 {trackDetails?.album?.name}
                             </h1>
                             <div className="mt-2 space-y-1">
@@ -241,7 +241,7 @@ const TrackPage = ({ params }) => {
                         </div>
                     </div>
                     {trackDetails?.tracks?.length > 0 &&
-                        <div className="flex-1 flex flex-col gap-2 overflow-y-scroll max-h-[calc(100vh-370px)] sm:max-h-[calc(100vh-400px)] scrollbar-hidden">
+                        <div className="flex-1 flex flex-col gap-2 overflow-y-scroll max-h-[calc(100vh-380px)] sm:max-h-[calc(100vh-400px)] scrollbar-hidden">
                             {trackDetails?.tracks?.map((track) => {
                                 return <div key={track?.id}
                                     className="scroll-item-animation bg-neutral-700 rounded-xl p-2 flex items-center space-x-4 hover:bg-neutral-600 transition"
