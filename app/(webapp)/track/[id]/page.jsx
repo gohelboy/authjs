@@ -192,7 +192,7 @@ const TrackPage = ({ params }) => {
                     <img
                         src={trackDetails?.album?.image}
                         alt={trackDetails?.album?.image}
-                        className="object-cover w-full h-full inset-0 absolute opacity-30"
+                        className="object-cover w-full h-full inset-0 absolute opacity-45"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-l from-transparent to-black" />
                 </div>
