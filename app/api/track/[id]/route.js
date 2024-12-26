@@ -33,7 +33,7 @@ export async function GET(req, { params }) {
         await user.save();
         const track = await fetchTrack(token, id);
 
-        const albumData = track?.album?.album_type === "album" ? await fetchAlbumTracks(token, track.album.id) : null;
+        const albumData = await fetchAlbumTracks(token, track.album.id) || null;
 
 
 
