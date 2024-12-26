@@ -1,39 +1,115 @@
-"use client"
-import { Button } from '@/components/ui/button';
-import { useQuery } from '@tanstack/react-query';
-import { AudioLines, Book, Calendar, Clock, Disc, Globe, Play, UserRound } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
+"use client";
+import ConnectingLoading from "@/components/custom/ConnectingLoading";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AudioLines, Book, Calendar, Clock, Disc, Globe, Heart, Play, UserRound } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 const fetchTrackDetails = async ({ queryKey }) => {
     const [, id] = queryKey;
     const response = await fetch(`/api/track/${id}`);
-    if (!response.ok) throw new Error("Failed to fetch artist data");
+    if (!response.ok) throw new Error(`Failed to fetch track details: ${response.statusText}`);
     const data = await response.json();
     return data?.data || {};
 };
+
+const saveTrack = async (trackId) => {
+    const response = await fetch(`/api/track/save`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: trackId }),
+    });
+    if (!response.ok) throw new Error(`Failed to save track: ${response.statusText}`);
+    return await response.json();
+};
+
+const removeFromSaveTrack = async (trackId) => {
+    const response = await fetch(`/api/track/save`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: trackId }),
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to remove track");
+    }
+
+    return await response.json();
+};
+
 const TrackPage = ({ params }) => {
     const { id } = params;
+    const queryClient = useQueryClient();
+
     const formatDuration = (ms) => {
         const minutes = Math.floor(ms / 60000);
-        const seconds = ((ms % 60000) / 1000).toFixed(0);
-        return `${minutes}:${seconds.padStart(2, '0')}`;
+        const seconds = Math.floor((ms % 60000) / 1000).toString().padStart(2, "0");
+        return `${minutes}:${seconds}`;
     };
 
     const formatDate = (date) => {
-        return new Date(date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+        return new Date(date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
         });
     };
 
-
-    const { data: trackDetails } = useQuery({
-        queryKey: ['artist', id],
+    const { data: trackDetails, isLoading, isError } = useQuery({
+        queryKey: ["track", id],
         queryFn: fetchTrackDetails,
         enabled: !!id,
     });
+
+    const updateTrackCache = (trackId, isLiked) => {
+        queryClient.setQueryData(["track", id], (oldData) => {
+            if (!oldData) return oldData;
+            return {
+                ...oldData,
+                liked: isLiked,
+                tracks: oldData.tracks?.map((track) => {
+                    return track.id === trackId ? { ...track, liked: isLiked } : track
+                }
+                ),
+            };
+        });
+    };
+
+    const saveMutation = useMutation({
+        mutationFn: saveTrack,
+        onMutate: (trackId) => updateTrackCache(trackId, true),
+        onError: (error, trackId) => {
+            updateTrackCache(trackId, false);
+            console.error("Error saving track:", error);
+        },
+        onSuccess: (data, trackId) => {
+            console.log("Track saved successfully:", data);
+        },
+    });
+
+    const removeMutation = useMutation({
+        mutationFn: removeFromSaveTrack,
+        onMutate: (trackId) => updateTrackCache(trackId, false),
+        onError: (error, trackId) => {
+            updateTrackCache(trackId, true);
+            console.error("Error removing track:", error);
+        },
+        onSuccess: (data, trackId) => {
+            console.log("Track removed successfully:", data);
+        },
+    });
+
+    const handleTrackSave = (track) => {
+        if (!track || !track.id) return;
+        track.liked ? removeMutation.mutate(track.id) : saveMutation.mutate(track.id);
+    };
+
+    if (isLoading) return <ConnectingLoading message="Track is on the way..." />
+    if (isError) return <p className="flex flex-col gap-4 max-w-6xl mx-4 md:mx-auto">Error loading track details.</p>;
 
     return (
         <div className='flex flex-col gap-4 max-w-6xl mx-4 md:mx-auto'>
@@ -68,11 +144,16 @@ const TrackPage = ({ params }) => {
                     </div>
                     <div className="md:my-4 flex-1">
                         <h1 className="text-xl md:text-5xl font-semibold">{trackDetails?.name}</h1>
-                        <div className="mt-2 grid md:grid-cols-2 space-y-1">
-                            <p className="text-neutral-400 text-xs md:text-sm flex items-center gap-2">
+                        <div className="mt-2 grid gap-2 md:grid-cols-2 space-y-1">
+                            <div className="flex items-center gap-2 text-neutral-400 text-xs md:text-sm ">
                                 <UserRound className="size-3 md:size-4" />
-                                <span className='hidden sm:block'>Artist:</span> <span className="text-white">{trackDetails?.artist}</span>
-                            </p>
+                                <span className='hidden sm:block'>Artist:</span>
+                                {trackDetails?.artists?.map((artist) =>
+                                    <Link href={`/artist/${artist?.id}/albums`} className="flex hover:underline flex-wrap" key={artist?.id}>
+                                        <span className="text-white">{artist?.name}</span>
+                                    </Link>
+                                )}
+                            </div>
                             <p className="hidden text-neutral-400 text-xs md:text-sm sm:flex items-center gap-2">
                                 <Book className="size-3 md:size-4" />
                                 <span className='hidden sm:block'>Album:</span> <span className="text-white">{trackDetails?.album.name}</span>
@@ -97,6 +178,14 @@ const TrackPage = ({ params }) => {
 
                         </div>
                     </div>
+
+                    <Button
+                        onClick={() => handleTrackSave(trackDetails)}
+                        size="icon"
+                        variant="link"
+                        className={cn("absolute bottom-0 right-0 hover:scale-110 text-white hover:text-green-400", trackDetails?.liked ? "text-green-400" : "text-white")}>
+                        <Heart fill={trackDetails?.liked ? "currentColor" : "none"} />
+                    </Button>
                 </div>
 
                 <div>
@@ -108,7 +197,6 @@ const TrackPage = ({ params }) => {
                     <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-l from-transparent to-black" />
                 </div>
             </div>
-
             <div className='bg-neutral-800 w-full rounded-xl p-2 sm:p-4 relative overflow-hidden'>
                 <div className='relative flex flex-col sm:flex-row gap-4 z-[10]'>
                     <div className="relative  flex items-center sm:items-start sm:flex-col gap-4">
@@ -133,7 +221,10 @@ const TrackPage = ({ params }) => {
                             <div className="mt-2 space-y-1">
                                 <p className="text-neutral-400 text-xs md:text-sm flex items-center gap-2">
                                     <UserRound className="size-3 md:size-4" />
-                                    <span className='hidden sm:block'>Artist:</span> <span className="text-white">{trackDetails?.artist}</span>
+                                    <span className='hidden sm:block'>Artist:</span>
+                                    <Link href={`/artist/${trackDetails?.artist?.id}/albums`} className="flex hover:underline flex-wrap">
+                                        <span className="text-white">{trackDetails?.artist?.name}</span>
+                                    </Link>
                                 </p>
                                 <p className="text-neutral-400 text-xs md:text-sm flex items-center gap-2">
                                     <Disc className="size-3 md:size-4" />
@@ -167,6 +258,14 @@ const TrackPage = ({ params }) => {
                                         </p>
 
                                     </div>
+                                    <Button
+                                        onClick={() => handleTrackSave(track)}
+                                        size="icon"
+                                        variant="link"
+                                        className={cn("hover:scale-110 hover:text-green-400", track?.liked ? "text-green-400" : "text-white")}
+                                    >
+                                        <Heart fill={track.liked ? "currentColor" : "none"} />
+                                    </Button>
                                 </div>
                             })}
                         </div>}

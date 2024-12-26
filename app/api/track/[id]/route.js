@@ -31,16 +31,29 @@ export async function GET(req, { params }) {
         let token = await refreshSpotifyToken(user.spotifyRefreshToken);
         user.spotifyAccessToken = token;
         await user.save();
-        const track = await fetchTrack(token, id);
 
+        // Fetch track and album data
+        const track = await fetchTrack(token, id);
         const albumData = await fetchAlbumTracks(token, track.album.id) || null;
 
+        // Get all track IDs to check (current track + album tracks)
+        const trackIds = [track.id];
+        if (albumData?.tracks?.items) {
+            trackIds.push(...albumData.tracks.items.map(t => t.id));
+        }
 
+        // Check which tracks are saved
+        const savedTracksStatus = await checkSavedTracks(token, trackIds);
+        const savedTracksMap = trackIds.reduce((acc, trackId, index) => {
+            acc[trackId] = savedTracksStatus[index];
+            return acc;
+        }, {});
 
         // Filtering and structuring the data
         const filterData = {
             id: track.id,
-            artist: track.artists.map((artist) => artist.name).join(", "),
+            artist: track.artists?.[0],
+            artists: track.artists,
             popularity: track.popularity,
             track_url: track?.external_urls?.spotify,
             release_date: track.album.release_date,
@@ -50,6 +63,7 @@ export async function GET(req, { params }) {
             name: track.name,
             total_tracks: track.album.total_tracks,
             countries: track.available_markets?.length,
+            liked: savedTracksMap[track.id],
             album: {
                 id: track.album.id,
                 name: track.album.name,
@@ -66,6 +80,7 @@ export async function GET(req, { params }) {
                     explicit: t.explicit,
                     popularity: t.popularity,
                     track_url: t.external_urls.spotify,
+                    liked: savedTracksMap[t.id]
                 }
             }) || []
         };
@@ -110,5 +125,35 @@ const fetchAlbumTracks = async (token, id) => {
     } catch (error) {
         console.error("Error fetching track data:", error);
         return error;
+    }
+}
+
+const checkSavedTracks = async (token, trackIds) => {
+    try {
+        // Split trackIds into chunks of 50 (Spotify's limit)
+        const chunks = [];
+        for (let i = 0; i < trackIds.length; i += 50) {
+            chunks.push(trackIds.slice(i, i + 50));
+        }
+
+        // Make requests for each chunk
+        const requests = chunks.map(async chunk => {
+            const response = await fetch(
+                `https://api.spotify.com/v1/me/tracks/contains?ids=${chunk.join(',')}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            return response.json();
+        });
+
+        // Combine all results
+        const results = await Promise.all(requests);
+        return results.flat();
+    } catch (error) {
+        console.error("Error checking saved tracks:", error);
+        return new Array(trackIds.length).fill(false); // Return all false if check fails
     }
 }
