@@ -81,11 +81,9 @@ const UserProfilePage = ({ params }) => {
         <div className="grid grid-cols-3 gap-2 items-center">
           {/* Profile Image */}
           <div className="flex flex-col gap-3 items-center">
-            <Image
+            <img
               src={profileData?.image || "/user.jpg"}
               alt="Profile"
-              width={154}
-              height={154}
               className="rounded-full size-[70px] md:size-36 border border-white shadow-lg"
             />
             <div>

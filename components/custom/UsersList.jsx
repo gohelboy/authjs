@@ -67,11 +67,9 @@ const UsersList = () => {
             href={`/user/${user?._id}`}
             className="flex items-center gap-3 hover:underline"
           >
-            <Image
+            <img
               src={user.image || "/user.jpg"}
               alt={user.name}
-              width={56}
-              height={56}
               className="rounded-full object-cover"
             />
             <div className="flex-grow">

@@ -498,10 +498,8 @@ const TrackPage = ({ params }) => {
                     <div className="relative group min-w-fit">
                         <Link href={trackDetails?.track_url || "#"} className="relative">
                             {/* Artist Image */}
-                            <Image
+                            <img
                                 src={trackDetails?.album?.image || "/user.jpg"}
-                                width={248}
-                                height={248}
                                 alt="artist"
                                 className="size-36 md:size-64 object-cover relative rounded-2xl z-10"
                             />
@@ -573,10 +571,8 @@ const TrackPage = ({ params }) => {
                     <div className="relative  flex items-center sm:items-start sm:flex-col gap-4">
                         <Link href={trackDetails?.album?.url || "#"} className="relative min-w-fit group">
                             {/* Artist Image */}
-                            <Image
+                            <img
                                 src={trackDetails?.album?.image || "/user.jpg"}
-                                width={248}
-                                height={248}
                                 alt="artist"
                                 className="size-28 sm:size-auto object-cover relative rounded-2xl z-10"
                             />

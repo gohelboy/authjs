@@ -60,9 +60,7 @@ const FollowersListPage = () => {
             key={index}
             className="flex items-center space-x-4 p-4 border-b border-neutral-800 hover:underline"
           >
-            <Image
-              width={48}
-              height={48}
+            <img
               src={user?.image || "/user.jpg"}
               alt={user?.name}
               className="w-12 h-12 rounded-full border-2 border-green-500"

@@ -177,9 +177,7 @@ const DiscoverMap = () => {
           >
             <Popup>
               <div className="p-2 flex flex-col gap-2 items-center justify-center">
-                <Image
-                  width={54}
-                  height={54}
+                <img
                   src={user.image || "/user.jpg"}
                   alt={user.name}
                   className="w-16 h-16 rounded-full mx-auto"

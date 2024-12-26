@@ -79,11 +79,9 @@ const SpotifyProfilePage = () => {
         <div className="grid md:grid-cols-3 gap-8">
           {/* Profile Image */}
           <div className="flex flex-col items-center justify-center">
-            <Image
+            <img
               src={profileData?.image || "/user.jpg"}
               alt="Profile"
-              width={154}
-              height={154}
               className="rounded-full border-4 border-green-500 shadow-lg mb-4"
             />
             <h2 className="text-2xl font-semibold tracking-tight">

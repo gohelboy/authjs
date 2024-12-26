@@ -41,11 +41,9 @@ const Header = () => {
             href={"/me"}
             className="flex items-center space-x-3 group cursor-pointer"
           >
-            <Image
+            <img
               src={session?.user?.image || "/user.jpg"}
               alt="Profile"
-              width={40}
-              height={40}
               className="rounded-full border-2 border-green-500 group-hover:scale-105 transition-transform"
             />
             <div className="hidden md:flex flex-col items-start">

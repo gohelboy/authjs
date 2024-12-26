@@ -98,10 +98,8 @@ const ArtistCard = () => {
                             <div className="relative group min-w-fit">
                                 <Link href={artist?.external_urls?.spotify || "#"} className="relative">
                                     {/* Artist Image */}
-                                    <Image
+                                    <img
                                         src={artist?.images?.[0]?.url || "/user.jpg"}
-                                        width={248}
-                                        height={248}
                                         alt="artist"
                                         className="size-36 md:size-64 object-cover relative rounded-2xl z-10"
                                     />
