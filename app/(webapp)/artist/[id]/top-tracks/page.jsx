@@ -1,10 +1,9 @@
 "use client";
 
-import { AudioLines, Timer } from 'lucide-react';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
+import { AudioLines, Timer } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 function formatDuration(durationMs) {
     const totalSeconds = Math.floor(durationMs / 1000);

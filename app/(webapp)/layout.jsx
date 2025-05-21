@@ -1,5 +1,5 @@
 import Header from "@/components/custom/Header";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 
 const layout = ({ children }) => {
   return (

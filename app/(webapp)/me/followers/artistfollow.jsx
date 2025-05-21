@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 const FollowersListPage = () => {
   const { data: session } = useSession();
@@ -66,25 +66,25 @@ const FollowersListPage = () => {
 
       {/* Render followed artists list */}
       <div className="space-y-4">
-        {followers.map((artist, index) => (
+        {followers.map((user, index) => (
           <div
             key={index}
             className="flex items-center space-x-4 p-4 border-b border-neutral-800"
           >
             <img
-              src={artist.images?.[0]?.url || "/user.jpg"}
-              alt={artist.name}
+              src={user.images?.[0]?.url || "/user.jpg"}
+              alt={user.name}
               className="w-12 h-12 rounded-full border-2 border-green-500"
             />
             <div>
               <h3 className="text-lg font-semibold text-white">
-                {artist.name}
+                {user.name}
               </h3>
               <p className="text-sm text-neutral-400">
-                Followers: {artist.followers.total}
+                Followers: {user.followers.total}
               </p>
               <a
-                href={artist.external_urls.spotify}
+                href={user.external_urls.spotify}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-green-400 hover:underline"

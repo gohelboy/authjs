@@ -1,4 +1,3 @@
-import React from 'react'
 import ArtistCard from './_components/ArtistCard'
 
 const layout = ({ children }) => {

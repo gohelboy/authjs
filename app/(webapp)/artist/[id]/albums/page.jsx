@@ -1,9 +1,8 @@
 "use client";
 
-import { Calendar, Disc } from 'lucide-react';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
+import { Calendar, Disc } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const fetchArtistAlbums = async ({ queryKey }) => {
     const [, id] = queryKey; // Extract ID from queryKey
